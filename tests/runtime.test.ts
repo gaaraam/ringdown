@@ -183,6 +183,20 @@ it("동의 위조와 그래프 밖 전이는 실행 전에 거부", () => {
   expect(checkPlan({ transition: "missing" }, ctx)).toBe("transition_not_allowed");
 });
 
+it("종료 권한: 질문하면서 종료·런타임 전용 종료·효과 없는 콜백 종료를 거부한다", () => {
+  const loaded = packs.find((p) => p.pack.id === "gaga-ads")!;
+  const stage = (id: string) => loaded.pack.stages.find((s) => s.id === id)!;
+  const at = (id: string): TurnContext => ({ pack: loaded, stage: stage(id), facts: [], slots: {}, transcript: [] });
+  // M4 실측에서 EXAONE이 낸 계획: 다음 단계로 가며 질문하고, 동시에 확인 대기로 종료
+  expect(checkPlan({ transition: "pitch", end: "pending_confirmation" }, at("verify"))).toBe("end_reserved_for_runtime");
+  expect(checkPlan({ transition: "pitch", end: "declined" }, at("verify"))).toBe("end_without_terminal_stage");
+  expect(checkPlan({ end: "success" }, at("confirm"))).toBe("end_without_terminal_stage");
+  expect(checkPlan({ transition: "close", end: "callback_scheduled" }, at("pitch"))).toBe("end_without_effect");
+  expect(checkPlan({ transition: "close", end: "callback_scheduled", tools: [{ tool: "call.scheduleCallback", args: {} }] }, at("pitch"))).toBeUndefined();
+  expect(checkPlan({ transition: "close", end: "declined" }, at("pitch"))).toBeUndefined();
+  expect(checkPlan({ end: "handoff" }, at("pitch"))).toBeUndefined();
+});
+
 it("소수점은 문장 경계로 잘리지 않는다", () => {
   expect(postGuard("약 1.5일입니다. 감사합니다.", ["1.5"], [], 12)).toEqual({ text: "약 1.5일입니다. 감사합니다.", hits: [] });
   expect(postGuard("약 1.9일입니다.", ["1.5"], [], 12).hits).toContain("numeric_grounding");
@@ -232,7 +246,7 @@ it("응답 유실은 확인 작업을 등록하되 성공은 반영된 업무 �
   } finally { fault.lostAck = saved; }
 });
 it("성공이라는 Brain 주장만으로 목표를 달성하지 않는다", async () => {
-  const brain: Brain = { id: "test", plan: async () => ({ say: "감사합니다.", end: "success" }), compose: async () => "감사합니다." };
+  const brain: Brain = { id: "test", plan: async () => ({ say: "감사합니다.", transition: "close", end: "success" }), compose: async () => "감사합니다." };
   const result = await runCall(packs[0]!, packs[0]!.personas[0]!, "clean", 1, { brain });
   expect(result.outcome).toBe("failed");
   expect(result.system.writes).toEqual([]);
@@ -266,14 +280,14 @@ it("끼어들기 접두사는 다음 Brain 턴에 전달", async () => {
   pack.pack.stages[0]!.rule!.say = "길게 설명하는 문장입니다. ".repeat(20);
   pack.pack.policy.maxTurnSpeechSec = 60;
   const seen: TurnContext[] = [];
-  const brain: Brain = { id: "test", plan: async (ctx) => { seen.push(structuredClone(ctx)); return { say: "감사합니다.", end: "declined" }; }, compose: async () => "감사합니다." };
+  const brain: Brain = { id: "test", plan: async (ctx) => { seen.push(structuredClone(ctx)); return { say: "감사합니다.", transition: "close", end: "declined" }; }, compose: async () => "감사합니다." };
   const result = await runCall(pack, { ...pack.personas[0]!, patience: 0, quirks: ["interrupts"] }, "clean", 1, { brain });
   const cut = result.transcript.filter((t) => t.role === "agent" && t.interrupted).at(-1)!;
   expect(cut.role === "agent" && seen[0]?.interruptedAt).toBe(cut.role === "agent" ? cut.heard : undefined);
   expect(result.events.some((e) => e.type === "speech.interrupted")).toBe(true);
 });
 it("출력 차단은 실행 거부와 별도 계수하고 숫자 환각을 송출하지 않는다", async () => {
-  const brain: Brain = { id: "test", plan: async () => ({ say: "99999999원입니다. 무조건 됩니다.", end: "declined" }), compose: async () => "호출되지 않습니다." };
+  const brain: Brain = { id: "test", plan: async () => ({ say: "99999999원입니다. 무조건 됩니다.", transition: "close", end: "declined" }), compose: async () => "호출되지 않습니다." };
   const result = await runCall(packs[0]!, packs[0]!.personas[0]!, "clean", 1, { brain });
   expect(result.metrics.controlRejections).toBe(0);
   expect(result.metrics.outputGuardHits).toBe(2);
@@ -285,7 +299,7 @@ it("정책 재요청은 한 번만 하고 수정된 계획을 실행", async () 
   const brain: Brain = { id: "test", plan: async (ctx) => {
     count++;
     if (!ctx.rejection) return { transition: "missing" };
-    return { say: "감사합니다.", end: "declined" };
+    return { say: "감사합니다.", transition: "close", end: "declined" };
   }, compose: async () => "감사합니다." };
   const result = await runCall(packs[0]!, packs[0]!.personas[0]!, "clean", 1, { brain });
   expect(count).toBe(2);

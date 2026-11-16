@@ -76,7 +76,7 @@ it("LLM의 스키마 유효한 무동의 쓰기도 checkPlan이 차단", async (
 it("실제 경과 시간은 sim 시각에 합산하고 공급자의 주장 지연은 쓰지 않는다", async () => {
   let wall = 0;
   vi.spyOn(performance, "now").mockImplementation(() => wall);
-  const f = fake(() => { wall += 1800; return { intent: "no", say: "감사합니다.", end: "declined" }; });
+  const f = fake(() => { wall += 1800; return { intent: "no", say: "감사합니다.", transition: "close", end: "declined" }; });
   const result = await runCall(pack, pack.personas[0]!, "clean", 1, { brain: f.brain });
   expect(result.events.find(e => e.type === "brain.latency")?.ms).toBe(1800);
   const start = result.events.find(e => e.type === "turn.start")!;
@@ -130,7 +130,7 @@ it("compose 재시도도 턴 지연에 합산하고 실패 대체는 한 번", a
   const f = fake(req => {
     wall += 100;
     const suffix = JSON.parse(req.messages[0]!.content);
-    if (typeof suffix.task === "string") return { intent: "no", end: "declined" };
+    if (typeof suffix.task === "string") return { intent: "no", transition: "close", end: "declined" };
     return "{";
   });
   const result = await runCall(pack, pack.personas[0]!, "clean", 1, { brain: f.brain });
