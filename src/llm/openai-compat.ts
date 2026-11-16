@@ -13,9 +13,9 @@ export class OpenAICompatClient implements LlmClient {
       ...(req.maxTokens ? { max_tokens: req.maxTokens } : {}),
       ...(req.jsonSchema ? { response_format: { type: "json_schema", json_schema: { name: "response", strict: false, schema: req.jsonSchema } } } : {}),
     }, req.signal);
-    return { ...parseOutput(data.choices?.[0]?.message?.content, !!req.jsonSchema), model: this.label,
+    return { ...parseOutput(data?.choices?.[0]?.message?.content, !!req.jsonSchema), model: this.label,
       latencyMs: performance.now() - start,
-      ...(data.usage ? { usage: { promptTokens: data.usage.prompt_tokens, completionTokens: data.usage.completion_tokens } } : {}),
+      ...(typeof data.usage?.prompt_tokens === "number" && typeof data.usage?.completion_tokens === "number" ? { usage: { promptTokens: data.usage.prompt_tokens, completionTokens: data.usage.completion_tokens } } : {}),
     };
   }
 }

@@ -14,7 +14,7 @@ export class OllamaClient implements LlmClient {
       ...(req.jsonSchema ? { format: req.jsonSchema } : {}),
       options: { ...this.spec.options, ...(req.maxTokens ? { num_predict: req.maxTokens } : {}) },
     }, req.signal);
-    return { ...parseOutput(data.message?.content, !!req.jsonSchema), model: this.label,
+    return { ...parseOutput(data?.message?.content, !!req.jsonSchema), model: this.label,
       latencyMs: performance.now() - start,
       ...(typeof data.prompt_eval_count === "number" && typeof data.eval_count === "number" ? {
         usage: { promptTokens: data.prompt_eval_count, completionTokens: data.eval_count },

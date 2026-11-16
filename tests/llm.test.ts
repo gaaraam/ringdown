@@ -112,6 +112,8 @@ it("공급자 HTTP·잘못된 JSON·본문 제한 시간의 오류 종류", asyn
   const req = { system: "", messages: [], jsonSchema: { type: "object" } };
   vi.stubGlobal("fetch", async () => new Response("실패", { status: 503 }));
   await expect(client.chat(req)).rejects.toMatchObject({ kind: "http" });
+  vi.stubGlobal("fetch", async () => new Response("null"));
+  await expect(client.chat(req)).rejects.toMatchObject({ kind: "invalid_json" });
   vi.stubGlobal("fetch", async () => new Response("{"));
   await expect(client.chat(req)).rejects.toMatchObject({ kind: "invalid_json" });
   vi.stubGlobal("fetch", async (_url: unknown, init: RequestInit) => new Promise((_resolve, reject) => { init.signal!.addEventListener("abort", () => reject(Error("취소"))); }));
