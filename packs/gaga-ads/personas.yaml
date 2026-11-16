@@ -1,8 +1,255 @@
-- { id: grateful-owner, targetId: A-2001, description: 광고가 멈출 뻔한 걸 알고 고마워하는 사장님, patience: 0.8, cooperativeness: 0.9, intent: accept }
-- { id: clinic-manager, targetId: A-2002, description: 진료 중 잠깐 받은 병원 실장. 짧으면 듣는다, patience: 0.2, cooperativeness: 0.6, intent: accept_if_short, quirks: [interrupts] }
-- { id: careful-owner, targetId: A-2003, description: 결제수단과 해지 방법을 묻고 결정, patience: 0.6, cooperativeness: 0.6, intent: ask_then_accept, quirks: [asks_question] }
-- { id: budget-tight, targetId: A-2004, description: 비수기라 광고를 줄이려는 펜션 사장님, patience: 0.5, cooperativeness: 0.1, intent: decline }
-- { id: spam-hater, targetId: A-2005, description: 영업 전화에 예민한 원장, patience: 0.2, cooperativeness: 0.0, intent: opt_out, quirks: [interrupts] }
-- { id: wants-manager, targetId: A-2006, description: 담당 매니저와 직접 얘기하겠다는 사장님, patience: 0.4, cooperativeness: 0.4, intent: request_human }
-- { id: in-meeting, targetId: A-2007, description: 회의 중이라 나중에 통화하자는 사장님, patience: 0.3, cooperativeness: 0.5, intent: busy }
-- { id: silent-vet, targetId: A-2008, description: 대답이 늦고 자주 말이 끊기는 수의사, patience: 0.7, cooperativeness: 0.7, intent: accept, quirks: [silence] }
+# 30명: accept 16(53.3%), accept_if_short 4(13.3%), ask_then_accept 4(13.3%),
+# decline 2(6.7%), opt_out 1(3.3%), request_human 1(3.3%), busy 2(6.7%).
+# 기존 8명을 보존하고 수락 계열을 확장한 런타임 검증용 표본이며 실제 고객 분포가 아니다.
+# 추가 표본 인내심 0.2/0.4/0.6/0.8/1 순환, 협조성 0.8/0.9/1 순환.
+# 버릇 없음/끼어들기/침묵/질문/주제 전환/잘못 듣기를 순환하고 지식 수준도 분산한다.
+- id: grateful-owner
+  targetId: A-2001
+  description: 광고가 멈출 뻔한 걸 알고 고마워하는 사장님
+  patience: 0.8
+  cooperativeness: 0.9
+  intent: accept
+- id: clinic-manager
+  targetId: A-2002
+  description: 진료 중 잠깐 받은 병원 실장. 짧으면 듣는다
+  patience: 0.2
+  cooperativeness: 0.6
+  intent: accept_if_short
+  quirks:
+    - interrupts
+- id: careful-owner
+  targetId: A-2003
+  description: 결제수단과 해지 방법을 묻고 결정
+  patience: 0.6
+  cooperativeness: 0.6
+  intent: ask_then_accept
+  quirks:
+    - asks_question
+- id: budget-tight
+  targetId: A-2004
+  description: 비수기라 광고를 줄이려는 펜션 사장님
+  patience: 0.5
+  cooperativeness: 0.1
+  intent: decline
+- id: spam-hater
+  targetId: A-2005
+  description: 영업 전화에 예민한 원장
+  patience: 0.2
+  cooperativeness: 0
+  intent: opt_out
+  quirks:
+    - interrupts
+- id: wants-manager
+  targetId: A-2006
+  description: 담당 매니저와 직접 얘기하겠다는 사장님
+  patience: 0.4
+  cooperativeness: 0.4
+  intent: request_human
+- id: in-meeting
+  targetId: A-2007
+  description: 회의 중이라 나중에 통화하자는 사장님
+  patience: 0.3
+  cooperativeness: 0.5
+  intent: busy
+- id: silent-vet
+  targetId: A-2008
+  description: 대답이 늦고 자주 말이 끊기는 수의사
+  patience: 0.7
+  cooperativeness: 0.7
+  intent: accept
+  quirks:
+    - silence
+- id: sample-09
+  targetId: A-2009
+  description: accept 성향의 추가 표본 9
+  patience: 0.2
+  cooperativeness: 0.8
+  intent: accept
+  knowledge: low
+  quirks: []
+- id: sample-10
+  targetId: A-2010
+  description: accept 성향의 추가 표본 10
+  patience: 0.4
+  cooperativeness: 0.9
+  intent: accept
+  knowledge: mid
+  quirks:
+    - interrupts
+- id: sample-11
+  targetId: A-2011
+  description: accept 성향의 추가 표본 11
+  patience: 0.6
+  cooperativeness: 1
+  intent: accept
+  knowledge: high
+  quirks:
+    - silence
+- id: sample-12
+  targetId: A-2012
+  description: accept 성향의 추가 표본 12
+  patience: 0.8
+  cooperativeness: 0.8
+  intent: accept
+  knowledge: low
+  quirks:
+    - asks_question
+- id: sample-13
+  targetId: A-2013
+  description: accept 성향의 추가 표본 13
+  patience: 1
+  cooperativeness: 0.9
+  intent: accept
+  knowledge: mid
+  quirks:
+    - topic_switch
+- id: sample-14
+  targetId: A-2014
+  description: accept 성향의 추가 표본 14
+  patience: 0.2
+  cooperativeness: 1
+  intent: accept
+  knowledge: high
+  quirks:
+    - mishears
+- id: sample-15
+  targetId: A-2015
+  description: accept 성향의 추가 표본 15
+  patience: 0.4
+  cooperativeness: 0.8
+  intent: accept
+  knowledge: low
+  quirks: []
+- id: sample-16
+  targetId: A-2016
+  description: accept 성향의 추가 표본 16
+  patience: 0.6
+  cooperativeness: 0.9
+  intent: accept
+  knowledge: mid
+  quirks:
+    - interrupts
+- id: sample-17
+  targetId: A-2017
+  description: accept 성향의 추가 표본 17
+  patience: 0.8
+  cooperativeness: 1
+  intent: accept
+  knowledge: high
+  quirks:
+    - silence
+- id: sample-18
+  targetId: A-2018
+  description: accept 성향의 추가 표본 18
+  patience: 1
+  cooperativeness: 0.8
+  intent: accept
+  knowledge: low
+  quirks:
+    - asks_question
+- id: sample-19
+  targetId: A-2019
+  description: accept 성향의 추가 표본 19
+  patience: 0.2
+  cooperativeness: 0.9
+  intent: accept
+  knowledge: mid
+  quirks:
+    - topic_switch
+- id: sample-20
+  targetId: A-2020
+  description: accept 성향의 추가 표본 20
+  patience: 0.4
+  cooperativeness: 1
+  intent: accept
+  knowledge: high
+  quirks:
+    - mishears
+- id: sample-21
+  targetId: A-2021
+  description: accept 성향의 추가 표본 21
+  patience: 0.6
+  cooperativeness: 0.8
+  intent: accept
+  knowledge: low
+  quirks: []
+- id: sample-22
+  targetId: A-2022
+  description: accept 성향의 추가 표본 22
+  patience: 0.8
+  cooperativeness: 0.9
+  intent: accept
+  knowledge: mid
+  quirks:
+    - interrupts
+- id: sample-23
+  targetId: A-2023
+  description: accept_if_short 성향의 추가 표본 23
+  patience: 1
+  cooperativeness: 1
+  intent: accept_if_short
+  knowledge: high
+  quirks:
+    - silence
+- id: sample-24
+  targetId: A-2024
+  description: accept_if_short 성향의 추가 표본 24
+  patience: 0.2
+  cooperativeness: 0.8
+  intent: accept_if_short
+  knowledge: low
+  quirks:
+    - asks_question
+- id: sample-25
+  targetId: A-2025
+  description: accept_if_short 성향의 추가 표본 25
+  patience: 0.4
+  cooperativeness: 0.9
+  intent: accept_if_short
+  knowledge: mid
+  quirks:
+    - topic_switch
+- id: sample-26
+  targetId: A-2026
+  description: ask_then_accept 성향의 추가 표본 26
+  patience: 0.6
+  cooperativeness: 1
+  intent: ask_then_accept
+  knowledge: high
+  quirks:
+    - mishears
+- id: sample-27
+  targetId: A-2027
+  description: ask_then_accept 성향의 추가 표본 27
+  patience: 0.8
+  cooperativeness: 0.8
+  intent: ask_then_accept
+  knowledge: low
+  quirks: []
+- id: sample-28
+  targetId: A-2028
+  description: ask_then_accept 성향의 추가 표본 28
+  patience: 1
+  cooperativeness: 0.9
+  intent: ask_then_accept
+  knowledge: mid
+  quirks:
+    - interrupts
+- id: sample-29
+  targetId: A-2029
+  description: decline 성향의 추가 표본 29
+  patience: 0.2
+  cooperativeness: 1
+  intent: decline
+  knowledge: high
+  quirks:
+    - silence
+- id: sample-30
+  targetId: A-2030
+  description: busy 성향의 추가 표본 30
+  patience: 0.4
+  cooperativeness: 0.8
+  intent: busy
+  knowledge: low
+  quirks:
+    - asks_question
