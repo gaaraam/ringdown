@@ -1,0 +1,120 @@
+# 가가애즈 — 광고 잔액 소진 임박 광고주 자동충전 권유 콜 (영업 콜)
+# 가상 조직입니다. 실재하는 회사·서비스와 관련이 없습니다.
+id: gaga-ads
+version: 1
+name: 가가애즈 자동충전 권유
+locale: ko-KR
+
+call:
+  direction: outbound
+  target: { collection: advertisers, idParam: advertiserId }
+  prefetch: [ads.getAccount]
+
+goal:
+  description: >-
+    광고 잔액이 곧 바닥나는 광고주에게 광고가 멈추는 시점을 알리고,
+    원하면 잔액이 1만 원 아래로 내려갈 때 자동으로 충전되도록 설정한다. 영업 콜이라 거절을 존중한다.
+  success: { collection: advertisers, field: autoCharge, op: exists }
+  acceptableOutcomes: [callback_scheduled, pending_confirmation, declined, opted_out, handoff]
+
+policy:
+  callWindow: { days: [mon, tue, wed, thu, fri], from: "10:00", to: "17:00", tz: Asia/Seoul }
+  disclosure: "안녕하세요, 가가애즈 AI 상담원입니다. 광고 운영 안내를 위해 연락드렸고, 통화 내용은 기록됩니다."
+  maxTurnSpeechSec: 10
+  maxCallSec: 150
+  silenceMaxSec: 3
+  turnLatencyBudgetMs: 800
+  fillerPhrases: ["네, 잠시만요.", "계정 정보 확인하고 있어요."]
+  handoffTarget: queue:ads-sales
+  forbidden: ["무조건", "보장", "손해 없", "매출이 오릅니다"]
+
+intents:
+  amount_50k: ["5만", "오만", "50000"]
+  amount_100k: ["10만", "십만", "100000"]
+  amount_200k: ["20만", "이십만", "200000"]
+
+slots:
+  consent: { type: boolean, description: 자동충전 설정에 대한 명시적 동의 }
+  chargeAmount:
+    type: string
+    enum: ["50000", "100000", "200000"]
+    labels: { "50000": 5만 원, "100000": 10만 원, "200000": 20만 원 }
+
+stages:
+  - id: verify
+    goal: 통화 상대가 해당 광고 계정의 광고주 또는 운영 담당자인지 확인한다.
+    allowTools: [call.scheduleCallback]
+    next: [pitch, close]
+    rule:
+      say: "{{fact.businessName}} 광고 담당자분 맞으실까요?"
+      on:
+        yes: { goto: pitch }
+        no: { goto: close, say: "실례했습니다.", end: declined }
+        busy: { tool: call.scheduleCallback, goto: close, say: "편하신 시간에 다시 연락드릴게요.", end: callback_scheduled }
+
+  - id: pitch
+    goal: >-
+      남은 잔액과 광고가 멈추는 예상 시점을 사실(fact)에 있는 숫자로만 알리고,
+      자동충전을 원하는지와 충전 금액(5만·10만·20만 원)을 묻는다. 한 번 거절하면 더 권하지 않는다.
+    allowTools: [kb.search, call.scheduleCallback]
+    next: [confirm, close]
+    rule:
+      say: "지금 광고 잔액이 {{fact.balance}}원이라 약 {{fact.daysLeft}}일 뒤 광고가 멈춰요. 잔액이 1만 원 아래로 내려가면 자동으로 충전되게 해 드릴까요? 금액은 5만, 10만, 20만 원 중에 고르실 수 있어요."
+      on:
+        amount_50k: { set: { chargeAmount: "50000" }, goto: confirm }
+        amount_100k: { set: { chargeAmount: "100000" }, goto: confirm }
+        amount_200k: { set: { chargeAmount: "200000" }, goto: confirm }
+        question: { tool: kb.search }
+        no: { goto: close, say: "알겠습니다. 필요하시면 광고 관리 화면에서 언제든 켜실 수 있어요.", end: declined }
+        busy: { tool: call.scheduleCallback, goto: close, say: "편하신 시간에 다시 연락드릴게요.", end: callback_scheduled }
+
+  - id: confirm
+    goal: 충전 금액과 조건(잔액 1만 원 미만 시 등록 결제수단으로 충전)을 읽어 주고 명시적 동의를 받은 뒤에만 설정한다.
+    allowTools: [ads.enableAutoCharge]
+    requireConsent: true
+    next: [close]
+    rule:
+      say: "잔액이 1만 원 아래로 내려가면 등록된 결제수단으로 {{slot.chargeAmount}}씩 충전돼요. 이대로 설정할까요?"
+      on:
+        yes: { set: { consent: true }, tool: ads.enableAutoCharge, goto: close, say: "설정해 드렸어요.", end: success }
+        no: { goto: close, say: "알겠습니다. 설정하지 않을게요.", end: declined }
+
+  - id: close
+    goal: 통화를 정중하게 마무리한다.
+    terminal: true
+    rule:
+      say: "감사합니다. 좋은 하루 보내세요."
+
+tools:
+  ads.getAccount:
+    jack: gaga-ads-api
+    op: GET /advertisers/{advertiserId}
+    kind: read
+    description: 광고 계정의 잔액, 일 평균 광고비, 소진 예상일을 조회한다
+    params:
+      advertiserId: { type: string, source: target }
+    timeoutMs: 1200
+    retry: { max: 2, on: [timeout, 5xx] }
+    onFailure: defer_callback
+    facts: [businessName, balance, dailySpend, daysLeft]
+
+  ads.enableAutoCharge:
+    jack: gaga-ads-api
+    op: PUT /advertisers/{advertiserId}/auto-charge
+    kind: write
+    description: 잔액이 기준 아래로 내려가면 지정 금액을 자동 충전하도록 설정한다
+    params:
+      advertiserId: { type: string, source: target }
+      amount: { type: string, source: slot, slot: chargeAmount }
+    idempotency: { header: Idempotency-Key }
+    timeoutMs: 2500
+    retry: { max: 1, on: [timeout] }
+    onFailure: confirm_later
+
+gates:
+  goal_rate: ">= 0.30"
+  acceptable_rate: ">= 0.90"
+  policy_violations: "== 0"
+  barge_in_rate: "<= 0.25"
+  long_call_rate: "<= 0.10"
+  dead_air_incidents: "== 0"

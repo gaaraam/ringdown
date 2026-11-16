@@ -1,0 +1,14 @@
+routes:
+  - { op: "GET /advertisers/{advertiserId}", action: read, collection: advertisers, key: advertiserId }
+  - { op: "PUT /advertisers/{advertiserId}/auto-charge", action: patch, collection: advertisers, key: advertiserId, field: autoCharge }
+
+collections:
+  advertisers:
+    A-2001: { businessName: 한입베이커리, balance: 18000, dailySpend: 6000, daysLeft: 3, autoCharge: null }
+    A-2002: { businessName: 바른정형외과, balance: 42000, dailySpend: 21000, daysLeft: 2, autoCharge: null }
+    A-2003: { businessName: 그린필라테스, balance: 9000, dailySpend: 9000, daysLeft: 1, autoCharge: null }
+    A-2004: { businessName: 노을펜션, balance: 30000, dailySpend: 5000, daysLeft: 6, autoCharge: null }
+    A-2005: { businessName: 스마일치과, balance: 55000, dailySpend: 27500, daysLeft: 2, autoCharge: null }
+    A-2006: { businessName: 동네세탁소, balance: 12000, dailySpend: 3000, daysLeft: 4, autoCharge: null }
+    A-2007: { businessName: 빛나는안경, balance: 24000, dailySpend: 8000, daysLeft: 3, autoCharge: null }
+    A-2008: { businessName: 우리동물병원, balance: 15000, dailySpend: 15000, daysLeft: 1, autoCharge: null }

@@ -1,0 +1,9 @@
+# soundcheck 통화 상대. M3에서 30종으로 늘린다.
+- { id: cooperative-owner, targetId: S-1001, description: 설명을 끝까지 듣고 바로 고르는 판매자, patience: 0.8, cooperativeness: 0.9, intent: accept }
+- { id: busy-owner, targetId: S-1002, description: 포장 중이라 바쁜 판매자. 길면 끊는다, patience: 0.2, cooperativeness: 0.5, intent: accept_if_short, quirks: [interrupts] }
+- { id: skeptical-owner, targetId: S-1003, description: 질문을 두세 개 하고 나서 결정하는 판매자, patience: 0.6, cooperativeness: 0.6, intent: ask_then_accept, knowledge: high, quirks: [asks_question] }
+- { id: refuser, targetId: S-1004, description: 필요 없다고 거절하는 판매자, patience: 0.5, cooperativeness: 0.1, intent: decline }
+- { id: do-not-call, targetId: S-1005, description: 전화하지 말라고 하는 판매자, patience: 0.3, cooperativeness: 0.0, intent: opt_out }
+- { id: wants-human, targetId: S-1006, description: 사람 상담원을 요구하는 판매자, patience: 0.4, cooperativeness: 0.4, intent: request_human }
+- { id: driving-owner, targetId: S-1007, description: 운전 중이라 나중에 통화하자는 판매자, patience: 0.3, cooperativeness: 0.5, intent: busy }
+- { id: rambler, targetId: S-1008, description: 말이 많고 주제를 자주 바꾸는 판매자, patience: 0.7, cooperativeness: 0.7, intent: accept, quirks: [topic_switch] }

@@ -1,0 +1,19 @@
+# ringdown.config.yaml 로 복사해서 쓴다. 이 파일이 없으면 기본값을 쓴다.
+# 모델은 언제든 바꿀 수 있다. 우선순위: 기본값 < 이 파일 < 환경변수 < CLI
+#   환경변수: RINGDOWN_MODEL_AGENT=ollama/qwen3:14b
+#   CLI:     npm run ringdown -- models --model agent=ollama/qwen3:14b
+models:
+  agent:                       # 콜 에이전트의 두뇌
+    provider: ollama           # ollama | openai-compat (llama.cpp, LM Studio, vLLM 등)
+    model: exaone3.5:7.8b
+    baseUrl: http://localhost:11434
+    options: { temperature: 0.3, num_ctx: 8192 }
+    timeoutMs: 30000
+  persona:                     # soundcheck 통화 상대. 에이전트와 다른 계열 모델을 쓴다
+    provider: ollama
+    model: gemma3:12b
+    options: { temperature: 0.8 }
+  # judge:                     # 주관 평가가 필요할 때만
+  #   provider: openai-compat
+  #   model: qwen3-14b
+  #   baseUrl: http://localhost:8080/v1

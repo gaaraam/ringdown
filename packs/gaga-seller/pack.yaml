@@ -1,0 +1,123 @@
+# 가가마켓 판매자센터 — 반품 배송비 정책 미설정 판매자 안내 콜
+# 가상 조직입니다. 실재하는 회사·서비스와 관련이 없습니다.
+id: gaga-seller
+version: 1
+name: 가가마켓 반품 배송비 정책 안내
+locale: ko-KR
+
+call:
+  direction: outbound
+  target: { collection: sellers, idParam: sellerId }
+  prefetch: [seller.lookup]
+
+goal:
+  description: >-
+    반품 배송비 정책을 설정하지 않은 판매자에게 미설정 시 생기는 손해를 짧게 알리고,
+    동의하면 통화 중에 정책을 대신 설정한다.
+  success: { collection: sellers, field: returnPolicy, op: exists }
+  acceptableOutcomes: [callback_scheduled, pending_confirmation, declined, opted_out, handoff]
+
+policy:
+  callWindow: { days: [mon, tue, wed, thu, fri], from: "09:00", to: "18:00", tz: Asia/Seoul }
+  disclosure: "안녕하세요, 가가마켓 판매자센터 AI 상담원입니다. 통화 내용은 품질 관리를 위해 기록됩니다."
+  maxTurnSpeechSec: 12
+  maxCallSec: 180
+  silenceMaxSec: 3
+  turnLatencyBudgetMs: 800
+  fillerPhrases: ["네, 확인해 볼게요.", "잠시만요, 조회하고 있어요."]
+  handoffTarget: queue:seller-care
+  forbidden: ["무조건", "보장", "절대", "법적 책임"]
+
+intents:
+  plan_free: ["무료", "공짜", "안 받", "판매자 부담"]
+  plan_3000: ["3천", "삼천", "3000"]
+  plan_5000: ["5천", "오천", "5000"]
+
+slots:
+  consent: { type: boolean, description: 정책 설정에 대한 명시적 동의 }
+  returnPlan:
+    type: string
+    enum: [free, paid-3000, paid-5000]
+    labels:
+      free: 무료 반품
+      paid-3000: 반품 배송비 3천 원
+      paid-5000: 반품 배송비 5천 원
+
+stages:
+  - id: verify
+    goal: 통화 상대가 해당 스토어의 판매자 본인이거나 운영 담당자인지 확인한다.
+    next: [explain, close]
+    rule:
+      say: "{{fact.storeName}} 운영하시는 분 맞으실까요?"
+      on:
+        yes: { goto: explain }
+        no: { goto: close, say: "실례했습니다. 담당자분께 다시 연락드릴게요.", end: declined }
+        busy: { tool: call.scheduleCallback, goto: close, say: "그럼 편하신 시간에 다시 연락드릴게요.", end: callback_scheduled }
+    allowTools: [call.scheduleCallback]
+
+  - id: explain
+    goal: >-
+      반품 배송비 정책이 비어 있으면 반품 배송비를 판매자가 전부 부담한다는 점을 한두 문장으로 알리고,
+      무료·3천 원·5천 원 중 무엇으로 설정할지 묻는다. 질문이 오면 지식 문서로 답한다.
+    allowTools: [kb.search, call.scheduleCallback]
+    next: [confirm, close]
+    rule:
+      say: "지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설정해 드릴 수 있는데, 무료, 3천 원, 5천 원 중 어떤 걸로 할까요?"
+      on:
+        plan_free: { set: { returnPlan: free }, goto: confirm }
+        plan_3000: { set: { returnPlan: paid-3000 }, goto: confirm }
+        plan_5000: { set: { returnPlan: paid-5000 }, goto: confirm }
+        question: { tool: kb.search }
+        no: { goto: close, say: "알겠습니다. 판매자센터 설정 메뉴에서 언제든 바꾸실 수 있어요.", end: declined }
+        busy: { tool: call.scheduleCallback, goto: close, say: "그럼 편하신 시간에 다시 연락드릴게요.", end: callback_scheduled }
+
+  - id: confirm
+    goal: 고른 정책을 한 번 더 읽어 주고 명시적 동의를 받은 뒤에만 설정한다.
+    allowTools: [seller.setReturnPolicy]
+    requireConsent: true
+    next: [close]
+    rule:
+      say: "{{slot.returnPlan}}으로 설정할게요. 진행해도 될까요?"
+      on:
+        yes: { set: { consent: true }, tool: seller.setReturnPolicy, goto: close, say: "설정해 드렸어요.", end: success }
+        no: { goto: close, say: "알겠습니다. 설정하지 않을게요.", end: declined }
+
+  - id: close
+    goal: 통화를 정중하게 마무리한다.
+    terminal: true
+    rule:
+      say: "감사합니다. 좋은 하루 보내세요."
+
+tools:
+  seller.lookup:
+    jack: gaga-api
+    op: GET /sellers/{sellerId}
+    kind: read
+    description: 판매자 스토어 정보와 현재 반품 정책을 조회한다
+    params:
+      sellerId: { type: string, source: target }
+    timeoutMs: 1500
+    retry: { max: 2, on: [timeout, 5xx] }
+    onFailure: defer_callback
+    facts: [storeName, pendingReturns, monthlyReturnShippingCost]
+
+  seller.setReturnPolicy:
+    jack: gaga-api
+    op: PUT /sellers/{sellerId}/return-policy
+    kind: write
+    description: 판매자의 반품 배송비 정책을 설정한다
+    params:
+      sellerId: { type: string, source: target }
+      plan: { type: string, source: slot, slot: returnPlan }
+    idempotency: { header: Idempotency-Key }
+    timeoutMs: 2500
+    retry: { max: 1, on: [timeout] }
+    onFailure: confirm_later
+
+gates:
+  goal_rate: ">= 0.45"
+  acceptable_rate: ">= 0.90"
+  policy_violations: "== 0"
+  barge_in_rate: "<= 0.20"
+  long_call_rate: "<= 0.10"
+  dead_air_incidents: "== 0"
