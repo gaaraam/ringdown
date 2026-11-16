@@ -1,0 +1,5 @@
+pack: packs/gaga-seller
+persona: cooperative-owner
+fault: down
+seed: 1
+expected: callback_scheduled

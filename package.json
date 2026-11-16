@@ -16,7 +16,9 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "check:boundary": "tsx scripts/check-boundary.ts",
-    "ci": "npm run typecheck && npm run test && npm run check:boundary && npm run validate"
+    "ci": "npm run typecheck && npm run test && npm run check:boundary && npm run validate && npm run soundcheck:smoke",
+    "soundcheck": "tsx src/cli.ts soundcheck",
+    "soundcheck:smoke": "tsx scripts/soundcheck-smoke.ts"
   },
   "devDependencies": {
     "@types/node": "^20.19.43",

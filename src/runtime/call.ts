@@ -12,7 +12,7 @@ import { ScriptedPersona } from "../sim/persona.ts";
 import { SimTransport } from "../transport/sim.ts";
 
 export interface TraceEvent {
-  type: "turn.start" | "brain.plan" | "guard.reject" | "tool.call" | "tool.result" | "speech.start" | "speech.interrupted" | "call.end";
+  type: "brain.fallback" | "turn.start" | "brain.plan" | "guard.reject" | "tool.call" | "tool.result" | "speech.start" | "speech.interrupted" | "call.end";
   at: number;
   latency: { brain: number; tool: number; tts: number };
   [key: string]: unknown;
@@ -37,7 +37,7 @@ export async function runCall(loaded: LoadedPack, persona: Persona, faults: stri
   const profile = getFaultProfile(faults);
   const runtimes = new Map(Object.keys(loaded.jacks).map((id) => [id,
     new JackRuntime(new MockJack(id, system, profile, rng.fork(`jack:${id}`)), rng.fork(`retry:${id}`))]));
-  const brain = options.brain ?? new RuleBrain();
+  const brain: Brain = options.brain ?? new RuleBrain();
   const knowledge = new Knowledge(loaded.kb);
   const transcript: Turn[] = [];
   const events: TraceEvent[] = [];
@@ -196,6 +196,7 @@ export async function runCall(loaded: LoadedPack, persona: Persona, faults: stri
       await advance(now + delay);
       if (now >= until) break;
       plan = await brain.plan({ ...ctx(), rejection });
+      for (const reason of brain.takeFallbacks?.() ?? []) emit("brain.fallback", { reason });
       emit("brain.plan", { plan, attempt });
       rejection = checkPlan(plan, ctx());
       if (!rejection) break;
@@ -218,6 +219,7 @@ export async function runCall(loaded: LoadedPack, persona: Persona, faults: stri
     if (now >= until) break;
     if (!outcome && plan.transition) stage = pack.stages.find((s) => s.id === plan.transition)!;
     const text = failureText ?? (results.length === 0 && plan.say !== undefined ? render(plan.say, ctx()) : await brain.compose(ctx(), results));
+    for (const reason of brain.takeFallbacks?.() ?? []) emit("brain.fallback", { reason });
     latency.tts = 80;
     await advance(now + latency.tts);
     await say(text);
