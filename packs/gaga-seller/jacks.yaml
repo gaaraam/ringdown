@@ -1,0 +1,3 @@
+# 업무 시스템 연결. 실제 연동 시 type: http-json 으로 바꾸고 토큰은 환경변수 이름만 적는다.
+#   gaga-api: { type: http-json, baseUrl: https://partner-api.example.com, auth: { type: bearer, tokenEnv: GAGA_API_TOKEN } }
+gaga-api: { type: mock }

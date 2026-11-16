@@ -1,0 +1,8 @@
+- { id: grateful-owner, targetId: A-2001, description: 광고가 멈출 뻔한 걸 알고 고마워하는 사장님, patience: 0.8, cooperativeness: 0.9, intent: accept }
+- { id: clinic-manager, targetId: A-2002, description: 진료 중 잠깐 받은 병원 실장. 짧으면 듣는다, patience: 0.2, cooperativeness: 0.6, intent: accept_if_short, quirks: [interrupts] }
+- { id: careful-owner, targetId: A-2003, description: 결제수단과 해지 방법을 묻고 결정, patience: 0.6, cooperativeness: 0.6, intent: ask_then_accept, quirks: [asks_question] }
+- { id: budget-tight, targetId: A-2004, description: 비수기라 광고를 줄이려는 펜션 사장님, patience: 0.5, cooperativeness: 0.1, intent: decline }
+- { id: spam-hater, targetId: A-2005, description: 영업 전화에 예민한 원장, patience: 0.2, cooperativeness: 0.0, intent: opt_out, quirks: [interrupts] }
+- { id: wants-manager, targetId: A-2006, description: 담당 매니저와 직접 얘기하겠다는 사장님, patience: 0.4, cooperativeness: 0.4, intent: request_human }
+- { id: in-meeting, targetId: A-2007, description: 회의 중이라 나중에 통화하자는 사장님, patience: 0.3, cooperativeness: 0.5, intent: busy }
+- { id: silent-vet, targetId: A-2008, description: 대답이 늦고 자주 말이 끊기는 수의사, patience: 0.7, cooperativeness: 0.7, intent: accept, quirks: [silence] }
