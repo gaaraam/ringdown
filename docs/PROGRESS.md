@@ -126,3 +126,10 @@
 - **2026-11-17** RuleBrain 30명 × 5장애 × 3시드 = 450통화: 성공 129/450(28.67%), 허용 종료 100%, 정책 위반·침묵 사고·장시간 통화 0, 지연 p95 800ms. 유지는 쓰기 없이 `declined`로 종료하므로 목표 성공에 포함하지 않는다. 게이트 근거와 한계는 [실험 기록](experiments/2026-11-m5-onboarding.md)에 남겼다.
 - **2026-11-17** 기존 엔진·UI·스크립트 변경 없이 Playground 직접/자동 대화와 콘솔 30명 캠페인 완료. 처리함에 확인 2·콜백 2·이관 1건이 표시됐고 두 테마 PNG를 직접 검토했다. 로컬 CI 최초 1,062개 테스트·경계·세 팩 검증·각 150통화 smoke 통과. 기존 두 팩과 기준선은 변경하지 않았다.
 - **2026-11-17** [ONBOARDING.md](ONBOARDING.md) 작성. 동적 인증·API 선택지·무쓰기 성공·통화 시간 집행·팩 내부 산출물 발견·scripted 분기 제약을 [#20](https://github.com/gaaraam/ringdown/issues/20), [#21](https://github.com/gaaraam/ringdown/issues/21), [#22](https://github.com/gaaraam/ringdown/issues/22), [#23](https://github.com/gaaraam/ringdown/issues/23), [#24](https://github.com/gaaraam/ringdown/issues/24), [#25](https://github.com/gaaraam/ringdown/issues/25)로 분리했다. 실제 본인 인증·실시간 가용 슬롯·발신 시간 차단·의료 이해·실제 발신/API를 입증한 것이 아니다. 문서/PNG 및 CLI 호환 기준선 사본은 `packs/` 밖에 추가됐다.
+
+## M4 구현 (2026-11-16)
+
+- **2026-11-16** Ollama와 OpenAI 호환 공급자를 등록식으로 구현. JSON 스키마 출력, 본문 수신까지의 timeout, 오류 종류, 전체 지연과 토큰 사용량을 반환한다. 완성 JSON을 검증하기 위해 비스트리밍을 사용하므로 첫 토큰 지연은 미측정이다.
+- **2026-11-16** LlmBrain의 생성 스키마와 수신 검증을 동일 Zod 선언으로 묶었다. 단계별 도구·전이 enum, 선언 슬롯·결과 enum을 제한하고 오류 시 1회 재요청 뒤 RuleBrain으로 대체한다. 실행 동의·정책 검사는 기존 런타임이 계속 담당한다.
+- **2026-11-16** 고정 정책·그래프 프리픽스와 최근 8개 발화·출처 facts·거부 사유 서픽스를 분리. LLM의 plan/compose/재시도 전체 실측 시간을 시뮬레이션 시계에 반영하며 턴별 brain.latency와 보고서 v1의 선택적 diagnostics(p50/p95, 제어/출력 차단)를 추가했다.
+- **2026-11-16** 페르소나 공통 난수 (seed, persona)를 유지. LLM 페르소나는 선택 범위에서 제외하고 scripted 기준 비교에 집중한다. 실제 음성·업무 API·첫 토큰/캐시 적중률·상용 서버 인증은 검증 범위 밖이다.

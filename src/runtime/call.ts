@@ -13,7 +13,7 @@ import type { CustomerSource } from "../sim/customer.ts";
 import { SimTransport } from "../transport/sim.ts";
 
 export interface TraceEvent {
-  type: "brain.fallback" | "turn.start" | "brain.plan" | "guard.reject" | "tool.call" | "tool.result" | "speech.start" | "speech.interrupted" | "call.end";
+  type: "brain.compose" | "brain.latency" | "brain.fallback" | "turn.start" | "brain.plan" | "guard.reject" | "tool.call" | "tool.result" | "speech.start" | "speech.interrupted" | "call.end";
   at: number;
   latency: { brain: number; tool: number; tts: number };
   [key: string]: unknown;
@@ -40,7 +40,7 @@ export interface CallOptions {
   onState?: (state: CallSnapshot) => void;
 }
 
-/** 한 호출은 독립된 업무 상태·난수 스트림을 갖는다. 실시간 대기나 외부 API는 없다. */
+/** 한 호출은 독립된 업무 상태·난수 스트림을 갖는다. LLM 모드는 추론만 외부 공급자를 사용한다. */
 export async function runCall(loaded: LoadedPack, persona: Persona, faults: string, seed: number,
   options: CallOptions = {},
 ): Promise<CallResult> {
@@ -218,21 +218,25 @@ export async function runCall(loaded: LoadedPack, persona: Persona, faults: stri
     let plan: Plan = {};
     let rejection: string | undefined;
     for (let attempt = 0; attempt < 2; attempt++) {
-      const delay = Math.round(rng.between(20, 60));
+      const started = performance.now();
+      if (brain.latencyMode === "wall") plan = await brain.plan({ ...ctx(), rejection });
+      const delay = brain.latencyMode === "wall" ? performance.now() - started : Math.round(rng.between(20, 60));
       latency.brain += delay;
       await advance(now + delay);
-      if (now >= until) break;
-      plan = await brain.plan({ ...ctx(), rejection });
+      if (brain.latencyMode !== "wall") {
+        if (now >= until) break;
+        plan = await brain.plan({ ...ctx(), rejection });
+      }
       for (const reason of brain.takeFallbacks?.() ?? []) emit("brain.fallback", { reason });
       emit("brain.plan", { plan, attempt });
       rejection = checkPlan(plan, ctx());
-      if (!rejection) break;
+      if (!rejection || now >= until) break;
       metrics.controlRejections++;
       emit("guard.reject", { layer: "control", reason: rejection });
     }
     interruptedAt = undefined;
-    if (now >= until) break;
-    if (rejection) { await say(SAFE_PHRASE); continue; }
+    if (now >= until) { emit("brain.latency", { ms: latency.brain }); break; }
+    if (rejection) { emit("brain.latency", { ms: latency.brain }); await say(SAFE_PHRASE); continue; }
     for (const [key, value] of Object.entries(plan.setSlots ?? {})) slots[key] = { value, turn: transcript.length - 1 };
     const results: ToolResult[] = [];
     let failureText: string | undefined;
@@ -243,13 +247,27 @@ export async function runCall(loaded: LoadedPack, persona: Persona, faults: stri
       if (result.status === "failed") failureText = failure(call.tool, result.handledAs);
       if (outcome) break;
     }
-    if (now >= until) break;
+    if (now >= until) { emit("brain.latency", { ms: latency.brain }); break; }
     if (!outcome && plan.transition) {
       transitions.push({ from: stage.id, to: plan.transition, at: now, turn: transcript.length - 1 });
       stage = pack.stages.find((s) => s.id === plan.transition)!;
       observe();
     }
-    const text = failureText ?? (results.length === 0 && plan.say !== undefined ? render(plan.say, ctx()) : await brain.compose(ctx(), results));
+    let text = failureText;
+    if (text === undefined) {
+      if (results.length === 0 && plan.say !== undefined) text = render(plan.say, ctx());
+      else {
+        const started = performance.now();
+        text = await brain.compose(ctx(), results);
+        if (brain.latencyMode === "wall") {
+          const elapsed = performance.now() - started;
+          latency.brain += elapsed;
+          await advance(now + elapsed);
+        }
+        emit("brain.compose", { text });
+      }
+    }
+    emit("brain.latency", { ms: latency.brain });
     for (const reason of brain.takeFallbacks?.() ?? []) emit("brain.fallback", { reason });
     latency.tts = 80;
     await advance(now + latency.tts);
