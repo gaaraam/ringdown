@@ -7,7 +7,11 @@ const start=performance.now();
 for(const dir of listPackDirs("packs")) {
   const loaded=loadPack(dir); if(!loaded.ok) throw Error(JSON.stringify(loaded.issues));
   const {report}=await runMatrix(loaded.value,{faults:FAULT_IDS,seeds:[1],models:resolveModels({env:{}}),gitSha:"smoke",runId:"smoke"});
-  if(!report.pass) throw Error(`${report.pack}: 게이트 실패 ${JSON.stringify(report.gates.filter(g=>!g.pass))}`);
+  // smoke는 시드 1개(약 150통화)라 비율 지표의 95% 구간 폭이 ±0.08에 이른다. 비율 게이트를 여기서 걸면
+  // 코드가 아니라 표본 운으로 CI가 흔들린다. 표본 크기와 무관한 무관용 게이트(== 0)만 검사하고,
+  // 비율 게이트는 전체 soundcheck(--seeds 3 이상)에서 판정한다.
+  const hard=report.gates.filter(g=>g.op==="=="&&g.threshold===0);
+  if(hard.some(g=>!g.pass)) throw Error(`${report.pack}: 무관용 게이트 실패 ${JSON.stringify(hard.filter(g=>!g.pass))}`);
   console.log(`${report.pack}: ${report.matrix.calls}통화 통과`);
 }
 const elapsed=performance.now()-start;

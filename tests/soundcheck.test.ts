@@ -103,3 +103,35 @@ it("보고서 계약은 빠진 지표·알 수 없는 키·잘못된 표본 수�
 it("빈 매트릭스·중복 시드·장애 프로파일 거부",async()=>{
   for(const change of [{seeds:[]},{seeds:[1,1]},{faults:[]},{faults:["missing"]},{faults:["clean","clean"]}]) await expect(runMatrix(packs[0]!,{...input,...change})).rejects.toThrow();
 });
+
+it("공통 난수: 이름만 다른 같은 장애 프로파일이면 모든 페르소나의 발화가 같다", async () => {
+  const { FAULT_PROFILES } = await import("../src/jacks/faults.ts");
+  const loaded = loadPack("packs/gaga-seller");
+  if (!loaded.ok) throw new Error("pack");
+  // 동작은 clean과 같고 이름만 다르다. 고객 행동이 장애 이름에 따라 바뀌면 장애별 비교가 표본 차이를 재게 된다
+  FAULT_PROFILES["clean-twin"] = { ...FAULT_PROFILES.clean!, id: "clean-twin" };
+  try {
+    const texts = async (fault: string) => {
+      const out: string[][] = [];
+      for (const persona of loaded.value.personas) for (const seed of [1, 2, 3]) {
+        out.push((await runCall(loaded.value, persona, fault, seed)).transcript.filter((t) => t.role === "user").map((t) => t.text));
+      }
+      return out;
+    };
+    expect(await texts("clean-twin")).toEqual(await texts("clean"));
+  } finally {
+    delete FAULT_PROFILES["clean-twin"];
+  }
+});
+
+it("장애가 심할수록 성공률이 높아지지 않는다 (clean ≥ flaky ≥ down)", async () => {
+  const { loadPack } = await import("../src/pack/load.ts");
+  const { runMatrix } = await import("../src/soundcheck/runner.ts");
+  const { resolveModels } = await import("../src/config/models.ts");
+  const loaded = loadPack("packs/gaga-seller");
+  if (!loaded.ok) throw new Error("pack");
+  const { report } = await runMatrix(loaded.value, { faults: ["clean", "flaky", "down"], seeds: [1, 2, 3], runId: "t", gitSha: "t", models: resolveModels({ env: {} }) });
+  const g = (f: "clean" | "flaky" | "down") => report.breakdowns.fault[f]!.goal_rate.value!;
+  expect(g("clean")).toBeGreaterThanOrEqual(g("flaky"));
+  expect(g("flaky")).toBeGreaterThanOrEqual(g("down"));
+});

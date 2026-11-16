@@ -163,7 +163,9 @@ export async function runCall(loaded: LoadedPack, persona: Persona, faults: stri
   }
   const connectedAt = now;
   until = now + pack.policy.maxCallSec * 1000;
-  transport = options.transport ?? new SimTransport(new ScriptedPersona(persona, rng.fork("persona")), until);
+  // 페르소나 난수는 장애 프로파일과 무관하게 (시드, 페르소나)로만 정한다.
+  // 장애마다 다른 고객 행동을 뽑으면 장애별 비교가 장애 효과가 아니라 표본 차이를 재게 된다(공통 난수).
+  transport = options.transport ?? new SimTransport(new ScriptedPersona(persona, new Rng(`${seed}:${persona.id}`).fork("persona")), until);
   connected = true;
   await say(pack.policy.disclosure, true);
   if (prefetchFailure?.status === "failed") {
