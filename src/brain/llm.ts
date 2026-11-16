@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { Brain, Plan, ToolResult, TurnContext } from "../core/types.ts";
+import type { Brain, Plan, Scalar, ToolResult, TurnContext } from "../core/types.ts";
 import { OUTCOMES } from "../pack/schema.ts";
 import { createLlmClient, type LlmClient } from "../llm/types.ts";
 import type { ResolvedModel } from "../config/models.ts";
@@ -10,7 +10,14 @@ const choice = (values: string[]) => values.length ? z.enum(values) : z.never();
 export function planSchema(ctx: TurnContext) {
   const slots: Record<string, z.ZodType> = {};
   for (const [key, slot] of Object.entries(ctx.pack.pack.slots)) {
-    slots[key] = (slot.enum ? choice(slot.enum) : slot.type === "boolean" ? z.boolean() : slot.type === "number" ? z.number() : z.string()).optional();
+    let schema: z.ZodType = slot.type === "boolean" ? z.boolean() : slot.type === "number" ? z.number() : z.string();
+    if (slot.enum) {
+      // Pack의 enum은 문자열 목록이지만 슬롯의 실제 타입은 보존해야 한다.
+      const values = slot.enum.map(value => slot.type === "number" ? Number(value) : slot.type === "boolean" ? value === "true" : value)
+        .filter(value => slot.enum!.includes(String(value)) && (typeof value !== "number" || Number.isFinite(value)));
+      schema = values.length ? z.literal(values as [Scalar, ...Scalar[]]) : z.never();
+    }
+    slots[key] = schema.optional();
   }
   return z.strictObject({
     intent: z.string(), say: z.string().optional(),

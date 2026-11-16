@@ -150,3 +150,15 @@ it("입력 가드만 사용한 매트릭스는 LLM used=false", async () => {
   expect(result.report.models.agent.used).toBe(false);
   expect(f.requests).toHaveLength(0);
 });
+it("숫자·불리언 enum도 선언된 슬롯 타입을 유지", () => {
+  const ctx = context();
+  const changed = { ...ctx, pack: { ...ctx.pack, pack: { ...ctx.pack.pack, slots: {
+    count: { type: "number" as const, enum: ["1", "2"] },
+    enabled: { type: "boolean" as const, enum: ["true"] },
+  } } } };
+  const schema = planSchema(changed);
+  expect(schema.safeParse({ intent: "yes", setSlots: { count: 1, enabled: true } }).success).toBe(true);
+  expect(schema.safeParse({ intent: "yes", setSlots: { count: "1" } }).success).toBe(false);
+  expect(schema.safeParse({ intent: "yes", setSlots: { count: 3 } }).success).toBe(false);
+  expect(schema.safeParse({ intent: "yes", setSlots: { enabled: false } }).success).toBe(false);
+});
