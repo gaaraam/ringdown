@@ -12,6 +12,8 @@ commands:
   validate [pack-dir...]   Pack 검증 (기본: packs/ 아래 전체)
   call --pack <dir> --persona <id> --faults <profile> --seed <n>
                            결정론적 단일 통화와 JSONL trace
+  soundcheck --pack <dir>  매트릭스 평가 (여러 --pack 가능)
+  pin <runDir> <callId>    통화를 회귀 시나리오로 고정
   models                   역할별로 실제 사용될 모델과 그 출처 표시
 
 options:
@@ -19,6 +21,11 @@ options:
   --config <path>          설정 파일 (기본: ringdown.config.yaml)
   --json                   기계가 읽을 출력
 `;
+
+if (process.argv[2] === "soundcheck") {
+  try { process.exitCode = await (await import("./soundcheck/cli.ts")).soundcheck(process.argv.slice(3)); }
+  catch (e) { console.error(`오류: ${(e as Error).message}`); process.exitCode = 1; }
+} else {
 
 const { values, positionals } = parseArgs({
   allowPositionals: true,
@@ -114,6 +121,10 @@ async function main(): Promise<number> {
     return cmd ? 0 : 1;
   }
   switch (cmd) {
+    case "pin":
+      if (args.length !== 2) throw Error("pin <runDir> <callId>가 필요합니다");
+      console.log((await import("./soundcheck/io.ts")).pin(args[0]!, args[1]!));
+      return 0;
     case "call":
       return cmdCall();
     case "validate":
@@ -131,4 +142,6 @@ try {
 } catch (e) {
   console.error(`오류: ${(e as Error).message}`);
   process.exitCode = 1;
+}
+
 }

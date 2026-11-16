@@ -1,15 +1,162 @@
-# 가가마켓 판매자 API의 선언형 mock
 routes:
-  - { op: "GET /sellers/{sellerId}", action: read, collection: sellers, key: sellerId }
-  - { op: "PUT /sellers/{sellerId}/return-policy", action: patch, collection: sellers, key: sellerId, field: returnPolicy }
-
+  - op: GET /sellers/{sellerId}
+    action: read
+    collection: sellers
+    key: sellerId
+  - op: PUT /sellers/{sellerId}/return-policy
+    action: patch
+    collection: sellers
+    key: sellerId
+    field: returnPolicy
 collections:
   sellers:
-    S-1001: { storeName: 달빛공방, pendingReturns: 3, monthlyReturnShippingCost: 42000, returnPolicy: null }
-    S-1002: { storeName: 오늘의밥상, pendingReturns: 0, monthlyReturnShippingCost: 0, returnPolicy: null }
-    S-1003: { storeName: 단단스포츠, pendingReturns: 7, monthlyReturnShippingCost: 91000, returnPolicy: null }
-    S-1004: { storeName: 하루꽃집, pendingReturns: 1, monthlyReturnShippingCost: 6000, returnPolicy: null }
-    S-1005: { storeName: 모던키친, pendingReturns: 4, monthlyReturnShippingCost: 38000, returnPolicy: null }
-    S-1006: { storeName: 숲속캠핑, pendingReturns: 2, monthlyReturnShippingCost: 27000, returnPolicy: null }
-    S-1007: { storeName: 반짝액세서리, pendingReturns: 5, monthlyReturnShippingCost: 33000, returnPolicy: null }
-    S-1008: { storeName: 꼬마옷장, pendingReturns: 9, monthlyReturnShippingCost: 120000, returnPolicy: null }
+    S-1001:
+      storeName: 달빛공방
+      pendingReturns: 3
+      monthlyReturnShippingCost: 42000
+      returnPolicy: null
+    S-1002:
+      storeName: 오늘의밥상
+      pendingReturns: 0
+      monthlyReturnShippingCost: 0
+      returnPolicy: null
+    S-1003:
+      storeName: 단단스포츠
+      pendingReturns: 7
+      monthlyReturnShippingCost: 91000
+      returnPolicy: null
+    S-1004:
+      storeName: 하루꽃집
+      pendingReturns: 1
+      monthlyReturnShippingCost: 6000
+      returnPolicy: null
+    S-1005:
+      storeName: 모던키친
+      pendingReturns: 4
+      monthlyReturnShippingCost: 38000
+      returnPolicy: null
+    S-1006:
+      storeName: 숲속캠핑
+      pendingReturns: 2
+      monthlyReturnShippingCost: 27000
+      returnPolicy: null
+    S-1007:
+      storeName: 반짝액세서리
+      pendingReturns: 5
+      monthlyReturnShippingCost: 33000
+      returnPolicy: null
+    S-1008:
+      storeName: 꼬마옷장
+      pendingReturns: 9
+      monthlyReturnShippingCost: 120000
+      returnPolicy: null
+    S-1009:
+      storeName: 달빛공방
+      pendingReturns: 3
+      monthlyReturnShippingCost: 42000
+      returnPolicy: null
+    S-1010:
+      storeName: 오늘의밥상
+      pendingReturns: 0
+      monthlyReturnShippingCost: 0
+      returnPolicy: null
+    S-1011:
+      storeName: 단단스포츠
+      pendingReturns: 7
+      monthlyReturnShippingCost: 91000
+      returnPolicy: null
+    S-1012:
+      storeName: 하루꽃집
+      pendingReturns: 1
+      monthlyReturnShippingCost: 6000
+      returnPolicy: null
+    S-1013:
+      storeName: 모던키친
+      pendingReturns: 4
+      monthlyReturnShippingCost: 38000
+      returnPolicy: null
+    S-1014:
+      storeName: 숲속캠핑
+      pendingReturns: 2
+      monthlyReturnShippingCost: 27000
+      returnPolicy: null
+    S-1015:
+      storeName: 반짝액세서리
+      pendingReturns: 5
+      monthlyReturnShippingCost: 33000
+      returnPolicy: null
+    S-1016:
+      storeName: 꼬마옷장
+      pendingReturns: 9
+      monthlyReturnShippingCost: 120000
+      returnPolicy: null
+    S-1017:
+      storeName: 달빛공방
+      pendingReturns: 3
+      monthlyReturnShippingCost: 42000
+      returnPolicy: null
+    S-1018:
+      storeName: 오늘의밥상
+      pendingReturns: 0
+      monthlyReturnShippingCost: 0
+      returnPolicy: null
+    S-1019:
+      storeName: 단단스포츠
+      pendingReturns: 7
+      monthlyReturnShippingCost: 91000
+      returnPolicy: null
+    S-1020:
+      storeName: 하루꽃집
+      pendingReturns: 1
+      monthlyReturnShippingCost: 6000
+      returnPolicy: null
+    S-1021:
+      storeName: 모던키친
+      pendingReturns: 4
+      monthlyReturnShippingCost: 38000
+      returnPolicy: null
+    S-1022:
+      storeName: 숲속캠핑
+      pendingReturns: 2
+      monthlyReturnShippingCost: 27000
+      returnPolicy: null
+    S-1023:
+      storeName: 반짝액세서리
+      pendingReturns: 5
+      monthlyReturnShippingCost: 33000
+      returnPolicy: null
+    S-1024:
+      storeName: 꼬마옷장
+      pendingReturns: 9
+      monthlyReturnShippingCost: 120000
+      returnPolicy: null
+    S-1025:
+      storeName: 달빛공방
+      pendingReturns: 3
+      monthlyReturnShippingCost: 42000
+      returnPolicy: null
+    S-1026:
+      storeName: 오늘의밥상
+      pendingReturns: 0
+      monthlyReturnShippingCost: 0
+      returnPolicy: null
+    S-1027:
+      storeName: 단단스포츠
+      pendingReturns: 7
+      monthlyReturnShippingCost: 91000
+      returnPolicy: null
+    S-1028:
+      storeName: 하루꽃집
+      pendingReturns: 1
+      monthlyReturnShippingCost: 6000
+      returnPolicy: null
+    S-1029:
+      storeName: 모던키친
+      pendingReturns: 4
+      monthlyReturnShippingCost: 38000
+      returnPolicy: null
+    S-1030:
+      storeName: 숲속캠핑
+      pendingReturns: 2
+      monthlyReturnShippingCost: 27000
+      returnPolicy: null

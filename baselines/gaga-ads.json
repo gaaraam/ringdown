@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "pack": "gaga-ads@2",
+  "brain": "rule",
+  "matrix": {
+    "personas": 30,
+    "faults": [
+      "clean",
+      "slow",
+      "flaky",
+      "down",
+      "lost-ack"
+    ],
+    "calls": 450
+  },
+  "seeds": [
+    1,
+    2,
+    3
+  ],
+  "metrics": {
+    "goal_rate": {
+      "value": 0.5022222222222222,
+      "ci95": [
+        0.45620299664360675,
+        0.5482038286058912
+      ],
+      "n": 450
+    },
+    "acceptable_rate": {
+      "value": 1,
+      "ci95": [
+        0.9915356811370294,
+        1
+      ],
+      "n": 450
+    },
+    "barge_in_rate": {
+      "value": 0.04524886877828054,
+      "ci95": [
+        0.03596955536376287,
+        0.056781033681022816
+      ],
+      "n": 1547
+    },
+    "long_call_rate": {
+      "value": 0,
+      "ci95": [
+        0,
+        0.008464318862970662
+      ],
+      "n": 450
+    },
+    "turn_latency_p95": {
+      "value": 800,
+      "ci95": null,
+      "n": 978
+    },
+    "dead_air_incidents": {
+      "value": 0,
+      "ci95": null,
+      "n": 450
+    },
+    "degraded_survival": {
+      "value": 1,
+      "ci95": [
+        0.9801824705402803,
+        1
+      ],
+      "n": 190
+    },
+    "policy_violations": {
+      "value": 0,
+      "ci95": null,
+      "n": 450
+    },
+    "brain_fallbacks": {
+      "value": 0,
+      "ci95": null,
+      "n": 450
+    }
+  }
+}

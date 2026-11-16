@@ -1,0 +1,5 @@
+pack: packs/gaga-seller
+persona: cooperative-owner
+fault: lost-ack
+seed: 1
+expected: success

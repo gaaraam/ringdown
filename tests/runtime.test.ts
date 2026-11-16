@@ -135,7 +135,7 @@ it("끼어들기는 들린 접두사와 가상 종료 시각을 기록", async (
   expect(result.endedAt).toBe(4100);
 });
 
-describe("두 Pack × 8 페르소나 × 5 장애 × 2 시드", () => {
+describe("두 Pack × 30 페르소나 × 5 장애 × 2 시드", () => {
   for (const pack of packs) for (const persona of pack.personas) for (const fault of Object.keys(FAULT_PROFILES)) for (const seed of [1, 7]) {
     it(`${pack.pack.id}/${persona.id}/${fault}/${seed}`, async () => {
       const result = await runCall(pack, persona, fault, seed);
