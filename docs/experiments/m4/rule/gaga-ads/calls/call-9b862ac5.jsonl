@@ -1,0 +1,25 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"ads.getAccount","args":{"advertiserId":"A-2015"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":195,"latency":{"brain":0,"tool":195,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":195,"result":{"status":"ok","data":{"businessName":"빛나는안경","balance":24000,"dailySpend":8000,"daysLeft":3,"autoCharge":null},"latencyMs":195}}}
+{"type":"tool.result","at":195,"latency":{"brain":0,"tool":195,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"businessName":"빛나는안경","balance":24000,"dailySpend":8000,"daysLeft":3,"autoCharge":null},"latencyMs":195},"elapsedMs":195,"attempts":1}
+{"type":"speech.start","at":195,"latency":{"brain":0,"tool":195,"tts":0},"text":"안녕하세요, 가가애즈 AI 상담원입니다. 광고 운영 안내를 위해 연락드렸고, 통화 내용은 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":6053,"latency":{"brain":0,"tool":195,"tts":0},"text":"빛나는안경 광고 담당자분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":9639,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":9682,"latency":{"brain":43,"tool":0,"tts":0},"plan":{"intent":"yes","transition":"pitch","tools":[]},"attempt":0}
+{"type":"brain.compose","at":9682,"latency":{"brain":43,"tool":0,"tts":0},"text":"잔액이 24000원이라 3일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼요."}
+{"type":"brain.latency","at":9682,"latency":{"brain":43,"tool":0,"tts":0},"ms":43}
+{"type":"speech.start","at":9762,"latency":{"brain":43,"tool":0,"tts":80},"text":"잔액이 24000원이라 3일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼요.","filler":false,"fixed":false}
+{"type":"speech.interrupted","at":17762,"latency":{"brain":43,"tool":0,"tts":80},"intended":"잔액이 24000원이라 3일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼요.","heard":"잔액이 24000원이라 3일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼"}
+{"type":"turn.start","at":19205,"latency":{"brain":0,"tool":0,"tts":0},"stage":"pitch","user":"5만으로 해 주세요.","interruptedAt":"잔액이 24000원이라 3일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼"}
+{"type":"brain.plan","at":19248,"latency":{"brain":43,"tool":0,"tts":0},"plan":{"intent":"amount_50k","setSlots":{"chargeAmount":"50000"},"transition":"confirm","tools":[]},"attempt":0}
+{"type":"brain.compose","at":19248,"latency":{"brain":43,"tool":0,"tts":0},"text":"잔액이 1만 원 아래로 내려가면 등록된 결제수단으로 5만 원씩 충전돼요. 이대로 설정할까요?"}
+{"type":"brain.latency","at":19248,"latency":{"brain":43,"tool":0,"tts":0},"ms":43}
+{"type":"speech.start","at":19328,"latency":{"brain":43,"tool":0,"tts":80},"text":"잔액이 1만 원 아래로 내려가면 등록된 결제수단으로 5만 원씩 충전돼요. 이대로 설정할까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":26057,"latency":{"brain":0,"tool":0,"tts":0},"stage":"confirm","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":26082,"latency":{"brain":25,"tool":0,"tts":0},"plan":{"intent":"yes","setSlots":{"consent":true},"transition":"close","end":"success","say":"설정해 드렸어요.","tools":[{"tool":"ads.enableAutoCharge","args":{}}]},"attempt":0}
+{"type":"tool.call","at":26082,"latency":{"brain":25,"tool":0,"tts":0},"call":{"tool":"ads.enableAutoCharge","args":{"advertiserId":"A-2015","amount":"50000"}},"callSeq":2,"consent":true}
+{"type":"tool.result","at":26282,"latency":{"brain":25,"tool":200,"tts":0},"callSeq":2,"attempt":{"at":26082,"endedAt":26282,"result":{"status":"ok","data":{"businessName":"빛나는안경","balance":24000,"dailySpend":8000,"daysLeft":3,"autoCharge":{"advertiserId":"A-2015","amount":"50000"}},"latencyMs":200},"idempotencyKey":"call-9b862ac5:ads.enableAutoCharge:2"}}
+{"type":"tool.result","at":26282,"latency":{"brain":25,"tool":200,"tts":0},"callSeq":2,"result":{"status":"ok","data":{"businessName":"빛나는안경","balance":24000,"dailySpend":8000,"daysLeft":3,"autoCharge":{"advertiserId":"A-2015","amount":"50000"}},"latencyMs":200},"elapsedMs":200,"attempts":1}
+{"type":"brain.compose","at":26282,"latency":{"brain":25,"tool":200,"tts":0},"text":"설정해 드렸어요."}
+{"type":"brain.latency","at":26282,"latency":{"brain":25,"tool":200,"tts":0},"ms":25}
+{"type":"speech.start","at":26362,"latency":{"brain":25,"tool":200,"tts":80},"text":"설정해 드렸어요.","filler":false,"fixed":false}
+{"type":"call.end","at":27362,"latency":{"brain":25,"tool":200,"tts":80},"outcome":"success","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[],"brain":"rule","durationMs":27167}

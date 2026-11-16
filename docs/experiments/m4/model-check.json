@@ -1,0 +1,49 @@
+{
+  "models": {
+    "agent": {
+      "provider": "ollama",
+      "model": "exaone3.5:7.8b",
+      "options": {
+        "temperature": 0.3
+      },
+      "timeoutMs": 30000,
+      "baseUrl": "http://localhost:11434",
+      "role": "agent",
+      "source": "default"
+    },
+    "persona": {
+      "provider": "ollama",
+      "model": "gemma3:12b",
+      "options": {
+        "temperature": 0.8
+      },
+      "timeoutMs": 30000,
+      "baseUrl": "http://localhost:11434",
+      "role": "persona",
+      "source": "default"
+    },
+    "judge": {
+      "provider": "none",
+      "model": "none",
+      "options": {},
+      "timeoutMs": 30000,
+      "role": "judge",
+      "source": "default"
+    }
+  },
+  "checks": {
+    "agent": {
+      "reachable": true,
+      "installed": true
+    },
+    "persona": {
+      "reachable": true,
+      "installed": true
+    },
+    "judge": {
+      "reachable": false,
+      "installed": false,
+      "detail": "사용 안 함"
+    }
+  }
+}

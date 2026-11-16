@@ -1,0 +1,1 @@
+{"model":"qwen3:8b","created_at":"2026-11-16T05:42:50.203538Z","message":{"role":"assistant","content":"{\"say\": \"안녕하세요\"}"},"done":true,"done_reason":"stop","total_duration":5733195916,"load_duration":5180607000,"prompt_eval_count":28,"prompt_eval_cached_count":0,"prompt_eval_duration":240496000,"eval_count":9,"eval_duration":308480000}

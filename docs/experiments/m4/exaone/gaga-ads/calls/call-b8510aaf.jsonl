@@ -1,0 +1,16 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"ads.getAccount","args":{"advertiserId":"A-2008"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":353,"latency":{"brain":0,"tool":353,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":353,"result":{"status":"ok","data":{"businessName":"우리동물병원","balance":15000,"dailySpend":15000,"daysLeft":1,"autoCharge":null},"latencyMs":353}}}
+{"type":"tool.result","at":353,"latency":{"brain":0,"tool":353,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"businessName":"우리동물병원","balance":15000,"dailySpend":15000,"daysLeft":1,"autoCharge":null},"latencyMs":353},"elapsedMs":353,"attempts":1}
+{"type":"speech.start","at":353,"latency":{"brain":0,"tool":353,"tts":0},"text":"안녕하세요, 가가애즈 AI 상담원입니다. 광고 운영 안내를 위해 연락드렸고, 통화 내용은 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":6211,"latency":{"brain":0,"tool":353,"tts":0},"text":"우리동물병원 광고 담당자분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":12140,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"speech.start","at":12940,"latency":{"brain":2873.0185000000056,"tool":0,"tts":0},"text":"네, 잠시만요.","filler":true,"fixed":false}
+{"type":"speech.start","at":14455,"latency":{"brain":2873.0185000000056,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"brain.plan","at":15013.018500000006,"latency":{"brain":2873.0185000000056,"tool":0,"tts":0},"plan":{"intent":"verify","transition":"pitch","setSlots":{},"end":"pending_confirmation"},"attempt":0}
+{"type":"speech.start","at":16827,"latency":{"brain":7684.768125000002,"tool":0,"tts":0},"text":"네, 잠시만요.","filler":true,"fixed":false}
+{"type":"speech.start","at":18342,"latency":{"brain":7684.768125000002,"tool":0,"tts":0},"text":"네, 잠시만요.","filler":true,"fixed":false}
+{"type":"brain.compose","at":19824.768125000002,"latency":{"brain":7684.768125000002,"tool":0,"tts":0},"text":"잔액이 15,000원이라 내일 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전을 원하시나요? 5만, 10만, 20만 원 중 선택해 주세요."}
+{"type":"brain.latency","at":19824.768125000002,"latency":{"brain":7684.768125000002,"tool":0,"tts":0},"ms":7684.768125000002}
+{"type":"speech.start","at":19857,"latency":{"brain":7684.768125000002,"tool":0,"tts":80},"text":"네, 잠시만요.","filler":true,"fixed":false}
+{"type":"speech.start","at":20572,"latency":{"brain":7684.768125000002,"tool":0,"tts":80},"text":"잔액이 15,000원이라 내일 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전을 원하시나요? 5만, 10만, 20만 원 중 선택해 주세요.","filler":false,"fixed":false}
+{"type":"call.end","at":28430,"latency":{"brain":7684.768125000002,"tool":0,"tts":80},"outcome":"pending_confirmation","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[],"brain":"llm","durationMs":28077}

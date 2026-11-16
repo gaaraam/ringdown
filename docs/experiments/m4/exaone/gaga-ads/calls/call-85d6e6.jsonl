@@ -1,0 +1,15 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"ads.getAccount","args":{"advertiserId":"A-2025"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":103,"latency":{"brain":0,"tool":103,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":103,"result":{"status":"ok","data":{"businessName":"한입베이커리","balance":18000,"dailySpend":6000,"daysLeft":3,"autoCharge":null},"latencyMs":103}}}
+{"type":"tool.result","at":103,"latency":{"brain":0,"tool":103,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"businessName":"한입베이커리","balance":18000,"dailySpend":6000,"daysLeft":3,"autoCharge":null},"latencyMs":103},"elapsedMs":103,"attempts":1}
+{"type":"speech.start","at":103,"latency":{"brain":0,"tool":103,"tts":0},"text":"안녕하세요, 가가애즈 AI 상담원입니다. 광고 운영 안내를 위해 연락드렸고, 통화 내용은 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5961,"latency":{"brain":0,"tool":103,"tts":0},"text":"한입베이커리 광고 담당자분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":9690,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"speech.start","at":10490,"latency":{"brain":2900.02224999998,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"brain.plan","at":12590.02224999998,"latency":{"brain":2900.02224999998,"tool":0,"tts":0},"plan":{"intent":"verify","transition":"pitch","setSlots":{},"end":"pending_confirmation"},"attempt":0}
+{"type":"speech.start","at":12862,"latency":{"brain":7901.134583999985,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"speech.start","at":15234,"latency":{"brain":7901.134583999985,"tool":0,"tts":0},"text":"네, 잠시만요.","filler":true,"fixed":false}
+{"type":"speech.start","at":16749,"latency":{"brain":7901.134583999985,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"brain.compose","at":17591.134583999985,"latency":{"brain":7901.134583999985,"tool":0,"tts":0},"text":"잔액이 18,000원이라 3일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전을 원하시나요? 5만, 10만, 20만 원 중 선택해 주세요."}
+{"type":"brain.latency","at":17591.134583999985,"latency":{"brain":7901.134583999985,"tool":0,"tts":0},"ms":7901.134583999985}
+{"type":"speech.start","at":18321,"latency":{"brain":7901.134583999985,"tool":0,"tts":80},"text":"잔액이 18,000원이라 3일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전을 원하시나요? 5만, 10만, 20만 원 중 선택해 주세요.","filler":false,"fixed":false}
+{"type":"call.end","at":26321,"latency":{"brain":7901.134583999985,"tool":0,"tts":80},"outcome":"pending_confirmation","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[],"brain":"llm","durationMs":26218}

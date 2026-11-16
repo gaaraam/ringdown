@@ -1,6 +1,6 @@
 /** 실제 모델 비교 재현용. 순차 실행으로 모델 간 GPU 경합을 피한다. */
 import "../src/llm/providers.ts";
-import { appendFileSync, mkdirSync, writeFileSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { resolveModels } from "../src/config/models.ts";
 import { loadPack, listPackDirs } from "../src/pack/load.ts";
@@ -14,6 +14,7 @@ if (!brainSpec || !out) throw Error("사용법: tsx scripts/m4-comparison.ts rul
 const brain = brainSpec === "rule" ? "rule" : "llm";
 const models = resolveModels({ configPath: "docs/experiments/m4/config.yaml", env: {}, cli: brain === "llm" ? { agent: brainSpec } : {} });
 const gitSha = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
+if (existsSync(out)) throw Error(`새 출력 디렉터리가 필요합니다: ${out}`);
 mkdirSync(out, { recursive: true });
 let requests = 0;
 registerProvider("ollama", spec => {

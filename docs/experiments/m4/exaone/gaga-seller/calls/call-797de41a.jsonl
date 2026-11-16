@@ -1,0 +1,18 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"seller.lookup","args":{"sellerId":"S-1013"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":1500,"latency":{"brain":0,"tool":1500,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":1500,"result":{"status":"error","kind":"timeout","latencyMs":1500}}}
+{"type":"tool.result","at":1876,"latency":{"brain":0,"tool":1876,"tts":0},"callSeq":1,"attempt":{"at":1579,"endedAt":1876,"result":{"status":"ok","data":{"storeName":"모던키친","pendingReturns":4,"monthlyReturnShippingCost":38000,"returnPolicy":null},"latencyMs":297}}}
+{"type":"tool.result","at":1876,"latency":{"brain":0,"tool":1876,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"storeName":"모던키친","pendingReturns":4,"monthlyReturnShippingCost":38000,"returnPolicy":null},"latencyMs":297},"elapsedMs":1876,"attempts":2}
+{"type":"speech.start","at":1876,"latency":{"brain":0,"tool":1876,"tts":0},"text":"안녕하세요, 가가마켓 판매자센터 AI 상담원입니다. 통화 내용은 품질 관리를 위해 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":7448,"latency":{"brain":0,"tool":1876,"tts":0},"text":"모던키친 운영하시는 분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":10891,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"speech.start","at":11691,"latency":{"brain":3297.173833000008,"tool":0,"tts":0},"text":"네, 확인해 볼게요.","filler":true,"fixed":false}
+{"type":"speech.start","at":13491,"latency":{"brain":3297.173833000008,"tool":0,"tts":0},"text":"네, 확인해 볼게요.","filler":true,"fixed":false}
+{"type":"brain.plan","at":14188.173833000008,"latency":{"brain":3297.173833000008,"tool":0,"tts":0},"plan":{"intent":"verify","transition":"explain","setSlots":{"consent":false},"end":"pending_confirmation"},"attempt":0}
+{"type":"speech.start","at":15291,"latency":{"brain":8873.507666000049,"tool":0,"tts":0},"text":"네, 확인해 볼게요.","filler":true,"fixed":false}
+{"type":"speech.start","at":17091,"latency":{"brain":8873.507666000049,"tool":0,"tts":0},"text":"네, 확인해 볼게요.","filler":true,"fixed":false}
+{"type":"speech.start","at":18891,"latency":{"brain":8873.507666000049,"tool":0,"tts":0},"text":"네, 확인해 볼게요.","filler":true,"fixed":false}
+{"type":"brain.compose","at":19764.50766600005,"latency":{"brain":8873.507666000049,"tool":0,"tts":0},"text":"모던키친 판매자님, 반품 배송비 정책이 현재 설정되어 있지 않아 반품 시 배송비를 모두 판매자님께서 부담하게 됩니다. 무료 배송, 3천 원 배송비, 또는 5천 원 배송비 중 어떤 옵션으로 설정하시겠습니까? 설정을 원하신다면 지금 바로 도와드릴 수 있습니다."}
+{"type":"brain.latency","at":19764.50766600005,"latency":{"brain":8873.507666000049,"tool":0,"tts":0},"ms":8873.507666000049}
+{"type":"guard.reject","at":19844.50766600005,"latency":{"brain":8873.507666000049,"tool":0,"tts":80},"layer":"output","reason":"speech_length"}
+{"type":"speech.start","at":19891,"latency":{"brain":8873.507666000049,"tool":0,"tts":80},"text":"모던키친 판매자님, 반품 배송비 정책이 현재 설정되어 있지 않아 반품 시 배송비를 모두 판매자님께서 부담하게 됩니다. 무료 배송, 3천 원 배송비, 또는 5천 원 배송비 중 어떤 옵션으로 설정하시겠습니까?","filler":false,"fixed":false}
+{"type":"call.end","at":31463,"latency":{"brain":8873.507666000049,"tool":0,"tts":80},"outcome":"pending_confirmation","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":1,"longCall":false,"policyViolations":0},"pending":[],"brain":"llm","durationMs":29587}

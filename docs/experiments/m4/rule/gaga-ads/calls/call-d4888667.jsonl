@@ -1,0 +1,10 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"ads.getAccount","args":{"advertiserId":"A-2022"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":150,"latency":{"brain":0,"tool":150,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":150,"result":{"status":"error","kind":"5xx","latencyMs":150,"httpStatus":503}}}
+{"type":"tool.result","at":1448,"latency":{"brain":0,"tool":1448,"tts":0},"callSeq":1,"attempt":{"at":248,"endedAt":1448,"result":{"status":"error","kind":"timeout","latencyMs":1200}}}
+{"type":"tool.result","at":2919,"latency":{"brain":0,"tool":2919,"tts":0},"callSeq":1,"attempt":{"at":1719,"endedAt":2919,"result":{"status":"error","kind":"timeout","latencyMs":1200}}}
+{"type":"tool.result","at":2919,"latency":{"brain":0,"tool":2919,"tts":0},"callSeq":1,"result":{"status":"error","kind":"timeout","latencyMs":1200},"elapsedMs":2919,"attempts":3}
+{"type":"speech.start","at":2919,"latency":{"brain":0,"tool":2919,"tts":0},"text":"안녕하세요, 가가애즈 AI 상담원입니다. 광고 운영 안내를 위해 연락드렸고, 통화 내용은 기록됩니다.","filler":false,"fixed":true}
+{"type":"tool.call","at":8777,"latency":{"brain":0,"tool":2919,"tts":0},"call":{"tool":"call.scheduleCallback","args":{}},"builtin":true}
+{"type":"tool.result","at":8777,"latency":{"brain":0,"tool":2919,"tts":0},"result":{"call":{"tool":"call.scheduleCallback","args":{}},"status":"ok","data":{}},"citations":[]}
+{"type":"speech.start","at":8777,"latency":{"brain":0,"tool":2919,"tts":0},"text":"확인 후 다시 연락드릴게요.","filler":false,"fixed":false}
+{"type":"call.end","at":10349,"latency":{"brain":0,"tool":2919,"tts":0},"outcome":"callback_scheduled","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[{"kind":"callback"}],"brain":"rule","durationMs":7430}

@@ -39,7 +39,7 @@ const DEFAULT_BASE_URL: Record<ModelSpec["provider"], string | undefined> = {
   none: undefined,
 };
 
-/** 기본값은 M4 모델 비교 후 갱신한다. 페르소나는 에이전트와 다른 계열을 쓴다. */
+/** M4 비교에서 업무 성공 개선이 없어 기존 모델 설정을 유지한다. CLI 기본 Brain은 rule이다. */
 export const DEFAULTS: Record<Role, ModelSpec> = {
   agent: { provider: "ollama", model: "exaone3.5:7.8b", options: { temperature: 0.3 }, timeoutMs: 30_000 },
   persona: { provider: "ollama", model: "gemma3:12b", options: { temperature: 0.8 }, timeoutMs: 30_000 },

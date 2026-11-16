@@ -1,0 +1,27 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"ads.getAccount","args":{"advertiserId":"A-2017"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":186,"latency":{"brain":0,"tool":186,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":186,"result":{"status":"ok","data":{"businessName":"한입베이커리","balance":18000,"dailySpend":6000,"daysLeft":3,"autoCharge":null},"latencyMs":186}}}
+{"type":"tool.result","at":186,"latency":{"brain":0,"tool":186,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"businessName":"한입베이커리","balance":18000,"dailySpend":6000,"daysLeft":3,"autoCharge":null},"latencyMs":186},"elapsedMs":186,"attempts":1}
+{"type":"speech.start","at":186,"latency":{"brain":0,"tool":186,"tts":0},"text":"안녕하세요, 가가애즈 AI 상담원입니다. 광고 운영 안내를 위해 연락드렸고, 통화 내용은 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":6044,"latency":{"brain":0,"tool":186,"tts":0},"text":"한입베이커리 광고 담당자분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":11973,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":12026,"latency":{"brain":53,"tool":0,"tts":0},"plan":{"intent":"yes","transition":"pitch","tools":[]},"attempt":0}
+{"type":"brain.compose","at":12026,"latency":{"brain":53,"tool":0,"tts":0},"text":"잔액이 18000원이라 3일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼요."}
+{"type":"brain.latency","at":12026,"latency":{"brain":53,"tool":0,"tts":0},"ms":53}
+{"type":"speech.start","at":12106,"latency":{"brain":53,"tool":0,"tts":80},"text":"잔액이 18000원이라 3일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼요.","filler":false,"fixed":false}
+{"type":"turn.start","at":24035,"latency":{"brain":0,"tool":0,"tts":0},"stage":"pitch","user":"20만으로 해 주세요."}
+{"type":"brain.plan","at":24084,"latency":{"brain":49,"tool":0,"tts":0},"plan":{"intent":"amount_200k","setSlots":{"chargeAmount":"200000"},"transition":"confirm","tools":[]},"attempt":0}
+{"type":"brain.compose","at":24084,"latency":{"brain":49,"tool":0,"tts":0},"text":"잔액이 1만 원 아래로 내려가면 등록된 결제수단으로 20만 원씩 충전돼요. 이대로 설정할까요?"}
+{"type":"brain.latency","at":24084,"latency":{"brain":49,"tool":0,"tts":0},"ms":49}
+{"type":"speech.start","at":24164,"latency":{"brain":49,"tool":0,"tts":80},"text":"잔액이 1만 원 아래로 내려가면 등록된 결제수단으로 20만 원씩 충전돼요. 이대로 설정할까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":33236,"latency":{"brain":0,"tool":0,"tts":0},"stage":"confirm","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":33260,"latency":{"brain":24,"tool":0,"tts":0},"plan":{"intent":"yes","setSlots":{"consent":true},"transition":"close","end":"success","say":"설정해 드렸어요.","tools":[{"tool":"ads.enableAutoCharge","args":{}}]},"attempt":0}
+{"type":"tool.call","at":33260,"latency":{"brain":24,"tool":0,"tts":0},"call":{"tool":"ads.enableAutoCharge","args":{"advertiserId":"A-2017","amount":"200000"}},"callSeq":2,"consent":true}
+{"type":"speech.start","at":34036,"latency":{"brain":24,"tool":2500,"tts":0},"text":"네, 잠시만요.","filler":true,"fixed":false}
+{"type":"speech.start","at":35551,"latency":{"brain":24,"tool":2500,"tts":0},"text":"네, 잠시만요.","filler":true,"fixed":false}
+{"type":"tool.result","at":35760,"latency":{"brain":24,"tool":2500,"tts":0},"callSeq":2,"attempt":{"at":33260,"endedAt":35760,"result":{"status":"error","kind":"unknown_outcome","latencyMs":2500},"idempotencyKey":"call-b6f8ed5f:ads.enableAutoCharge:2"}}
+{"type":"speech.start","at":37066,"latency":{"brain":24,"tool":5080,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"tool.result","at":38340,"latency":{"brain":24,"tool":5080,"tts":0},"callSeq":2,"attempt":{"at":35840,"endedAt":38340,"result":{"status":"error","kind":"unknown_outcome","latencyMs":2500},"idempotencyKey":"call-b6f8ed5f:ads.enableAutoCharge:2"}}
+{"type":"tool.result","at":38340,"latency":{"brain":24,"tool":5080,"tts":0},"callSeq":2,"result":{"status":"error","kind":"unknown_outcome","latencyMs":2500},"elapsedMs":5080,"attempts":2}
+{"type":"brain.latency","at":38340,"latency":{"brain":24,"tool":5080,"tts":0},"ms":24}
+{"type":"speech.start","at":38638,"latency":{"brain":24,"tool":5080,"tts":80},"text":"처리 결과는 문자로 안내드릴게요.","filler":false,"fixed":false}
+{"type":"call.end","at":40638,"latency":{"brain":24,"tool":5080,"tts":80},"outcome":"pending_confirmation","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[{"kind":"confirmation","tool":"ads.enableAutoCharge"}],"brain":"rule","durationMs":40452}

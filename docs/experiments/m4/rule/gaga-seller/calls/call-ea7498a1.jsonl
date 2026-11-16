@@ -1,0 +1,24 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"seller.lookup","args":{"sellerId":"S-1016"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":210,"latency":{"brain":0,"tool":210,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":210,"result":{"status":"ok","data":{"storeName":"꼬마옷장","pendingReturns":9,"monthlyReturnShippingCost":120000,"returnPolicy":null},"latencyMs":210}}}
+{"type":"tool.result","at":210,"latency":{"brain":0,"tool":210,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"storeName":"꼬마옷장","pendingReturns":9,"monthlyReturnShippingCost":120000,"returnPolicy":null},"latencyMs":210},"elapsedMs":210,"attempts":1}
+{"type":"speech.start","at":210,"latency":{"brain":0,"tool":210,"tts":0},"text":"안녕하세요, 가가마켓 판매자센터 AI 상담원입니다. 통화 내용은 품질 관리를 위해 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5782,"latency":{"brain":0,"tool":210,"tts":0},"text":"꼬마옷장 운영하시는 분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":9225,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":9284,"latency":{"brain":59,"tool":0,"tts":0},"plan":{"intent":"yes","transition":"explain","tools":[]},"attempt":0}
+{"type":"brain.compose","at":9284,"latency":{"brain":59,"tool":0,"tts":0},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설정해 드릴 수 있는데, 무료, 3천 원, 5천 원 중 어떤 걸로 할까요?"}
+{"type":"brain.latency","at":9284,"latency":{"brain":59,"tool":0,"tts":0},"ms":59}
+{"type":"speech.start","at":9364,"latency":{"brain":59,"tool":0,"tts":80},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설정해 드릴 수 있는데, 무료, 3천 원, 5천 원 중 어떤 걸로 할까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":20236,"latency":{"brain":0,"tool":0,"tts":0},"stage":"explain","user":"무료으로 해 주세요."}
+{"type":"brain.plan","at":20262,"latency":{"brain":26,"tool":0,"tts":0},"plan":{"intent":"plan_free","setSlots":{"returnPlan":"free"},"transition":"confirm","tools":[]},"attempt":0}
+{"type":"brain.compose","at":20262,"latency":{"brain":26,"tool":0,"tts":0},"text":"무료 반품으로 설정할게요. 진행해도 될까요?"}
+{"type":"brain.latency","at":20262,"latency":{"brain":26,"tool":0,"tts":0},"ms":26}
+{"type":"speech.start","at":20342,"latency":{"brain":26,"tool":0,"tts":80},"text":"무료 반품으로 설정할게요. 진행해도 될까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":24214,"latency":{"brain":0,"tool":0,"tts":0},"stage":"confirm","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":24263,"latency":{"brain":49,"tool":0,"tts":0},"plan":{"intent":"yes","setSlots":{"consent":true},"transition":"close","end":"success","say":"설정해 드렸어요.","tools":[{"tool":"seller.setReturnPolicy","args":{}}]},"attempt":0}
+{"type":"tool.call","at":24263,"latency":{"brain":49,"tool":0,"tts":0},"call":{"tool":"seller.setReturnPolicy","args":{"sellerId":"S-1016","plan":"free"}},"callSeq":2,"consent":true}
+{"type":"tool.result","at":24359,"latency":{"brain":49,"tool":96,"tts":0},"callSeq":2,"attempt":{"at":24263,"endedAt":24359,"result":{"status":"ok","data":{"storeName":"꼬마옷장","pendingReturns":9,"monthlyReturnShippingCost":120000,"returnPolicy":{"sellerId":"S-1016","plan":"free"}},"latencyMs":96},"idempotencyKey":"call-ea7498a1:seller.setReturnPolicy:2"}}
+{"type":"tool.result","at":24359,"latency":{"brain":49,"tool":96,"tts":0},"callSeq":2,"result":{"status":"ok","data":{"storeName":"꼬마옷장","pendingReturns":9,"monthlyReturnShippingCost":120000,"returnPolicy":{"sellerId":"S-1016","plan":"free"}},"latencyMs":96},"elapsedMs":96,"attempts":1}
+{"type":"brain.compose","at":24359,"latency":{"brain":49,"tool":96,"tts":0},"text":"설정해 드렸어요."}
+{"type":"brain.latency","at":24359,"latency":{"brain":49,"tool":96,"tts":0},"ms":49}
+{"type":"speech.start","at":24439,"latency":{"brain":49,"tool":96,"tts":80},"text":"설정해 드렸어요.","filler":false,"fixed":false}
+{"type":"call.end","at":25439,"latency":{"brain":49,"tool":96,"tts":80},"outcome":"success","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[],"brain":"rule","durationMs":25229}

@@ -1,0 +1,31 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"seller.lookup","args":{"sellerId":"S-1008"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":216,"latency":{"brain":0,"tool":216,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":216,"result":{"status":"ok","data":{"storeName":"꼬마옷장","pendingReturns":9,"monthlyReturnShippingCost":120000,"returnPolicy":null},"latencyMs":216}}}
+{"type":"tool.result","at":216,"latency":{"brain":0,"tool":216,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"storeName":"꼬마옷장","pendingReturns":9,"monthlyReturnShippingCost":120000,"returnPolicy":null},"latencyMs":216},"elapsedMs":216,"attempts":1}
+{"type":"speech.start","at":216,"latency":{"brain":0,"tool":216,"tts":0},"text":"안녕하세요, 가가마켓 판매자센터 AI 상담원입니다. 통화 내용은 품질 관리를 위해 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5788,"latency":{"brain":0,"tool":216,"tts":0},"text":"꼬마옷장 운영하시는 분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":9231,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":9272,"latency":{"brain":41,"tool":0,"tts":0},"plan":{"intent":"yes","transition":"explain","tools":[]},"attempt":0}
+{"type":"brain.compose","at":9272,"latency":{"brain":41,"tool":0,"tts":0},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설정해 드릴 수 있는데, 무료, 3천 원, 5천 원 중 어떤 걸로 할까요?"}
+{"type":"brain.latency","at":9272,"latency":{"brain":41,"tool":0,"tts":0},"ms":41}
+{"type":"speech.start","at":9352,"latency":{"brain":41,"tool":0,"tts":80},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설정해 드릴 수 있는데, 무료, 3천 원, 5천 원 중 어떤 걸로 할까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":20367,"latency":{"brain":0,"tool":0,"tts":0},"stage":"explain","user":"오늘 날씨 이야기예요."}
+{"type":"brain.plan","at":20423,"latency":{"brain":56,"tool":0,"tts":0},"plan":{"say":"다시 짧게 말씀해 주시겠어요?","intent":"unknown"},"attempt":0}
+{"type":"brain.latency","at":20423,"latency":{"brain":56,"tool":0,"tts":0},"ms":56}
+{"type":"speech.start","at":20503,"latency":{"brain":56,"tool":0,"tts":80},"text":"다시 짧게 말씀해 주시겠어요?","filler":false,"fixed":false}
+{"type":"turn.start","at":23661,"latency":{"brain":0,"tool":0,"tts":0},"stage":"explain","user":"5천으로 해 주세요."}
+{"type":"brain.plan","at":23682,"latency":{"brain":21,"tool":0,"tts":0},"plan":{"intent":"plan_5000","setSlots":{"returnPlan":"paid-5000"},"transition":"confirm","tools":[]},"attempt":0}
+{"type":"brain.compose","at":23682,"latency":{"brain":21,"tool":0,"tts":0},"text":"반품 배송비 5천 원으로 설정할게요. 진행해도 될까요?"}
+{"type":"brain.latency","at":23682,"latency":{"brain":21,"tool":0,"tts":0},"ms":21}
+{"type":"speech.start","at":23762,"latency":{"brain":21,"tool":0,"tts":80},"text":"반품 배송비 5천 원으로 설정할게요. 진행해도 될까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":28205,"latency":{"brain":0,"tool":0,"tts":0},"stage":"confirm","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":28229,"latency":{"brain":24,"tool":0,"tts":0},"plan":{"intent":"yes","setSlots":{"consent":true},"transition":"close","end":"success","say":"설정해 드렸어요.","tools":[{"tool":"seller.setReturnPolicy","args":{}}]},"attempt":0}
+{"type":"tool.call","at":28229,"latency":{"brain":24,"tool":0,"tts":0},"call":{"tool":"seller.setReturnPolicy","args":{"sellerId":"S-1008","plan":"paid-5000"}},"callSeq":2,"consent":true}
+{"type":"speech.start","at":29005,"latency":{"brain":24,"tool":2500,"tts":0},"text":"잠시만요, 조회하고 있어요.","filler":true,"fixed":false}
+{"type":"tool.result","at":30729,"latency":{"brain":24,"tool":2500,"tts":0},"callSeq":2,"attempt":{"at":28229,"endedAt":30729,"result":{"status":"error","kind":"unknown_outcome","latencyMs":2500},"idempotencyKey":"call-d5f49d0e:seller.setReturnPolicy:2"}}
+{"type":"speech.start","at":31377,"latency":{"brain":24,"tool":5067,"tts":0},"text":"네, 확인해 볼게요.","filler":true,"fixed":false}
+{"type":"speech.start","at":33177,"latency":{"brain":24,"tool":5067,"tts":0},"text":"잠시만요, 조회하고 있어요.","filler":true,"fixed":false}
+{"type":"tool.result","at":33296,"latency":{"brain":24,"tool":5067,"tts":0},"callSeq":2,"attempt":{"at":30796,"endedAt":33296,"result":{"status":"error","kind":"unknown_outcome","latencyMs":2500},"idempotencyKey":"call-d5f49d0e:seller.setReturnPolicy:2"}}
+{"type":"tool.result","at":33296,"latency":{"brain":24,"tool":5067,"tts":0},"callSeq":2,"result":{"status":"error","kind":"unknown_outcome","latencyMs":2500},"elapsedMs":5067,"attempts":2}
+{"type":"brain.latency","at":33296,"latency":{"brain":24,"tool":5067,"tts":0},"ms":24}
+{"type":"speech.start","at":34749,"latency":{"brain":24,"tool":5067,"tts":80},"text":"처리 결과는 문자로 안내드릴게요.","filler":false,"fixed":false}
+{"type":"call.end","at":36749,"latency":{"brain":24,"tool":5067,"tts":80},"outcome":"pending_confirmation","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[{"kind":"confirmation","tool":"seller.setReturnPolicy"}],"brain":"rule","durationMs":36533}

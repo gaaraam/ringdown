@@ -1,0 +1,11 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"seller.lookup","args":{"sellerId":"S-1006"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":116,"latency":{"brain":0,"tool":116,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":116,"result":{"status":"ok","data":{"storeName":"숲속캠핑","pendingReturns":2,"monthlyReturnShippingCost":27000,"returnPolicy":null},"latencyMs":116}}}
+{"type":"tool.result","at":116,"latency":{"brain":0,"tool":116,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"storeName":"숲속캠핑","pendingReturns":2,"monthlyReturnShippingCost":27000,"returnPolicy":null},"latencyMs":116},"elapsedMs":116,"attempts":1}
+{"type":"speech.start","at":116,"latency":{"brain":0,"tool":116,"tts":0},"text":"안녕하세요, 가가마켓 판매자센터 AI 상담원입니다. 통화 내용은 품질 관리를 위해 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5688,"latency":{"brain":0,"tool":116,"tts":0},"text":"숲속캠핑 운영하시는 분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":9703,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"사람 상담원 연결해 주세요."}
+{"type":"guard.reject","at":9703,"latency":{"brain":0,"tool":0,"tts":0},"layer":"input","reason":"handoff"}
+{"type":"tool.call","at":9703,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"call.handoff","args":{}},"builtin":true}
+{"type":"tool.result","at":9703,"latency":{"brain":0,"tool":0,"tts":0},"result":{"call":{"tool":"call.handoff","args":{}},"status":"ok","data":{}},"citations":[]}
+{"type":"speech.start","at":9703,"latency":{"brain":0,"tool":0,"tts":0},"text":"상담원에게 연결해 드릴게요.","filler":false,"fixed":false}
+{"type":"call.end","at":11418,"latency":{"brain":0,"tool":0,"tts":0},"outcome":"handoff","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[{"kind":"handoff","target":"queue:seller-care"}],"brain":"llm","durationMs":11302}

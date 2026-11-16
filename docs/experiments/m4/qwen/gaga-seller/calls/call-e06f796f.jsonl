@@ -1,0 +1,12 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"seller.lookup","args":{"sellerId":"S-1014"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":125,"latency":{"brain":0,"tool":125,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":125,"result":{"status":"ok","data":{"storeName":"숲속캠핑","pendingReturns":2,"monthlyReturnShippingCost":27000,"returnPolicy":null},"latencyMs":125}}}
+{"type":"tool.result","at":125,"latency":{"brain":0,"tool":125,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"storeName":"숲속캠핑","pendingReturns":2,"monthlyReturnShippingCost":27000,"returnPolicy":null},"latencyMs":125},"elapsedMs":125,"attempts":1}
+{"type":"speech.start","at":125,"latency":{"brain":0,"tool":125,"tts":0},"text":"안녕하세요, 가가마켓 판매자센터 AI 상담원입니다. 통화 내용은 품질 관리를 위해 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5697,"latency":{"brain":0,"tool":125,"tts":0},"text":"숲속캠핑 운영하시는 분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":9140,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"speech.start","at":9940,"latency":{"brain":3676.4596659999806,"tool":0,"tts":0},"text":"네, 확인해 볼게요.","filler":true,"fixed":false}
+{"type":"speech.start","at":11740,"latency":{"brain":3676.4596659999806,"tool":0,"tts":0},"text":"네, 확인해 볼게요.","filler":true,"fixed":false}
+{"type":"brain.plan","at":12816.45966599998,"latency":{"brain":3676.4596659999806,"tool":0,"tts":0},"plan":{"intent":"yes","say":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설정해 드릴 수 있는데, 무료, 3천 원, 5천 원 중 어떤 걸로 할까요?","tools":[],"end":"pending_confirmation"},"attempt":0}
+{"type":"brain.latency","at":12816.45966599998,"latency":{"brain":3676.4596659999806,"tool":0,"tts":0},"ms":3676.4596659999806}
+{"type":"speech.start","at":12896.45966599998,"latency":{"brain":3676.4596659999806,"tool":0,"tts":80},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설정해 드릴 수 있는데, 무료, 3천 원, 5천 원 중 어떤 걸로 할까요?","filler":false,"fixed":false}
+{"type":"call.end","at":22325.45966599998,"latency":{"brain":3676.4596659999806,"tool":0,"tts":80},"outcome":"pending_confirmation","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[],"brain":"llm","durationMs":22200.45966599998}

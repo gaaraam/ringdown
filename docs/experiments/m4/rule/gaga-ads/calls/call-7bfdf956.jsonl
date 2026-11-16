@@ -1,0 +1,31 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"ads.getAccount","args":{"advertiserId":"A-2018"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":93,"latency":{"brain":0,"tool":93,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":93,"result":{"status":"ok","data":{"businessName":"바른정형외과","balance":42000,"dailySpend":21000,"daysLeft":2,"autoCharge":null},"latencyMs":93}}}
+{"type":"tool.result","at":93,"latency":{"brain":0,"tool":93,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"businessName":"바른정형외과","balance":42000,"dailySpend":21000,"daysLeft":2,"autoCharge":null},"latencyMs":93},"elapsedMs":93,"attempts":1}
+{"type":"speech.start","at":93,"latency":{"brain":0,"tool":93,"tts":0},"text":"안녕하세요, 가가애즈 AI 상담원입니다. 광고 운영 안내를 위해 연락드렸고, 통화 내용은 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5951,"latency":{"brain":0,"tool":93,"tts":0},"text":"바른정형외과 광고 담당자분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":9680,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":9706,"latency":{"brain":26,"tool":0,"tts":0},"plan":{"intent":"yes","transition":"pitch","tools":[]},"attempt":0}
+{"type":"brain.compose","at":9706,"latency":{"brain":26,"tool":0,"tts":0},"text":"잔액이 42000원이라 2일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼요."}
+{"type":"brain.latency","at":9706,"latency":{"brain":26,"tool":0,"tts":0},"ms":26}
+{"type":"speech.start","at":9786,"latency":{"brain":26,"tool":0,"tts":80},"text":"잔액이 42000원이라 2일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼요.","filler":false,"fixed":false}
+{"type":"turn.start","at":19944,"latency":{"brain":0,"tool":0,"tts":0},"stage":"pitch","user":"어떻게 변경하나요? 궁금해요."}
+{"type":"brain.plan","at":19993,"latency":{"brain":49,"tool":0,"tts":0},"plan":{"intent":"question","tools":[{"tool":"kb.search","args":{"query":"어떻게 변경하나요? 궁금해요."}}]},"attempt":0}
+{"type":"tool.call","at":19993,"latency":{"brain":49,"tool":0,"tts":0},"call":{"tool":"kb.search","args":{"query":"어떻게 변경하나요? 궁금해요."}},"builtin":true}
+{"type":"tool.result","at":19993,"latency":{"brain":49,"tool":0,"tts":0},"result":{"call":{"tool":"kb.search","args":{"query":"어떻게 변경하나요? 궁금해요."}},"status":"ok","data":[]},"citations":[]}
+{"type":"brain.compose","at":19993,"latency":{"brain":49,"tool":0,"tts":0},"text":"그 내용은 제가 가진 자료로는 정확히 안내드리기 어려워요."}
+{"type":"brain.latency","at":19993,"latency":{"brain":49,"tool":0,"tts":0},"ms":49}
+{"type":"speech.start","at":20073,"latency":{"brain":49,"tool":0,"tts":80},"text":"그 내용은 제가 가진 자료로는 정확히 안내드리기 어려워요.","filler":false,"fixed":false}
+{"type":"turn.start","at":25088,"latency":{"brain":0,"tool":0,"tts":0},"stage":"pitch","user":"20만으로 해 주세요."}
+{"type":"brain.plan","at":25113,"latency":{"brain":25,"tool":0,"tts":0},"plan":{"intent":"amount_200k","setSlots":{"chargeAmount":"200000"},"transition":"confirm","tools":[]},"attempt":0}
+{"type":"brain.compose","at":25113,"latency":{"brain":25,"tool":0,"tts":0},"text":"잔액이 1만 원 아래로 내려가면 등록된 결제수단으로 20만 원씩 충전돼요. 이대로 설정할까요?"}
+{"type":"brain.latency","at":25113,"latency":{"brain":25,"tool":0,"tts":0},"ms":25}
+{"type":"speech.start","at":25193,"latency":{"brain":25,"tool":0,"tts":80},"text":"잔액이 1만 원 아래로 내려가면 등록된 결제수단으로 20만 원씩 충전돼요. 이대로 설정할까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":32065,"latency":{"brain":0,"tool":0,"tts":0},"stage":"confirm","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":32112,"latency":{"brain":47,"tool":0,"tts":0},"plan":{"intent":"yes","setSlots":{"consent":true},"transition":"close","end":"success","say":"설정해 드렸어요.","tools":[{"tool":"ads.enableAutoCharge","args":{}}]},"attempt":0}
+{"type":"tool.call","at":32112,"latency":{"brain":47,"tool":0,"tts":0},"call":{"tool":"ads.enableAutoCharge","args":{"advertiserId":"A-2018","amount":"200000"}},"callSeq":2,"consent":true}
+{"type":"tool.result","at":32188,"latency":{"brain":47,"tool":76,"tts":0},"callSeq":2,"attempt":{"at":32112,"endedAt":32188,"result":{"status":"ok","data":{"businessName":"바른정형외과","balance":42000,"dailySpend":21000,"daysLeft":2,"autoCharge":{"advertiserId":"A-2018","amount":"200000"}},"latencyMs":76},"idempotencyKey":"call-7bfdf956:ads.enableAutoCharge:2"}}
+{"type":"tool.result","at":32188,"latency":{"brain":47,"tool":76,"tts":0},"callSeq":2,"result":{"status":"ok","data":{"businessName":"바른정형외과","balance":42000,"dailySpend":21000,"daysLeft":2,"autoCharge":{"advertiserId":"A-2018","amount":"200000"}},"latencyMs":76},"elapsedMs":76,"attempts":1}
+{"type":"brain.compose","at":32188,"latency":{"brain":47,"tool":76,"tts":0},"text":"설정해 드렸어요."}
+{"type":"brain.latency","at":32188,"latency":{"brain":47,"tool":76,"tts":0},"ms":47}
+{"type":"speech.start","at":32268,"latency":{"brain":47,"tool":76,"tts":80},"text":"설정해 드렸어요.","filler":false,"fixed":false}
+{"type":"call.end","at":33268,"latency":{"brain":47,"tool":76,"tts":80},"outcome":"success","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[],"brain":"rule","durationMs":33175}

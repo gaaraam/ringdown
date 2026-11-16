@@ -1,0 +1,4 @@
+NAME              ID              SIZE      MODIFIED       
+gemma3:12b        b92b218582c5    8.2 GB    25 seconds ago    
+qwen3:8b          500a1f067a9f    5.2 GB    8 minutes ago     
+exaone3.5:7.8b    c7c4e3d1ca22    4.8 GB    10 minutes ago    

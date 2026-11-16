@@ -1,0 +1,638 @@
+[
+  {
+    "brain": "rule",
+    "pack": "gaga-ads@2",
+    "report": "docs/experiments/m4/rule/gaga-ads/report.json",
+    "timing": {
+      "startedAt": "2026-11-16T05:28:08.214Z",
+      "wallMs": 46.605042000000026,
+      "requestsSoFar": 0
+    },
+    "metrics": {
+      "goal_rate": {
+        "value": 0.5,
+        "ci95": [
+          0.3773502424155577,
+          0.6226497575844423
+        ],
+        "n": 60
+      },
+      "acceptable_rate": {
+        "value": 1,
+        "ci95": [
+          0.93982814785791,
+          1
+        ],
+        "n": 60
+      },
+      "barge_in_rate": {
+        "value": 0.05286343612334802,
+        "ci95": [
+          0.03049542237997617,
+          0.09011315011358076
+        ],
+        "n": 227
+      },
+      "long_call_rate": {
+        "value": 0,
+        "ci95": [
+          0,
+          0.06017185214208986
+        ],
+        "n": 60
+      },
+      "turn_latency_p95": {
+        "value": 336,
+        "ci95": null,
+        "n": 159
+      },
+      "dead_air_incidents": {
+        "value": 0,
+        "ci95": null,
+        "n": 60
+      },
+      "degraded_survival": {
+        "value": 1,
+        "ci95": [
+          0.7719046276458016,
+          1
+        ],
+        "n": 13
+      },
+      "policy_violations": {
+        "value": 0,
+        "ci95": null,
+        "n": 60
+      },
+      "brain_fallbacks": {
+        "value": 0,
+        "ci95": null,
+        "n": 60
+      }
+    },
+    "diagnostics": {
+      "brain_latency_p50": {
+        "value": 37,
+        "ci95": null,
+        "n": 155
+      },
+      "brain_latency_p95": {
+        "value": 59,
+        "ci95": null,
+        "n": 155
+      },
+      "control_rejections": 0,
+      "output_guard_hits": 0
+    },
+    "speech": {
+      "speech": 227,
+      "filler": 8,
+      "answer": 219,
+      "pending_confirmation_without_pending": 0,
+      "interrupted": 12,
+      "answer_interrupted": 12
+    },
+    "guards": {
+      "input:handoff": 2,
+      "input:opted_out": 2
+    },
+    "outcomes": {
+      "success": 30,
+      "declined": 12,
+      "pending_confirmation": 5,
+      "callback_scheduled": 9,
+      "handoff": 2,
+      "opted_out": 2
+    }
+  },
+  {
+    "brain": "rule",
+    "pack": "gaga-seller@1",
+    "report": "docs/experiments/m4/rule/gaga-seller/report.json",
+    "timing": {
+      "startedAt": "2026-11-16T05:28:08.281Z",
+      "wallMs": 28.110749999999996,
+      "requestsSoFar": 0
+    },
+    "metrics": {
+      "goal_rate": {
+        "value": 0.48333333333333334,
+        "ci95": [
+          0.36175049539732784,
+          0.6069218996740751
+        ],
+        "n": 60
+      },
+      "acceptable_rate": {
+        "value": 1,
+        "ci95": [
+          0.93982814785791,
+          1
+        ],
+        "n": 60
+      },
+      "barge_in_rate": {
+        "value": 0.05263157894736842,
+        "ci95": [
+          0.030360537105262837,
+          0.08972781535039813
+        ],
+        "n": 228
+      },
+      "long_call_rate": {
+        "value": 0,
+        "ci95": [
+          0,
+          0.06017185214208986
+        ],
+        "n": 60
+      },
+      "turn_latency_p95": {
+        "value": 287,
+        "ci95": null,
+        "n": 164
+      },
+      "dead_air_incidents": {
+        "value": 0,
+        "ci95": null,
+        "n": 60
+      },
+      "degraded_survival": {
+        "value": 1,
+        "ci95": [
+          0.7719046276458016,
+          1
+        ],
+        "n": 13
+      },
+      "policy_violations": {
+        "value": 0,
+        "ci95": null,
+        "n": 60
+      },
+      "brain_fallbacks": {
+        "value": 0,
+        "ci95": null,
+        "n": 60
+      }
+    },
+    "diagnostics": {
+      "brain_latency_p50": {
+        "value": 38,
+        "ci95": null,
+        "n": 160
+      },
+      "brain_latency_p95": {
+        "value": 59,
+        "ci95": null,
+        "n": 160
+      },
+      "control_rejections": 0,
+      "output_guard_hits": 0
+    },
+    "speech": {
+      "speech": 228,
+      "filler": 4,
+      "answer": 224,
+      "pending_confirmation_without_pending": 0,
+      "interrupted": 12,
+      "answer_interrupted": 12
+    },
+    "guards": {
+      "input:handoff": 2,
+      "input:opted_out": 2
+    },
+    "outcomes": {
+      "declined": 12,
+      "success": 29,
+      "pending_confirmation": 7,
+      "handoff": 2,
+      "opted_out": 2,
+      "callback_scheduled": 8
+    }
+  },
+  {
+    "brain": "exaone",
+    "pack": "gaga-ads@2",
+    "report": "docs/experiments/m4/exaone/gaga-ads/report.json",
+    "timing": {
+      "startedAt": "2026-11-16T05:28:08.893Z",
+      "wallMs": 420034.215625,
+      "requestsSoFar": 102
+    },
+    "metrics": {
+      "goal_rate": {
+        "value": 0,
+        "ci95": [
+          0,
+          0.06017185214208986
+        ],
+        "n": 60
+      },
+      "acceptable_rate": {
+        "value": 1,
+        "ci95": [
+          0.93982814785791,
+          1
+        ],
+        "n": 60
+      },
+      "barge_in_rate": {
+        "value": 0.017142857142857144,
+        "ci95": [
+          0.007879807153229886,
+          0.03689012702432967
+        ],
+        "n": 350
+      },
+      "long_call_rate": {
+        "value": 0,
+        "ci95": [
+          0,
+          0.06017185214208986
+        ],
+        "n": 60
+      },
+      "turn_latency_p95": {
+        "value": 800,
+        "ci95": null,
+        "n": 59
+      },
+      "dead_air_incidents": {
+        "value": 0,
+        "ci95": null,
+        "n": 60
+      },
+      "degraded_survival": {
+        "value": 1,
+        "ci95": [
+          0.6755924351161198,
+          1
+        ],
+        "n": 8
+      },
+      "policy_violations": {
+        "value": 0,
+        "ci95": null,
+        "n": 60
+      },
+      "brain_fallbacks": {
+        "value": 0,
+        "ci95": null,
+        "n": 60
+      }
+    },
+    "diagnostics": {
+      "brain_latency_p50": {
+        "value": 8081.980875000008,
+        "ci95": null,
+        "n": 55
+      },
+      "brain_latency_p95": {
+        "value": 9819.946915999986,
+        "ci95": null,
+        "n": 55
+      },
+      "control_rejections": 0,
+      "output_guard_hits": 20
+    },
+    "speech": {
+      "speech": 350,
+      "filler": 231,
+      "answer": 119,
+      "pending_confirmation_without_pending": 47,
+      "interrupted": 6,
+      "answer_interrupted": 6
+    },
+    "guards": {
+      "output:speech_length": 20,
+      "input:handoff": 2,
+      "input:opted_out": 2
+    },
+    "outcomes": {
+      "pending_confirmation": 47,
+      "declined": 4,
+      "handoff": 2,
+      "callback_scheduled": 5,
+      "opted_out": 2
+    }
+  },
+  {
+    "brain": "exaone",
+    "pack": "gaga-seller@1",
+    "report": "docs/experiments/m4/exaone/gaga-seller/report.json",
+    "timing": {
+      "startedAt": "2026-11-16T05:35:08.956Z",
+      "wallMs": 455463.420375,
+      "requestsSoFar": 214
+    },
+    "metrics": {
+      "goal_rate": {
+        "value": 0,
+        "ci95": [
+          0,
+          0.06017185214208986
+        ],
+        "n": 60
+      },
+      "acceptable_rate": {
+        "value": 1,
+        "ci95": [
+          0.93982814785791,
+          1
+        ],
+        "n": 60
+      },
+      "barge_in_rate": {
+        "value": 0.05747126436781609,
+        "ci95": [
+          0.03750846016579826,
+          0.08709726130785177
+        ],
+        "n": 348
+      },
+      "long_call_rate": {
+        "value": 0,
+        "ci95": [
+          0,
+          0.06017185214208986
+        ],
+        "n": 60
+      },
+      "turn_latency_p95": {
+        "value": 800,
+        "ci95": null,
+        "n": 60
+      },
+      "dead_air_incidents": {
+        "value": 0,
+        "ci95": null,
+        "n": 60
+      },
+      "degraded_survival": {
+        "value": 1,
+        "ci95": [
+          0.6755924351161198,
+          1
+        ],
+        "n": 8
+      },
+      "policy_violations": {
+        "value": 0,
+        "ci95": null,
+        "n": 60
+      },
+      "brain_fallbacks": {
+        "value": 0,
+        "ci95": null,
+        "n": 60
+      }
+    },
+    "diagnostics": {
+      "brain_latency_p50": {
+        "value": 8309.85400000005,
+        "ci95": null,
+        "n": 56
+      },
+      "brain_latency_p95": {
+        "value": 10306.170458000037,
+        "ci95": null,
+        "n": 56
+      },
+      "control_rejections": 0,
+      "output_guard_hits": 43
+    },
+    "speech": {
+      "speech": 348,
+      "filler": 228,
+      "answer": 120,
+      "pending_confirmation_without_pending": 48,
+      "interrupted": 20,
+      "answer_interrupted": 20
+    },
+    "guards": {
+      "output:speech_length": 42,
+      "input:handoff": 2,
+      "input:opted_out": 2,
+      "output:numeric_grounding": 1
+    },
+    "outcomes": {
+      "pending_confirmation": 48,
+      "handoff": 2,
+      "declined": 4,
+      "opted_out": 2,
+      "callback_scheduled": 4
+    }
+  },
+  {
+    "brain": "qwen",
+    "pack": "gaga-ads@2",
+    "report": "docs/experiments/m4/qwen/gaga-ads/report.json",
+    "timing": {
+      "startedAt": "2026-11-16T05:42:51.123Z",
+      "wallMs": 236320.949666,
+      "requestsSoFar": 67
+    },
+    "metrics": {
+      "goal_rate": {
+        "value": 0,
+        "ci95": [
+          0,
+          0.06017185214208986
+        ],
+        "n": 60
+      },
+      "acceptable_rate": {
+        "value": 0.9166666666666666,
+        "ci95": [
+          0.8193105798166558,
+          0.9638795433982692
+        ],
+        "n": 60
+      },
+      "barge_in_rate": {
+        "value": 0.04460966542750929,
+        "ci95": [
+          0.025699967329258767,
+          0.07634265823444256
+        ],
+        "n": 269
+      },
+      "long_call_rate": {
+        "value": 0,
+        "ci95": [
+          0,
+          0.06017185214208986
+        ],
+        "n": 60
+      },
+      "turn_latency_p95": {
+        "value": 800,
+        "ci95": null,
+        "n": 71
+      },
+      "dead_air_incidents": {
+        "value": 0,
+        "ci95": null,
+        "n": 60
+      },
+      "degraded_survival": {
+        "value": 0.875,
+        "ci95": [
+          0.5291118177871464,
+          0.9775825085499433
+        ],
+        "n": 8
+      },
+      "policy_violations": {
+        "value": 0,
+        "ci95": null,
+        "n": 60
+      },
+      "brain_fallbacks": {
+        "value": 0,
+        "ci95": null,
+        "n": 60
+      }
+    },
+    "diagnostics": {
+      "brain_latency_p50": {
+        "value": 3556.9887089999975,
+        "ci95": null,
+        "n": 67
+      },
+      "brain_latency_p95": {
+        "value": 4593.8751660000125,
+        "ci95": null,
+        "n": 67
+      },
+      "control_rejections": 0,
+      "output_guard_hits": 0
+    },
+    "speech": {
+      "speech": 269,
+      "filler": 138,
+      "answer": 131,
+      "pending_confirmation_without_pending": 42,
+      "interrupted": 12,
+      "answer_interrupted": 12
+    },
+    "guards": {
+      "input:handoff": 2,
+      "input:opted_out": 2
+    },
+    "outcomes": {
+      "pending_confirmation": 42,
+      "failed": 5,
+      "declined": 4,
+      "handoff": 2,
+      "callback_scheduled": 5,
+      "opted_out": 2
+    }
+  },
+  {
+    "brain": "qwen",
+    "pack": "gaga-seller@1",
+    "report": "docs/experiments/m4/qwen/gaga-seller/report.json",
+    "timing": {
+      "startedAt": "2026-11-16T05:46:47.477Z",
+      "wallMs": 169994.542208,
+      "requestsSoFar": 123
+    },
+    "metrics": {
+      "goal_rate": {
+        "value": 0,
+        "ci95": [
+          0,
+          0.06017185214208986
+        ],
+        "n": 60
+      },
+      "acceptable_rate": {
+        "value": 1,
+        "ci95": [
+          0.93982814785791,
+          1
+        ],
+        "n": 60
+      },
+      "barge_in_rate": {
+        "value": 0.056074766355140186,
+        "ci95": [
+          0.03236469679512063,
+          0.09544136441754553
+        ],
+        "n": 214
+      },
+      "long_call_rate": {
+        "value": 0,
+        "ci95": [
+          0,
+          0.06017185214208986
+        ],
+        "n": 60
+      },
+      "turn_latency_p95": {
+        "value": 800,
+        "ci95": null,
+        "n": 60
+      },
+      "dead_air_incidents": {
+        "value": 0,
+        "ci95": null,
+        "n": 60
+      },
+      "degraded_survival": {
+        "value": 1,
+        "ci95": [
+          0.6755924351161198,
+          1
+        ],
+        "n": 8
+      },
+      "policy_violations": {
+        "value": 0,
+        "ci95": null,
+        "n": 60
+      },
+      "brain_fallbacks": {
+        "value": 0,
+        "ci95": null,
+        "n": 60
+      }
+    },
+    "diagnostics": {
+      "brain_latency_p50": {
+        "value": 2952.475083999976,
+        "ci95": null,
+        "n": 56
+      },
+      "brain_latency_p95": {
+        "value": 3909.250708000036,
+        "ci95": null,
+        "n": 56
+      },
+      "control_rejections": 0,
+      "output_guard_hits": 0
+    },
+    "speech": {
+      "speech": 214,
+      "filler": 94,
+      "answer": 120,
+      "pending_confirmation_without_pending": 48,
+      "interrupted": 12,
+      "answer_interrupted": 12
+    },
+    "guards": {
+      "input:handoff": 2,
+      "input:opted_out": 2
+    },
+    "outcomes": {
+      "pending_confirmation": 48,
+      "handoff": 2,
+      "declined": 4,
+      "opted_out": 2,
+      "callback_scheduled": 4
+    }
+  }
+]

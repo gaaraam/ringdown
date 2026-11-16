@@ -1,0 +1,32 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"ads.getAccount","args":{"advertiserId":"A-2003"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":671,"latency":{"brain":0,"tool":671,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":671,"result":{"status":"error","kind":"5xx","latencyMs":671,"httpStatus":503}}}
+{"type":"tool.result","at":916,"latency":{"brain":0,"tool":916,"tts":0},"callSeq":1,"attempt":{"at":804,"endedAt":916,"result":{"status":"ok","data":{"businessName":"그린필라테스","balance":9000,"dailySpend":9000,"daysLeft":1,"autoCharge":null},"latencyMs":112}}}
+{"type":"tool.result","at":916,"latency":{"brain":0,"tool":916,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"businessName":"그린필라테스","balance":9000,"dailySpend":9000,"daysLeft":1,"autoCharge":null},"latencyMs":112},"elapsedMs":916,"attempts":2}
+{"type":"speech.start","at":916,"latency":{"brain":0,"tool":916,"tts":0},"text":"안녕하세요, 가가애즈 AI 상담원입니다. 광고 운영 안내를 위해 연락드렸고, 통화 내용은 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":6774,"latency":{"brain":0,"tool":916,"tts":0},"text":"그린필라테스 광고 담당자분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":10503,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":10530,"latency":{"brain":27,"tool":0,"tts":0},"plan":{"intent":"yes","transition":"pitch","tools":[]},"attempt":0}
+{"type":"brain.compose","at":10530,"latency":{"brain":27,"tool":0,"tts":0},"text":"잔액이 9000원이라 1일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼요."}
+{"type":"brain.latency","at":10530,"latency":{"brain":27,"tool":0,"tts":0},"ms":27}
+{"type":"speech.start","at":10610,"latency":{"brain":27,"tool":0,"tts":80},"text":"잔액이 9000원이라 1일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼요.","filler":false,"fixed":false}
+{"type":"turn.start","at":20625,"latency":{"brain":0,"tool":0,"tts":0},"stage":"pitch","user":"어떻게 변경하나요? 궁금해요."}
+{"type":"brain.plan","at":20647,"latency":{"brain":22,"tool":0,"tts":0},"plan":{"intent":"question","tools":[{"tool":"kb.search","args":{"query":"어떻게 변경하나요? 궁금해요."}}]},"attempt":0}
+{"type":"tool.call","at":20647,"latency":{"brain":22,"tool":0,"tts":0},"call":{"tool":"kb.search","args":{"query":"어떻게 변경하나요? 궁금해요."}},"builtin":true}
+{"type":"tool.result","at":20647,"latency":{"brain":22,"tool":0,"tts":0},"result":{"call":{"tool":"kb.search","args":{"query":"어떻게 변경하나요? 궁금해요."}},"status":"ok","data":[]},"citations":[]}
+{"type":"brain.compose","at":20647,"latency":{"brain":22,"tool":0,"tts":0},"text":"그 내용은 제가 가진 자료로는 정확히 안내드리기 어려워요."}
+{"type":"brain.latency","at":20647,"latency":{"brain":22,"tool":0,"tts":0},"ms":22}
+{"type":"speech.start","at":20727,"latency":{"brain":22,"tool":0,"tts":80},"text":"그 내용은 제가 가진 자료로는 정확히 안내드리기 어려워요.","filler":false,"fixed":false}
+{"type":"turn.start","at":25742,"latency":{"brain":0,"tool":0,"tts":0},"stage":"pitch","user":"20만으로 해 주세요."}
+{"type":"brain.plan","at":25767,"latency":{"brain":25,"tool":0,"tts":0},"plan":{"intent":"amount_200k","setSlots":{"chargeAmount":"200000"},"transition":"confirm","tools":[]},"attempt":0}
+{"type":"brain.compose","at":25767,"latency":{"brain":25,"tool":0,"tts":0},"text":"잔액이 1만 원 아래로 내려가면 등록된 결제수단으로 20만 원씩 충전돼요. 이대로 설정할까요?"}
+{"type":"brain.latency","at":25767,"latency":{"brain":25,"tool":0,"tts":0},"ms":25}
+{"type":"speech.start","at":25847,"latency":{"brain":25,"tool":0,"tts":80},"text":"잔액이 1만 원 아래로 내려가면 등록된 결제수단으로 20만 원씩 충전돼요. 이대로 설정할까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":32719,"latency":{"brain":0,"tool":0,"tts":0},"stage":"confirm","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":32747,"latency":{"brain":28,"tool":0,"tts":0},"plan":{"intent":"yes","setSlots":{"consent":true},"transition":"close","end":"success","say":"설정해 드렸어요.","tools":[{"tool":"ads.enableAutoCharge","args":{}}]},"attempt":0}
+{"type":"tool.call","at":32747,"latency":{"brain":28,"tool":0,"tts":0},"call":{"tool":"ads.enableAutoCharge","args":{"advertiserId":"A-2003","amount":"200000"}},"callSeq":2,"consent":true}
+{"type":"tool.result","at":32893,"latency":{"brain":28,"tool":146,"tts":0},"callSeq":2,"attempt":{"at":32747,"endedAt":32893,"result":{"status":"ok","data":{"businessName":"그린필라테스","balance":9000,"dailySpend":9000,"daysLeft":1,"autoCharge":{"advertiserId":"A-2003","amount":"200000"}},"latencyMs":146},"idempotencyKey":"call-23a37ecc:ads.enableAutoCharge:2"}}
+{"type":"tool.result","at":32893,"latency":{"brain":28,"tool":146,"tts":0},"callSeq":2,"result":{"status":"ok","data":{"businessName":"그린필라테스","balance":9000,"dailySpend":9000,"daysLeft":1,"autoCharge":{"advertiserId":"A-2003","amount":"200000"}},"latencyMs":146},"elapsedMs":146,"attempts":1}
+{"type":"brain.compose","at":32893,"latency":{"brain":28,"tool":146,"tts":0},"text":"설정해 드렸어요."}
+{"type":"brain.latency","at":32893,"latency":{"brain":28,"tool":146,"tts":0},"ms":28}
+{"type":"speech.start","at":32973,"latency":{"brain":28,"tool":146,"tts":80},"text":"설정해 드렸어요.","filler":false,"fixed":false}
+{"type":"call.end","at":33973,"latency":{"brain":28,"tool":146,"tts":80},"outcome":"success","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[],"brain":"rule","durationMs":33057}

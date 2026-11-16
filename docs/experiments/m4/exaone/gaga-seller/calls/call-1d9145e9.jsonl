@@ -1,0 +1,18 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"seller.lookup","args":{"sellerId":"S-1023"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":195,"latency":{"brain":0,"tool":195,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":195,"result":{"status":"error","kind":"5xx","latencyMs":195,"httpStatus":503}}}
+{"type":"tool.result","at":521,"latency":{"brain":0,"tool":521,"tts":0},"callSeq":1,"attempt":{"at":321,"endedAt":521,"result":{"status":"ok","data":{"storeName":"반짝액세서리","pendingReturns":5,"monthlyReturnShippingCost":33000,"returnPolicy":null},"latencyMs":200}}}
+{"type":"tool.result","at":521,"latency":{"brain":0,"tool":521,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"storeName":"반짝액세서리","pendingReturns":5,"monthlyReturnShippingCost":33000,"returnPolicy":null},"latencyMs":200},"elapsedMs":521,"attempts":2}
+{"type":"speech.start","at":521,"latency":{"brain":0,"tool":521,"tts":0},"text":"안녕하세요, 가가마켓 판매자센터 AI 상담원입니다. 통화 내용은 품질 관리를 위해 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":6093,"latency":{"brain":0,"tool":521,"tts":0},"text":"반짝액세서리 운영하시는 분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":12022,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"speech.start","at":12822,"latency":{"brain":3186.7984169999836,"tool":0,"tts":0},"text":"네, 확인해 볼게요.","filler":true,"fixed":false}
+{"type":"speech.start","at":14622,"latency":{"brain":3186.7984169999836,"tool":0,"tts":0},"text":"잠시만요, 조회하고 있어요.","filler":true,"fixed":false}
+{"type":"brain.plan","at":15208.798416999984,"latency":{"brain":3186.7984169999836,"tool":0,"tts":0},"plan":{"intent":"verify","transition":"explain","setSlots":{"consent":false},"end":"pending_confirmation"},"attempt":0}
+{"type":"speech.start","at":16994,"latency":{"brain":9831.254749999964,"tool":0,"tts":0},"text":"네, 확인해 볼게요.","filler":true,"fixed":false}
+{"type":"speech.start","at":18794,"latency":{"brain":9831.254749999964,"tool":0,"tts":0},"text":"잠시만요, 조회하고 있어요.","filler":true,"fixed":false}
+{"type":"speech.start","at":21166,"latency":{"brain":9831.254749999964,"tool":0,"tts":0},"text":"네, 확인해 볼게요.","filler":true,"fixed":false}
+{"type":"brain.compose","at":21853.254749999964,"latency":{"brain":9831.254749999964,"tool":0,"tts":0},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하셔야 합니다. 설정을 원하신다면 무료, 3천 원, 5천 원 중 어떤 옵션으로 하시겠습니까? 현재 스토어의 반품 관련 통계는 다음과 같습니다: 최근 5건의 반품이 있었고, 월 평균 반품 배송비는 약 33,000원입니다. 어떤 옵션을 선택하시겠어요?"}
+{"type":"brain.latency","at":21853.254749999964,"latency":{"brain":9831.254749999964,"tool":0,"tts":0},"ms":9831.254749999964}
+{"type":"guard.reject","at":21933.254749999964,"latency":{"brain":9831.254749999964,"tool":0,"tts":80},"layer":"output","reason":"speech_length"}
+{"type":"speech.start","at":22166,"latency":{"brain":9831.254749999964,"tool":0,"tts":80},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하셔야 합니다. 설정을 원하신다면 무료, 3천 원, 5천 원 중 어떤 옵션으로 하시겠습니까?","filler":false,"fixed":false}
+{"type":"call.end","at":32024,"latency":{"brain":9831.254749999964,"tool":0,"tts":80},"outcome":"pending_confirmation","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":1,"longCall":false,"policyViolations":0},"pending":[],"brain":"llm","durationMs":31503}

@@ -1,0 +1,24 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"seller.lookup","args":{"sellerId":"S-1023"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":79,"latency":{"brain":0,"tool":79,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":79,"result":{"status":"ok","data":{"storeName":"반짝액세서리","pendingReturns":5,"monthlyReturnShippingCost":33000,"returnPolicy":null},"latencyMs":79}}}
+{"type":"tool.result","at":79,"latency":{"brain":0,"tool":79,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"storeName":"반짝액세서리","pendingReturns":5,"monthlyReturnShippingCost":33000,"returnPolicy":null},"latencyMs":79},"elapsedMs":79,"attempts":1}
+{"type":"speech.start","at":79,"latency":{"brain":0,"tool":79,"tts":0},"text":"안녕하세요, 가가마켓 판매자센터 AI 상담원입니다. 통화 내용은 품질 관리를 위해 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5651,"latency":{"brain":0,"tool":79,"tts":0},"text":"반짝액세서리 운영하시는 분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":11580,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":11604,"latency":{"brain":24,"tool":0,"tts":0},"plan":{"intent":"yes","transition":"explain","tools":[]},"attempt":0}
+{"type":"brain.compose","at":11604,"latency":{"brain":24,"tool":0,"tts":0},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설정해 드릴 수 있는데, 무료, 3천 원, 5천 원 중 어떤 걸로 할까요?"}
+{"type":"brain.latency","at":11604,"latency":{"brain":24,"tool":0,"tts":0},"ms":24}
+{"type":"speech.start","at":11684,"latency":{"brain":24,"tool":0,"tts":80},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설정해 드릴 수 있는데, 무료, 3천 원, 5천 원 중 어떤 걸로 할까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":24756,"latency":{"brain":0,"tool":0,"tts":0},"stage":"explain","user":"5천으로 해 주세요."}
+{"type":"brain.plan","at":24782,"latency":{"brain":26,"tool":0,"tts":0},"plan":{"intent":"plan_5000","setSlots":{"returnPlan":"paid-5000"},"transition":"confirm","tools":[]},"attempt":0}
+{"type":"brain.compose","at":24782,"latency":{"brain":26,"tool":0,"tts":0},"text":"반품 배송비 5천 원으로 설정할게요. 진행해도 될까요?"}
+{"type":"brain.latency","at":24782,"latency":{"brain":26,"tool":0,"tts":0},"ms":26}
+{"type":"speech.start","at":24862,"latency":{"brain":26,"tool":0,"tts":80},"text":"반품 배송비 5천 원으로 설정할게요. 진행해도 될까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":31505,"latency":{"brain":0,"tool":0,"tts":0},"stage":"confirm","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":31526,"latency":{"brain":21,"tool":0,"tts":0},"plan":{"intent":"yes","setSlots":{"consent":true},"transition":"close","end":"success","say":"설정해 드렸어요.","tools":[{"tool":"seller.setReturnPolicy","args":{}}]},"attempt":0}
+{"type":"tool.call","at":31526,"latency":{"brain":21,"tool":0,"tts":0},"call":{"tool":"seller.setReturnPolicy","args":{"sellerId":"S-1023","plan":"paid-5000"}},"callSeq":2,"consent":true}
+{"type":"tool.result","at":31574,"latency":{"brain":21,"tool":48,"tts":0},"callSeq":2,"attempt":{"at":31526,"endedAt":31574,"result":{"status":"ok","data":{"storeName":"반짝액세서리","pendingReturns":5,"monthlyReturnShippingCost":33000,"returnPolicy":{"sellerId":"S-1023","plan":"paid-5000"}},"latencyMs":48},"idempotencyKey":"call-d9e3e7b5:seller.setReturnPolicy:2"}}
+{"type":"tool.result","at":31574,"latency":{"brain":21,"tool":48,"tts":0},"callSeq":2,"result":{"status":"ok","data":{"storeName":"반짝액세서리","pendingReturns":5,"monthlyReturnShippingCost":33000,"returnPolicy":{"sellerId":"S-1023","plan":"paid-5000"}},"latencyMs":48},"elapsedMs":48,"attempts":1}
+{"type":"brain.compose","at":31574,"latency":{"brain":21,"tool":48,"tts":0},"text":"설정해 드렸어요."}
+{"type":"brain.latency","at":31574,"latency":{"brain":21,"tool":48,"tts":0},"ms":21}
+{"type":"speech.start","at":31654,"latency":{"brain":21,"tool":48,"tts":80},"text":"설정해 드렸어요.","filler":false,"fixed":false}
+{"type":"call.end","at":32654,"latency":{"brain":21,"tool":48,"tts":80},"outcome":"success","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[],"brain":"rule","durationMs":32575}

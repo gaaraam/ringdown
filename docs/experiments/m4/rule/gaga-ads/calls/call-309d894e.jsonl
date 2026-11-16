@@ -1,0 +1,19 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"ads.getAccount","args":{"advertiserId":"A-2002"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":82,"latency":{"brain":0,"tool":82,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":82,"result":{"status":"ok","data":{"businessName":"바른정형외과","balance":42000,"dailySpend":21000,"daysLeft":2,"autoCharge":null},"latencyMs":82}}}
+{"type":"tool.result","at":82,"latency":{"brain":0,"tool":82,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"businessName":"바른정형외과","balance":42000,"dailySpend":21000,"daysLeft":2,"autoCharge":null},"latencyMs":82},"elapsedMs":82,"attempts":1}
+{"type":"speech.start","at":82,"latency":{"brain":0,"tool":82,"tts":0},"text":"안녕하세요, 가가애즈 AI 상담원입니다. 광고 운영 안내를 위해 연락드렸고, 통화 내용은 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5940,"latency":{"brain":0,"tool":82,"tts":0},"text":"바른정형외과 광고 담당자분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":9669,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":9697,"latency":{"brain":28,"tool":0,"tts":0},"plan":{"intent":"yes","transition":"pitch","tools":[]},"attempt":0}
+{"type":"brain.compose","at":9697,"latency":{"brain":28,"tool":0,"tts":0},"text":"잔액이 42000원이라 2일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼요."}
+{"type":"brain.latency","at":9697,"latency":{"brain":28,"tool":0,"tts":0},"ms":28}
+{"type":"speech.start","at":9777,"latency":{"brain":28,"tool":0,"tts":80},"text":"잔액이 42000원이라 2일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼요.","filler":false,"fixed":false}
+{"type":"speech.interrupted","at":15777,"latency":{"brain":28,"tool":0,"tts":80},"intended":"잔액이 42000원이라 2일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼요.","heard":"잔액이 42000원이라 2일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5"}
+{"type":"turn.start","at":17935,"latency":{"brain":0,"tool":0,"tts":0},"stage":"pitch","user":"지금 바빠요. 나중에 연락 주세요.","interruptedAt":"잔액이 42000원이라 2일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5"}
+{"type":"brain.plan","at":17964,"latency":{"brain":29,"tool":0,"tts":0},"plan":{"intent":"busy","transition":"close","end":"callback_scheduled","say":"편하신 시간에 다시 연락드릴게요.","tools":[{"tool":"call.scheduleCallback","args":{}}]},"attempt":0}
+{"type":"tool.call","at":17964,"latency":{"brain":29,"tool":0,"tts":0},"call":{"tool":"call.scheduleCallback","args":{}},"builtin":true}
+{"type":"tool.result","at":17964,"latency":{"brain":29,"tool":0,"tts":0},"result":{"call":{"tool":"call.scheduleCallback","args":{}},"status":"ok","data":{}},"citations":[]}
+{"type":"brain.compose","at":17964,"latency":{"brain":29,"tool":0,"tts":0},"text":"편하신 시간에 다시 연락드릴게요."}
+{"type":"brain.latency","at":17964,"latency":{"brain":29,"tool":0,"tts":0},"ms":29}
+{"type":"speech.start","at":18044,"latency":{"brain":29,"tool":0,"tts":80},"text":"편하신 시간에 다시 연락드릴게요.","filler":false,"fixed":false}
+{"type":"call.end","at":20044,"latency":{"brain":29,"tool":0,"tts":80},"outcome":"callback_scheduled","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[{"kind":"callback"}],"brain":"rule","durationMs":19962}

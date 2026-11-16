@@ -1,0 +1,39 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"ads.getAccount","args":{"advertiserId":"A-2026"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":1200,"latency":{"brain":0,"tool":1200,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":1200,"result":{"status":"error","kind":"timeout","latencyMs":1200}}}
+{"type":"tool.result","at":1445,"latency":{"brain":0,"tool":1445,"tts":0},"callSeq":1,"attempt":{"at":1297,"endedAt":1445,"result":{"status":"ok","data":{"businessName":"바른정형외과","balance":42000,"dailySpend":21000,"daysLeft":2,"autoCharge":null},"latencyMs":148}}}
+{"type":"tool.result","at":1445,"latency":{"brain":0,"tool":1445,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"businessName":"바른정형외과","balance":42000,"dailySpend":21000,"daysLeft":2,"autoCharge":null},"latencyMs":148},"elapsedMs":1445,"attempts":2}
+{"type":"speech.start","at":1445,"latency":{"brain":0,"tool":1445,"tts":0},"text":"안녕하세요, 가가애즈 AI 상담원입니다. 광고 운영 안내를 위해 연락드렸고, 통화 내용은 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":7303,"latency":{"brain":0,"tool":1445,"tts":0},"text":"바른정형외과 광고 담당자분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":11032,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":11060,"latency":{"brain":28,"tool":0,"tts":0},"plan":{"intent":"yes","transition":"pitch","tools":[]},"attempt":0}
+{"type":"brain.compose","at":11060,"latency":{"brain":28,"tool":0,"tts":0},"text":"잔액이 42000원이라 2일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼요."}
+{"type":"brain.latency","at":11060,"latency":{"brain":28,"tool":0,"tts":0},"ms":28}
+{"type":"speech.start","at":11140,"latency":{"brain":28,"tool":0,"tts":80},"text":"잔액이 42000원이라 2일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼요.","filler":false,"fixed":false}
+{"type":"turn.start","at":20869,"latency":{"brain":0,"tool":0,"tts":0},"stage":"pitch","user":"오늘 날씨 이야기예요."}
+{"type":"brain.plan","at":20897,"latency":{"brain":28,"tool":0,"tts":0},"plan":{"say":"다시 짧게 말씀해 주시겠어요?","intent":"unknown"},"attempt":0}
+{"type":"brain.latency","at":20897,"latency":{"brain":28,"tool":0,"tts":0},"ms":28}
+{"type":"speech.start","at":20977,"latency":{"brain":28,"tool":0,"tts":80},"text":"다시 짧게 말씀해 주시겠어요?","filler":false,"fixed":false}
+{"type":"turn.start","at":24707,"latency":{"brain":0,"tool":0,"tts":0},"stage":"pitch","user":"어떻게 변경하나요? 궁금해요."}
+{"type":"brain.plan","at":24763,"latency":{"brain":56,"tool":0,"tts":0},"plan":{"intent":"question","tools":[{"tool":"kb.search","args":{"query":"어떻게 변경하나요? 궁금해요."}}]},"attempt":0}
+{"type":"tool.call","at":24763,"latency":{"brain":56,"tool":0,"tts":0},"call":{"tool":"kb.search","args":{"query":"어떻게 변경하나요? 궁금해요."}},"builtin":true}
+{"type":"tool.result","at":24763,"latency":{"brain":56,"tool":0,"tts":0},"result":{"call":{"tool":"kb.search","args":{"query":"어떻게 변경하나요? 궁금해요."}},"status":"ok","data":[]},"citations":[]}
+{"type":"brain.compose","at":24763,"latency":{"brain":56,"tool":0,"tts":0},"text":"그 내용은 제가 가진 자료로는 정확히 안내드리기 어려워요."}
+{"type":"brain.latency","at":24763,"latency":{"brain":56,"tool":0,"tts":0},"ms":56}
+{"type":"speech.start","at":24843,"latency":{"brain":56,"tool":0,"tts":80},"text":"그 내용은 제가 가진 자료로는 정확히 안내드리기 어려워요.","filler":false,"fixed":false}
+{"type":"turn.start","at":29715,"latency":{"brain":0,"tool":0,"tts":0},"stage":"pitch","user":"5만으로 해 주세요."}
+{"type":"brain.plan","at":29753,"latency":{"brain":38,"tool":0,"tts":0},"plan":{"intent":"amount_50k","setSlots":{"chargeAmount":"50000"},"transition":"confirm","tools":[]},"attempt":0}
+{"type":"brain.compose","at":29753,"latency":{"brain":38,"tool":0,"tts":0},"text":"잔액이 1만 원 아래로 내려가면 등록된 결제수단으로 5만 원씩 충전돼요. 이대로 설정할까요?"}
+{"type":"brain.latency","at":29753,"latency":{"brain":38,"tool":0,"tts":0},"ms":38}
+{"type":"speech.start","at":29833,"latency":{"brain":38,"tool":0,"tts":80},"text":"잔액이 1만 원 아래로 내려가면 등록된 결제수단으로 5만 원씩 충전돼요. 이대로 설정할까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":36562,"latency":{"brain":0,"tool":0,"tts":0},"stage":"confirm","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":36595,"latency":{"brain":33,"tool":0,"tts":0},"plan":{"intent":"yes","setSlots":{"consent":true},"transition":"close","end":"success","say":"설정해 드렸어요.","tools":[{"tool":"ads.enableAutoCharge","args":{}}]},"attempt":0}
+{"type":"tool.call","at":36595,"latency":{"brain":33,"tool":0,"tts":0},"call":{"tool":"ads.enableAutoCharge","args":{"advertiserId":"A-2026","amount":"50000"}},"callSeq":2,"consent":true}
+{"type":"speech.start","at":37362,"latency":{"brain":33,"tool":2500,"tts":0},"text":"네, 잠시만요.","filler":true,"fixed":false}
+{"type":"speech.start","at":38877,"latency":{"brain":33,"tool":2500,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"tool.result","at":39095,"latency":{"brain":33,"tool":2500,"tts":0},"callSeq":2,"attempt":{"at":36595,"endedAt":39095,"result":{"status":"error","kind":"unknown_outcome","latencyMs":2500},"idempotencyKey":"call-12e56923:ads.enableAutoCharge:2"}}
+{"type":"speech.start","at":41249,"latency":{"brain":33,"tool":5091,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"tool.result","at":41686,"latency":{"brain":33,"tool":5091,"tts":0},"callSeq":2,"attempt":{"at":39186,"endedAt":41686,"result":{"status":"error","kind":"unknown_outcome","latencyMs":2500},"idempotencyKey":"call-12e56923:ads.enableAutoCharge:2"}}
+{"type":"tool.result","at":41686,"latency":{"brain":33,"tool":5091,"tts":0},"callSeq":2,"result":{"status":"error","kind":"unknown_outcome","latencyMs":2500},"elapsedMs":5091,"attempts":2}
+{"type":"brain.latency","at":41686,"latency":{"brain":33,"tool":5091,"tts":0},"ms":33}
+{"type":"speech.start","at":42821,"latency":{"brain":33,"tool":5091,"tts":80},"text":"처리 결과는 문자로 안내드릴게요.","filler":false,"fixed":false}
+{"type":"call.end","at":44821,"latency":{"brain":33,"tool":5091,"tts":80},"outcome":"pending_confirmation","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[{"kind":"confirmation","tool":"ads.enableAutoCharge"}],"brain":"rule","durationMs":43376}

@@ -1,0 +1,15 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"ads.getAccount","args":{"advertiserId":"A-2022"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":92,"latency":{"brain":0,"tool":92,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":92,"result":{"status":"ok","data":{"businessName":"동네세탁소","balance":12000,"dailySpend":3000,"daysLeft":4,"autoCharge":null},"latencyMs":92}}}
+{"type":"tool.result","at":92,"latency":{"brain":0,"tool":92,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"businessName":"동네세탁소","balance":12000,"dailySpend":3000,"daysLeft":4,"autoCharge":null},"latencyMs":92},"elapsedMs":92,"attempts":1}
+{"type":"speech.start","at":92,"latency":{"brain":0,"tool":92,"tts":0},"text":"안녕하세요, 가가애즈 AI 상담원입니다. 광고 운영 안내를 위해 연락드렸고, 통화 내용은 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5950,"latency":{"brain":0,"tool":92,"tts":0},"text":"동네세탁소 광고 담당자분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":9536,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"speech.start","at":10336,"latency":{"brain":3136.514958999993,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"brain.plan","at":12672.514958999993,"latency":{"brain":3136.514958999993,"tool":0,"tts":0},"plan":{"intent":"verify","transition":"pitch","setSlots":{},"end":"pending_confirmation"},"attempt":0}
+{"type":"speech.start","at":12708,"latency":{"brain":8259.860458999989,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"speech.start","at":15080,"latency":{"brain":8259.860458999989,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"speech.start","at":17452,"latency":{"brain":8259.860458999989,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"brain.compose","at":17795.86045899999,"latency":{"brain":8259.860458999989,"tool":0,"tts":0},"text":"잔액이 12,000원이라 4일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전을 원하시나요? 5만, 10만, 20만 원 중 선택해 주세요."}
+{"type":"brain.latency","at":17795.86045899999,"latency":{"brain":8259.860458999989,"tool":0,"tts":0},"ms":8259.860458999989}
+{"type":"speech.start","at":19024,"latency":{"brain":8259.860458999989,"tool":0,"tts":80},"text":"잔액이 12,000원이라 4일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전을 원하시나요? 5만, 10만, 20만 원 중 선택해 주세요.","filler":false,"fixed":false}
+{"type":"call.end","at":27024,"latency":{"brain":8259.860458999989,"tool":0,"tts":80},"outcome":"pending_confirmation","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[],"brain":"llm","durationMs":26932}

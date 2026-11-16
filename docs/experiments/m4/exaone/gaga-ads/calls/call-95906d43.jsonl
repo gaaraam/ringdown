@@ -1,0 +1,13 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"ads.getAccount","args":{"advertiserId":"A-2007"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":219,"latency":{"brain":0,"tool":219,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":219,"result":{"status":"ok","data":{"businessName":"빛나는안경","balance":24000,"dailySpend":8000,"daysLeft":3,"autoCharge":null},"latencyMs":219}}}
+{"type":"tool.result","at":219,"latency":{"brain":0,"tool":219,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"businessName":"빛나는안경","balance":24000,"dailySpend":8000,"daysLeft":3,"autoCharge":null},"latencyMs":219},"elapsedMs":219,"attempts":1}
+{"type":"speech.start","at":219,"latency":{"brain":0,"tool":219,"tts":0},"text":"안녕하세요, 가가애즈 AI 상담원입니다. 광고 운영 안내를 위해 연락드렸고, 통화 내용은 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":6077,"latency":{"brain":0,"tool":219,"tts":0},"text":"빛나는안경 광고 담당자분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":10521,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"지금 바빠요. 나중에 연락 주세요."}
+{"type":"speech.start","at":11321,"latency":{"brain":2008.414625000005,"tool":0,"tts":0},"text":"네, 잠시만요.","filler":true,"fixed":false}
+{"type":"brain.plan","at":12529.414625000005,"latency":{"brain":2008.414625000005,"tool":0,"tts":0},"plan":{"intent":"busy","say":"편하신 시간에 다시 연락드릴게요.","end":"callback_scheduled"},"attempt":0}
+{"type":"brain.latency","at":12529.414625000005,"latency":{"brain":2008.414625000005,"tool":0,"tts":0},"ms":2008.414625000005}
+{"type":"speech.start","at":12609.414625000005,"latency":{"brain":2008.414625000005,"tool":0,"tts":80},"text":"편하신 시간에 다시 연락드릴게요.","filler":false,"fixed":false}
+{"type":"tool.call","at":14609.414625000005,"latency":{"brain":2008.414625000005,"tool":0,"tts":80},"call":{"tool":"call.scheduleCallback","args":{}},"builtin":true}
+{"type":"tool.result","at":14609.414625000005,"latency":{"brain":2008.414625000005,"tool":0,"tts":80},"result":{"call":{"tool":"call.scheduleCallback","args":{}},"status":"ok","data":{}},"citations":[]}
+{"type":"call.end","at":14609.414625000005,"latency":{"brain":2008.414625000005,"tool":0,"tts":80},"outcome":"callback_scheduled","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[{"kind":"callback"}],"brain":"llm","durationMs":14390.414625000005}

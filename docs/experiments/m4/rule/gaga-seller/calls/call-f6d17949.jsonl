@@ -1,0 +1,16 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"seller.lookup","args":{"sellerId":"S-1009"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":318,"latency":{"brain":0,"tool":318,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":318,"result":{"status":"error","kind":"5xx","latencyMs":318,"httpStatus":503}}}
+{"type":"tool.result","at":866,"latency":{"brain":0,"tool":866,"tts":0},"callSeq":1,"attempt":{"at":383,"endedAt":866,"result":{"status":"ok","data":{"storeName":"달빛공방","pendingReturns":3,"monthlyReturnShippingCost":42000,"returnPolicy":null},"latencyMs":483}}}
+{"type":"tool.result","at":866,"latency":{"brain":0,"tool":866,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"storeName":"달빛공방","pendingReturns":3,"monthlyReturnShippingCost":42000,"returnPolicy":null},"latencyMs":483},"elapsedMs":866,"attempts":2}
+{"type":"speech.start","at":866,"latency":{"brain":0,"tool":866,"tts":0},"text":"안녕하세요, 가가마켓 판매자센터 AI 상담원입니다. 통화 내용은 품질 관리를 위해 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":6438,"latency":{"brain":0,"tool":866,"tts":0},"text":"달빛공방 운영하시는 분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":9881,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":9941,"latency":{"brain":60,"tool":0,"tts":0},"plan":{"intent":"yes","transition":"explain","tools":[]},"attempt":0}
+{"type":"brain.compose","at":9941,"latency":{"brain":60,"tool":0,"tts":0},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설정해 드릴 수 있는데, 무료, 3천 원, 5천 원 중 어떤 걸로 할까요?"}
+{"type":"brain.latency","at":9941,"latency":{"brain":60,"tool":0,"tts":0},"ms":60}
+{"type":"speech.start","at":10021,"latency":{"brain":60,"tool":0,"tts":80},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설정해 드릴 수 있는데, 무료, 3천 원, 5천 원 중 어떤 걸로 할까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":20750,"latency":{"brain":0,"tool":0,"tts":0},"stage":"explain","user":"아니요. 안 할게요."}
+{"type":"brain.plan","at":20786,"latency":{"brain":36,"tool":0,"tts":0},"plan":{"intent":"no","transition":"close","end":"declined","say":"알겠습니다. 판매자센터 설정 메뉴에서 언제든 바꾸실 수 있어요.","tools":[]},"attempt":0}
+{"type":"brain.latency","at":20786,"latency":{"brain":36,"tool":0,"tts":0},"ms":36}
+{"type":"speech.start","at":20866,"latency":{"brain":36,"tool":0,"tts":80},"text":"알겠습니다. 판매자센터 설정 메뉴에서 언제든 바꾸실 수 있어요.","filler":false,"fixed":false}
+{"type":"call.end","at":24581,"latency":{"brain":36,"tool":0,"tts":80},"outcome":"declined","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[],"brain":"rule","durationMs":23715}
