@@ -22,6 +22,7 @@ export const DEFINITIONS = `시뮬레이션 기준 · scripted 페르소나 · �
 export function markdown(r: Report): string {
   const fmt = (v: number | null) => v === null ? "관측 없음" : v.toFixed(4);
   return `# Soundcheck ${r.pack}: ${r.pass ? "통과" : "실패"}\n\n${r.runId} · git ${r.gitSha}\n\n| 지표 | 값 | 95% CI | n |\n|---|---:|---|---:|\n` + Object.entries(r.metrics).map(([k,m]) => `| ${k} | ${fmt(m.value)} | ${m.ci95?.map(fmt).join(" ~ ") ?? "—"} | ${m.n} |`).join("\n") +
+    (r.diagnostics ? `\n\n## Brain 진단\n\n- 턴 지연 p50/p95: ${fmt(r.diagnostics.brain_latency_p50.value)} / ${fmt(r.diagnostics.brain_latency_p95.value)} ms (n=${r.diagnostics.brain_latency_p95.n})\n- 제어 거부: ${r.diagnostics.control_rejections}회 · 출력 가드: ${r.diagnostics.output_guard_hits}회\n` : "") +
     `\n\n## 게이트\n\n| 지표 | 기준 | 값 | 판정 |\n|---|---|---:|---|\n` + r.gates.map(g => `| ${g.metric} | ${g.op} ${g.threshold} | ${fmt(g.value)} | ${g.pass ? "통과" : "실패"} |`).join("\n") +
     `\n\n## 장애별\n\n| 장애 | 성공률 | 허용률 | 장애 생존율 | 지연 p95(ms) |\n|---|---:|---:|---:|---:|\n` + Object.entries(r.breakdowns.fault).map(([f,m]) => `| ${f} | ${fmt(m.goal_rate.value)} | ${fmt(m.acceptable_rate.value)} | ${fmt(m.degraded_survival.value)} | ${fmt(m.turn_latency_p95.value)} |`).join("\n") +
     `\n\n## 주요 실패 이유\n\n` + (Object.entries(r.failures.reduce<Record<string,number>>((a,f) => { a[f.reason]=(a[f.reason]??0)+1; return a; },{})).sort((a,b) => b[1]-a[1]).slice(0,10).map(([reason,n]) => `- ${reason}: ${n}건`).join("\n") || "통화 단위 실패 없음(집계 게이트 실패와 별개).") +
