@@ -1,0 +1,58 @@
+import type { Brain, Plan, ToolResult, TurnContext } from "../core/types.ts";
+import { BUILTIN_INTENTS } from "../pack/schema.ts";
+import type { Chunk } from "../knowledge/bm25.ts";
+
+export const KEYWORDS: Record<string, string[]> = {
+  opt_out: ["전화하지", "그만 연락", "수신 거부", "연락하지"],
+  request_human: ["사람", "상담원 연결", "담당자 연결", "매니저"],
+  busy: ["바빠", "바쁩니다", "나중에", "운전", "회의"],
+  no: ["아니", "싫", "필요 없", "안 할", "괜찮습니다"],
+  yes: ["네", "예", "맞아", "좋아", "동의", "진행해"],
+  question: ["왜", "어떻게", "궁금", "질문", "?"],
+};
+export function classify(text: string, intents: Record<string, string[]> = {}): string {
+  const matches = (key: string) => [...(KEYWORDS[key] ?? []), ...(intents[key] ?? [])].some((word) => text.includes(word));
+  const custom = Object.keys(intents).filter((key) => !(BUILTIN_INTENTS as readonly string[]).includes(key));
+  return ["opt_out", "request_human", ...custom, "busy", "no", "yes", "question"].find(matches) ?? "unknown";
+}
+export function render(text: string, ctx: TurnContext): string {
+  return text.replace(/\{\{\s*(fact|slot)\.(\w+)\s*\}\}/g, (_, kind: string, key: string) => {
+    if (kind === "fact") return String([...ctx.facts].reverse().find((f) => f.key === key)?.value ?? "확인되지 않은 정보");
+    const value = ctx.slots[key]?.value;
+    return ctx.pack.pack.slots[key]?.labels?.[String(value)] ?? String(value ?? "선택한 항목");
+  });
+}
+export class RuleBrain implements Brain {
+  readonly id = "rule";
+  private unknowns = 0;
+  private lastTurn = -1;
+  private proposed: Plan = {};
+  async plan(ctx: TurnContext): Promise<Plan> {
+    const user = [...ctx.transcript].reverse().find((t) => t.role === "user");
+    const intent = classify(user?.text ?? "", ctx.pack.pack.intents);
+    if (user?.seq !== this.lastTurn) {
+      this.unknowns = intent === "unknown" ? this.unknowns + 1 : 0;
+      this.lastTurn = user?.seq ?? -1;
+    }
+    if (ctx.rejection) return this.proposed = { say: "확인이 필요합니다. 다시 말씀해 주시겠어요?", intent };
+    if (intent === "unknown") return this.proposed = this.unknowns >= 2
+      ? { say: "상담원에게 연결해 드릴게요.", end: "handoff", intent }
+      : { say: "다시 짧게 말씀해 주시겠어요?", intent };
+    const action = ctx.stage.rule?.on[intent];
+    if (!action) return this.proposed = { say: "원하시는 내용을 다시 말씀해 주시겠어요?", intent };
+    return this.proposed = {
+      intent, setSlots: action.set, transition: action.goto, end: action.end,
+      say: action.say,
+      tools: action.tool ? [{ tool: action.tool, args: action.tool === "kb.search" ? { query: user?.text ?? "" } : {} }] : [],
+    };
+  }
+  async compose(ctx: TurnContext, results: ToolResult[]): Promise<string> {
+    const knowledge = results.find((r) => r.call.tool === "kb.search" && r.status === "ok");
+    if (knowledge?.status === "ok") {
+      const chunks = knowledge.data as Chunk[];
+      // 인용 ID는 trace의 결과에 보존하고 음성에는 본문만 읽는다.
+      return chunks[0]?.text ?? "관련 내용을 확인한 뒤 안내드릴게요.";
+    }
+    return render(this.proposed.say ?? ctx.stage.rule?.say ?? "감사합니다.", ctx);
+  }
+}
