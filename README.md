@@ -12,7 +12,7 @@
 ## 빠른 시작
 
 ```bash
-npm install
+npm ci
 npm run validate                 # packs/ 아래 Pack 검증
 npm run ringdown -- models       # 역할별 모델과 그 출처
 npm run ci                       # 타입 검사 + 테스트 + 경계 검사 + Pack 검증
@@ -30,3 +30,15 @@ packs/gaga-seller/          가가마켓 반품 배송비 정책 안내 (가상 
 ```
 
 가가마켓·가가애즈는 가상 조직이며 실재하는 회사·서비스와 관련이 없습니다.
+
+
+## 단일 통화 시뮬레이션 (M2)
+
+```bash
+npm run ringdown -- call --pack packs/gaga-seller --persona cooperative-owner --faults lost-ack --seed 7
+npm run ringdown -- call --pack packs/gaga-ads --persona grateful-owner --faults slow --seed 7 --json
+```
+
+장애 프로파일은 `clean`, `slow`, `flaky`, `down`, `lost-ack`이다. 출력은 시뮬레이션 시각의 대화·끼어들기로 들린 부분·최종 결과이며, `runs/<runId>/calls/<callId>.jsonl`에 이벤트와 지연 분해를 저장한다. 동일 Pack·페르소나·장애·시드는 같은 경로를 덮어쓴다. `runs/`는 Git에서 제외된다.
+
+M2는 RuleBrain과 mock만 사용하며 실제 대기, LLM 호출, 전화 발신, SMS 발송은 하지 않는다. 콜백·확인 작업·이관은 trace의 pending 목록에 등록된다. 성공은 Brain의 선언이 아닌 mock 업무 상태로 판정한다. scripted 페르소나는 현재 단계와 규칙을 아는 테스트 장치이므로 결과를 실제 고객의 대화 품질로 해석하면 안 된다.

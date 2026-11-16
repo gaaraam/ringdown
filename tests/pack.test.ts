@@ -58,6 +58,7 @@ describe("잘못된 Pack은 정확한 오류 코드로 거부된다", () => {
     ["규칙이 next 밖으로 전이", "RULE_GOTO_NOT_IN_NEXT", "pack.yaml", (d) => (stage(d, "verify").rule.on.yes.goto = "confirm")],
     ["규칙이 허용 안 된 도구 호출", "RULE_TOOL_NOT_ALLOWED", "pack.yaml", (d) => (stage(d, "verify").rule.on.question = { tool: "kb.search" })],
     ["템플릿이 없는 사실 참조", "TEMPLATE_REF_UNKNOWN", "pack.yaml", (d) => (stage(d, "verify").rule.say = "{{fact.ownerName}} 사장님?")],
+    ["상한을 넘는 스크립트 발화", "RULE_SAY_TOO_LONG", "pack.yaml", (d) => (stage(d, "explain").rule.say = "가".repeat(7 * 13))],
     ["prefetch에 쓰기 도구", "PREFETCH_INVALID", "pack.yaml", (d) => d.call.prefetch.push("seller.setReturnPolicy")],
     ["통화 가능 시간 역전", "CALL_WINDOW_INVALID", "pack.yaml", (d) => (d.policy.callWindow.from = "19:00")],
     ["성공 판정 컬렉션 없음", "MOCK_COLLECTION_UNKNOWN", "pack.yaml", (d) => (d.goal.success.collection = "shops")],
