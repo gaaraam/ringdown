@@ -38,6 +38,7 @@ export type IssueCode =
   | "RULE_TOOL_NOT_ALLOWED"
   | "RULE_SLOT_UNKNOWN"
   | "TEMPLATE_REF_UNKNOWN"
+  | "RULE_SAY_TOO_LONG"
   | "PREFETCH_INVALID"
   | "CALL_WINDOW_INVALID"
   | "KB_EMPTY"
@@ -194,6 +195,32 @@ export function validatePack(parts: PackParts): Issue[] {
     checkTemplate(s.rule.say, `pack.yaml#stages[${i}].rule.say`);
     for (const [intent, a] of Object.entries(s.rule.on)) {
       if (a.say) checkTemplate(a.say, `pack.yaml#stages[${i}].rule.on.${intent}.say`);
+    }
+  });
+
+  // ── 스크립트 발화 길이: 상한을 넘으면 런타임이 문장을 잘라서 뒷부분(대개 질문)이 사라진다 ──
+  // 초당 7음절 기준. 사실(fact)은 5음절, 슬롯은 가장 긴 레이블로 어림한다.
+  const estimateSec = (text: string) => {
+    const expanded = text.replace(/\{\{\s*(\w+)\.(\w+)\s*\}\}/g, (_m, kind: string, key: string) => {
+      if (kind === "slot") {
+        const labels = Object.values(pack.slots[key]?.labels ?? {});
+        return labels.reduce((a, b) => (b.length > a.length ? b : a), "다섯음절값");
+      }
+      return "다섯음절값";
+    });
+    return (expanded.match(/[\p{L}\p{N}]/gu) ?? []).length / 7;
+  };
+  const checkLength = (text: string, where: string) => {
+    const sec = estimateSec(text);
+    if (sec > pack.policy.maxTurnSpeechSec) {
+      add("RULE_SAY_TOO_LONG", where, `약 ${sec.toFixed(1)}초로 발화 상한 ${pack.policy.maxTurnSpeechSec}초를 넘습니다. 넘는 문장은 잘려서 송출되지 않습니다`);
+    }
+  };
+  pack.stages.forEach((s, i) => {
+    if (!s.rule) return;
+    checkLength(s.rule.say, `pack.yaml#stages[${i}].rule.say`);
+    for (const [intent, a] of Object.entries(s.rule.on)) {
+      if (a.say) checkLength(a.say, `pack.yaml#stages[${i}].rule.on.${intent}.say`);
     }
   });
 

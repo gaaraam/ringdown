@@ -1,7 +1,7 @@
 # 가가애즈 — 광고 잔액 소진 임박 광고주 자동충전 권유 콜 (영업 콜)
 # 가상 조직입니다. 실재하는 회사·서비스와 관련이 없습니다.
 id: gaga-ads
-version: 1
+version: 2
 name: 가가애즈 자동충전 권유
 locale: ko-KR
 
@@ -59,7 +59,7 @@ stages:
     allowTools: [kb.search, call.scheduleCallback]
     next: [confirm, close]
     rule:
-      say: "지금 광고 잔액이 {{fact.balance}}원이라 약 {{fact.daysLeft}}일 뒤 광고가 멈춰요. 잔액이 1만 원 아래로 내려가면 자동으로 충전되게 해 드릴까요? 금액은 5만, 10만, 20만 원 중에 고르실 수 있어요."
+      say: "잔액이 {{fact.balance}}원이라 {{fact.daysLeft}}일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼요."
       on:
         amount_50k: { set: { chargeAmount: "50000" }, goto: confirm }
         amount_100k: { set: { chargeAmount: "100000" }, goto: confirm }

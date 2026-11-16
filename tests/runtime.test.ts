@@ -83,6 +83,19 @@ describe("숫자와 출력 가드", () => {
   });
 });
 
+it("한 글자 키워드는 어절 단위로만 맞고, '사람'만으로는 이관하지 않는다", () => {
+  for (const [text, intent] of [
+    ["오늘 날씨 이야기예요.", "unknown"],
+    ["예약 문의예요", "unknown"],
+    ["네, 진행해 주세요.", "yes"],
+    ["네네 맞아요", "yes"],
+    ["예요", "yes"],
+    ["사람들이 반품을 많이 해서요", "unknown"],
+    ["사람 상담원 연결해 주세요.", "request_human"],
+    ["AI 상담원이세요?", "question"],
+  ]) expect(classify(text!), text).toBe(intent);
+});
+
 it("BM25는 질문과 가까운 청크를 ID와 함께 반환", () => {
   const kb = new Knowledge([{ file: "kb/test.md", text: "## 환불\n환불 정책과 환불 신청 방법입니다.\n## 결제\n자동 결제 금액을 변경합니다." }]);
   expect(kb.search("환불 신청")[0]?.chunkId).toBe("kb/test.md#환불");
@@ -91,7 +104,7 @@ it("BM25는 질문과 가까운 청크를 ID와 함께 반환", () => {
 
 it("의도 우선순위와 Pack 추가 키워드", () => {
   const intents = { choice: ["선택"], yes: ["승인"] };
-  for (const [text, intent] of [["네 전화하지 마 사람 선택", "opt_out"], ["사람 선택 바빠", "request_human"], ["선택 바빠 아니 네?", "choice"], ["바빠 아니 네?", "busy"], ["아니 네?", "no"], ["네?", "yes"], ["왜?", "question"], ["승인", "yes"], ["음", "unknown"]]) expect(classify(text!, intents)).toBe(intent);
+  for (const [text, intent] of [["네 전화하지 마 사람 선택", "opt_out"], ["사람 상담원 선택 바빠", "request_human"], ["선택 바빠 아니 네?", "choice"], ["바빠 아니 네?", "busy"], ["아니 네?", "no"], ["네?", "yes"], ["왜?", "question"], ["승인", "yes"], ["음", "unknown"]]) expect(classify(text!, intents)).toBe(intent);
 });
 
 function context(): TurnContext {
