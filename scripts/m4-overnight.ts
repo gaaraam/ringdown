@@ -83,6 +83,8 @@ const segments: Segment[] = plan === "pilot"
     ];
 
 const deadModels = new Set<string>();
+/** 한 번이라도 목표를 달성한 모델. 이후 0건은 그 Pack의 문제로 보고 구간만 중단한다. */
+const provenModels = new Set<string>();
 /** 규칙 두뇌의 통화별 결과. LLM 구간의 조기 판정 기준으로 쓴다. */
 const ruleSuccess = new Map<string, boolean>();
 const key = (pack: string, persona: string, fault: string) => `${pack}|${persona}|${fault}`;
@@ -136,6 +138,7 @@ for (const seg of segments) {
       } });
     writeRun(`${segmentDir}/report`, result);
     const m = result.report.metrics;
+    if ((m.goal_rate.value ?? 0) > 0) provenModels.add(seg.model);
     summary.push({ name, status: "complete", calls: result.report.matrix.calls, goal: m.goal_rate.value, goalCi: m.goal_rate.ci95,
       acceptable: m.acceptable_rate.value, longCall: m.long_call_rate.value, minutes: Math.round((performance.now() - startedAt) / 60000) });
     log(`${name}: 완료, goal=${m.goal_rate.value}`);
@@ -151,7 +154,8 @@ for (const seg of segments) {
     summary.push({ name, status: "aborted", scope: e.scope, reason: e.message, callsDone: rows.length,
       success: rows.filter(r => r.outcome === "success").length, minutes: Math.round((performance.now() - startedAt) / 60000) });
     log(`${name}: 중단(${e.scope}) ${e.message}`);
-    if (e.scope === "model") deadModels.add(seg.model);
+    if (e.scope === "model" && !provenModels.has(seg.model)) deadModels.add(seg.model);
+    else if (e.scope === "model") log(`${name}: ${seg.model}은 다른 Pack에서 성공했으므로 이 구간만 중단`);
     if (e.scope === "all") { writeSummary(); break; }
   }
   writeSummary();
