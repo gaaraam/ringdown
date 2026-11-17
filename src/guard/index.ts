@@ -22,6 +22,12 @@ export function checkPlan(plan: Plan, ctx: TurnContext): string | undefined {
   for (const call of plan.tools ?? []) {
     if (!ctx.stage.allowTools.includes(call.tool)) return "tool_not_allowed";
     if (pack.tools[call.tool]?.kind === "write" && consent !== true) return "write_without_consent";
+    // 쓰기 인자로 쓸 슬롯이 비어 있으면 실행 전에 거부한다. 실행 단계까지 가면 '결과 확인 필요'로 잘못 남는다.
+    if (pack.tools[call.tool]?.kind === "write") {
+      for (const param of Object.values(pack.tools[call.tool]!.params)) {
+        if (param.source === "slot" && (plan.setSlots?.[param.slot!] ?? ctx.slots[param.slot!]?.value) === undefined) return "write_param_missing";
+      }
+    }
   }
   if (plan.transition && !ctx.stage.next.includes(plan.transition)) return "transition_not_allowed";
   return checkEnd(plan, ctx);

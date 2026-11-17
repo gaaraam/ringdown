@@ -193,6 +193,11 @@ it("종료 권한: 질문하면서 종료·런타임 전용 종료·효과 없�
   expect(checkPlan({ transition: "pitch", end: "opted_out" }, at("verify"))).toBe("end_reserved_for_runtime");
   // 쓰기 없이 성공으로 끝내면 고객에게 거짓 완료 안내가 나간다 (M4 파일럿에서 세 모델 모두 발생)
   expect(checkPlan({ transition: "close", end: "success" }, at("confirm"))).toBe("end_without_effect");
+  // 인자 슬롯이 비면 실행 전에 거부한다 (실행되면 '확인 필요'로 잘못 남는다)
+  const write = Object.entries(loaded.pack.tools).find(([, t]) => t.kind === "write" && Object.values(t.params).some(p => p.source === "slot" && p.slot !== "consent"))![0];
+  const stageWithWrite = loaded.pack.stages.find(s => s.allowTools.includes(write))!.id;
+  const agreed = { ...at(stageWithWrite), transcript: [{ role: "user" as const, seq: 0, text: "네, 동의합니다.", startedAt: 0, endedAt: 1 }] };
+  expect(checkPlan({ tools: [{ tool: write, args: {} }], setSlots: { consent: true } }, agreed)).toBe("write_param_missing");
   expect(checkPlan({ transition: "pitch", end: "declined" }, at("verify"))).toBe("end_without_terminal_stage");
   expect(checkPlan({ end: "success" }, at("confirm"))).toBe("end_without_terminal_stage");
   expect(checkPlan({ transition: "close", end: "callback_scheduled" }, at("pitch"))).toBe("end_without_effect");
@@ -211,6 +216,10 @@ it("명시적 긍정 동의와 슬롯 설정 뒤에만 쓰기를 제안한다", 
   const tool = ctx.stage.allowTools[0]!;
   expect(checkPlan({ tools: [{ tool, args: {} }] }, ctx)).toBe("write_without_consent");
   ctx.transcript = [{ role: "user", seq: 1, text: "네, 동의합니다.", startedAt: 0, endedAt: 1 }];
+  // 쓰기 인자 슬롯은 앞 단계에서 채워져 있어야 한다 (비어 있으면 write_param_missing)
+  for (const param of Object.values(ctx.pack.pack.tools[tool]!.params)) {
+    if (param.source === "slot") ctx.slots[param.slot!] = { value: ctx.pack.pack.slots[param.slot!]!.enum?.[0] ?? "x", turn: 0 } as never;
+  }
   const plan = await new RuleBrain().plan(ctx);
   expect(plan.setSlots?.consent).toBe(true);
   expect(plan.tools?.[0]?.tool).toBe(tool);

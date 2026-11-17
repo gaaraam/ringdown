@@ -45,6 +45,13 @@ export function rejectionHint(ctx: TurnContext): string | undefined {
       ? `업무 완료로 끝내려면 tools에 ${writes.map(call).join(" 또는 ")}를 넣어 실제로 실행하고, 고객이 동의했다면 setSlots에 consent: true를 넣으세요. 인자는 런타임이 채웁니다. 콜백으로 끝내려면 tools에 ${call("call.scheduleCallback")}를 넣으세요.`
       : `이 단계에서는 업무를 완료할 수 없습니다. 콜백으로 끝내려면 tools에 ${call("call.scheduleCallback")}를 넣고, 아니면 end를 continue로 두세요.`;
   }
+  if (code === "write_without_consent") return "고객이 이번 단계에서 명시적으로 동의했다면 setSlots에 consent: true를 함께 넣으세요. 동의가 없었다면 tools를 비우고 동의를 물어보세요.";
+  if (code === "write_param_missing") {
+    const missing = ctx.stage.allowTools.flatMap(t => Object.values(ctx.pack.pack.tools[t]?.kind === "write" ? ctx.pack.pack.tools[t]!.params : {}))
+      .filter(p => p.source === "slot" && ctx.slots[p.slot!] === undefined).map(p => p.slot!);
+    const spec = missing.map(slot => `${slot}${ctx.pack.pack.slots[slot]?.enum ? `(${ctx.pack.pack.slots[slot]!.enum!.join("/")})` : ""}`).join(", ");
+    return `쓰기에 필요한 값이 비어 있습니다. 고객이 말한 값으로 setSlots에 ${spec}를 함께 넣으세요.`;
+  }
   if (code === "end_without_terminal_stage") return "통화를 끝내려면 transition을 종료 단계로 두세요. 고객 답을 기다려야 하면 end는 continue입니다.";
   if (code === "end_reserved_for_runtime") return "수신 거부와 확인 대기는 고를 수 없습니다. end를 continue로 두고 통화를 이어가세요.";
   return `런타임이 이전 계획을 거부했습니다: ${code}. 허용된 도구와 다음 단계만 사용하세요.`;

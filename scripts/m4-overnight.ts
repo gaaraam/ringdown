@@ -142,7 +142,7 @@ for (const seg of segments) {
     if (seg.label === "pilot") {
       const turns = rows.reduce((t, r) => t + r.transcript.filter(x => x.role === "user").length, 0) || 1;
       const rej = rows.reduce((t, r) => t + r.metrics.controlRejections, 0) / turns;
-      const pass = (m.goal_rate.value ?? 0) > 0 && rej < 0.5 && (m.long_call_rate.value ?? 1) < 0.3;
+      const pass = (m.goal_rate.value ?? 0) > 0 && rej < RULES.maxRejectionsPerTurn && (m.long_call_rate.value ?? 1) < 0.3;
       summary[summary.length - 1]!.pilot = { pass, rejectionsPerTurn: Number(rej.toFixed(2)) };
       log(`파일럿 ${pass ? "통과" : "실패"}: 성공 ${m.goal_rate.value}, 턴당 거부 ${rej.toFixed(2)}, 시간 상한 ${m.long_call_rate.value}`);
     }
