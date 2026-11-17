@@ -199,3 +199,12 @@ it("거부 코드를 고칠 수 있는 지시로 바꿔 전달한다", () => {
   expect(hint).toContain("consent");
   expect(rejectionHint({ ...ctx, rejection: undefined })).toBeUndefined();
 });
+
+it("도구 인자에 넣은 쓰기 값을 슬롯 제안으로 옮기되 동의는 옮기지 않는다", () => {
+  const ctx = context();
+  const [name, tool] = Object.entries(pack.pack.tools).find(([, t]) => t.kind === "write" && Object.values(t.params).some(p => p.source === "slot"))!;
+  const [key, param] = Object.entries(tool.params).find(([, p]) => p.source === "slot")!;
+  const plan = normalizePlan({ intent: "yes", tools: [{ tool: name, args: { [key]: "v", consent: true } }] }, ctx);
+  expect(plan.setSlots?.[param.slot!]).toBe("v");
+  expect(plan.setSlots?.consent).toBeUndefined();
+});

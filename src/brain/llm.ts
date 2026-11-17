@@ -29,6 +29,15 @@ function allowedEnds(ctx: TurnContext): [string, ...string[]] {
 /** "continue"를 지우고, 종료 단계로 가는 길이 하나뿐이면 종료와 함께 그 단계로 이동시킨다. */
 export function normalizePlan(plan: Omit<Plan, "end"> & { end?: string }, ctx: TurnContext): Plan {
   const { end, transition, ...base } = plan;
+  // 모델은 쓰기 값을 슬롯 대신 도구 인자에 넣곤 했다. 인자의 값을 해당 슬롯 제안으로 옮긴다(허용 값 검사는 런타임 몫, 동의는 옮기지 않는다).
+  const moved: Record<string, Scalar> = {};
+  for (const call of base.tools ?? []) {
+    for (const [key, param] of Object.entries(ctx.pack.pack.tools[call.tool]?.params ?? {})) {
+      const value = call.args[key];
+      if (param.source === "slot" && param.slot !== "consent" && value !== undefined && base.setSlots?.[param.slot!] === undefined && ctx.slots[param.slot!] === undefined) moved[param.slot!] = value;
+    }
+  }
+  if (Object.keys(moved).length) base.setSlots = { ...base.setSlots, ...moved };
   const rest: Plan = transition && transition !== STAY ? { ...base, transition } : base;
   if (!end || end === CONTINUE) return rest;
   const next = rest.transition ?? (ctx.stage.terminal ? undefined : terminalNext(ctx));
@@ -93,6 +102,8 @@ export class LlmBrain implements Brain {
   private fallbacks: string[] = [];
   private fallbackTurn = false;
   private proposed: Plan = {};
+  private hints: string[] = [];
+  private hintStage = "";
   constructor(spec: ResolvedModel) { this.client = createLlmClient(spec); }
   takeFallbacks() { return this.fallbacks.splice(0); }
   private async ask<T>(ctx: TurnContext, schema: z.ZodType<T>, extra: unknown, required: string[] = []): Promise<T> {
@@ -105,7 +116,7 @@ export class LlmBrain implements Brain {
           jsonSchema, messages: [{ role: "user", content: JSON.stringify({
             stage: ctx.stage, slots: ctx.slots, facts: ctx.facts,
             transcript: ctx.transcript.slice(-8).map(t => ({ role: t.role, text: t.role === "agent" ? t.heard : t.text })),
-            interruptedAt: ctx.interruptedAt, rejection: rejectionHint(ctx), task: extra, retry: failure,
+            interruptedAt: ctx.interruptedAt, rejection: rejectionHint(ctx), earlierRejections: this.hints, task: extra, retry: failure,
           }) }],
         });
         return schema.parse(response.json ?? JSON.parse(response.text));
@@ -115,6 +126,10 @@ export class LlmBrain implements Brain {
   }
   async plan(ctx: TurnContext): Promise<Plan> {
     if (!ctx.rejection) this.fallbackTurn = false;
+    // 같은 단계에 있는 동안 받은 거부 지시를 계속 보여준다. 턴이 바뀌면 직전 지시를 잊고 같은 실수를 반복했다.
+    if (this.hintStage !== ctx.stage.id) { this.hints = []; this.hintStage = ctx.stage.id; }
+    const hint = rejectionHint(ctx);
+    if (hint && !this.hints.includes(hint)) this.hints = [...this.hints, hint].slice(-3);
     const rulePlan = await this.rule.plan(ctx);
     if (this.fallbackTurn) return rulePlan;
     try { return this.proposed = normalizePlan(await this.ask(ctx, planSchema(ctx), "다음 Plan을 작성하세요.", ["tools", "transition", "end"]) as Omit<Plan, "end"> & { end?: string }, ctx); }
