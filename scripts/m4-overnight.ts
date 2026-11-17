@@ -23,6 +23,9 @@ if (!out) throw Error("사용법: tsx scripts/m4-overnight.ts <출력 디렉터�
 const opt = (name: string, fallback: string) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1]! : fallback; };
 const plan = opt("--plan", "full");
 const packFilter = opt("--packs", "");
+const FAULTS = opt("--faults", "clean,flaky").split(",");
+const SEEDS = opt("--seeds", "1").split(",").map(Number);
+const withRule = opt("--rule", "yes") === "yes";
 const [dh, dm] = opt("--deadline", "07:30").split(":").map(Number);
 const deadline = (() => { const d = new Date(); d.setHours(dh!, dm!, 0, 0); if (d.getTime() < Date.now()) d.setDate(d.getDate() + 1); return d.getTime(); })();
 
@@ -78,8 +81,8 @@ const LLMS = opt("--models", "ollama/exaone3.5:7.8b,ollama/qwen3:8b,ollama/gemma
 const segments: Segment[] = plan === "pilot"
   ? [{ model: LLMS[0]!, pack: subset(byId("gaga-seller"), 6), faults: ["clean"], seeds: [1], label: "pilot" }]
   : [
-      ...packs.map(pack => ({ model: "rule", pack, faults: ["clean", "flaky"], seeds: [1], label: "main" })),
-      ...LLMS.flatMap(model => packs.map(pack => ({ model, pack, faults: ["clean", "flaky"], seeds: [1], label: "main" }))),
+      ...(withRule ? packs.map(pack => ({ model: "rule", pack, faults: FAULTS, seeds: SEEDS, label: "main" })) : []),
+      ...LLMS.flatMap(model => packs.map(pack => ({ model, pack, faults: FAULTS, seeds: SEEDS, label: "main" }))),
     ];
 
 const deadModels = new Set<string>();
