@@ -7,7 +7,9 @@ import { acceptable, metrics } from "./metrics.ts";
 import { Fault, gates, Report } from "./report.ts";
 
 /** rule 모드는 결정론적이다. llm 모드는 실제 추론을 호출한다. 업무 상태와 브레이커는 runCall마다 새로 만든다. */
-export async function runMatrix(pack: LoadedPack, input: { faults: string[]; seeds: number[]; runId: string; gitSha: string; models: Record<Role, ResolvedModel>; brain?: "rule" | "llm" }) {
+export async function runMatrix(pack: LoadedPack, input: { faults: string[]; seeds: number[]; runId: string; gitSha: string; models: Record<Role, ResolvedModel>; brain?: "rule" | "llm";
+  /** 통화 하나가 끝날 때마다 호출한다. 예외를 던지면 매트릭스를 중단한다(장시간 실험의 조기 중단용). */
+  onCall?: (row: { result: CallResult; persona: string; fault: string; seed: number; done: number; total: number }) => void }) {
   if (!pack.personas.length || !input.seeds.length || !input.faults.length) throw Error("빈 매트릭스는 평가할 수 없습니다");
   if (new Set(input.seeds).size !== input.seeds.length || input.seeds.some(s => !Number.isSafeInteger(s))) throw Error("시드는 중복 없는 안전한 정수여야 합니다");
   if (new Set(input.faults).size !== input.faults.length) throw Error("장애 프로파일 중복");
@@ -16,6 +18,7 @@ export async function runMatrix(pack: LoadedPack, input: { faults: string[]; see
     const fault = Fault.parse(raw);
     const result = await runCall(pack, persona, fault, seed, { brain: input.brain === "llm" ? new LlmBrain(input.models.agent) : undefined });
     rows.push({ result, persona, fault, seed });
+    input.onCall?.({ result, persona: persona.id, fault, seed, done: rows.length, total: pack.personas.length * input.faults.length * input.seeds.length });
   }
   const summary = (row: typeof rows[number]) => ({ callId: row.result.callId, persona: row.persona.id, fault: row.fault, seed: row.seed, outcome: row.result.outcome, trace: `calls/${row.result.callId}.jsonl` });
   if (new Set(rows.map(r => r.result.callId)).size !== rows.length) throw Error("통화 ID 충돌");
