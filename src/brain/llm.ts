@@ -104,11 +104,18 @@ export class LlmBrain implements Brain {
   private proposed: Plan = {};
   private hints: string[] = [];
   private hintStage = "";
+  private carried: Record<string, Scalar> = {};
+  private slotStage = "";
   constructor(spec: ResolvedModel) { this.client = createLlmClient(spec); }
   takeFallbacks() { return this.fallbacks.splice(0); }
   private async ask<T>(ctx: TurnContext, schema: z.ZodType<T>, extra: unknown, required: string[] = []): Promise<T> {
-    const jsonSchema = z.toJSONSchema(schema) as { required?: string[] };
+    const jsonSchema = z.toJSONSchema(schema) as { required?: string[]; properties?: Record<string, { required?: string[] }> };
     if (required.length) jsonSchema.required = [...new Set([...(jsonSchema.required ?? []), ...required])];
+    // 동의가 필요한 단계에서는 consent 칸을 반드시 채우게 한다. 값(참/거짓)은 모델이 정하고, 명시적 긍정 여부는 런타임이 다시 검사한다.
+    if (required.includes("tools") && ctx.stage.requireConsent && jsonSchema.properties?.setSlots && "consent" in ctx.pack.pack.slots) {
+      jsonSchema.required = [...new Set([...jsonSchema.required ?? [], "setSlots"])];
+      jsonSchema.properties.setSlots.required = ["consent"];
+    }
     let failure = "";
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
@@ -130,9 +137,17 @@ export class LlmBrain implements Brain {
     if (this.hintStage !== ctx.stage.id) { this.hints = []; this.hintStage = ctx.stage.id; }
     const hint = rejectionHint(ctx);
     if (hint && !this.hints.includes(hint)) this.hints = [...this.hints, hint].slice(-3);
+    if (this.slotStage !== ctx.stage.id) { this.carried = {}; this.slotStage = ctx.stage.id; }
     const rulePlan = await this.rule.plan(ctx);
     if (this.fallbackTurn) return rulePlan;
-    try { return this.proposed = normalizePlan(await this.ask(ctx, planSchema(ctx), "다음 Plan을 작성하세요.", ["tools", "transition", "end"]) as Omit<Plan, "end"> & { end?: string }, ctx); }
+    try {
+      const plan = normalizePlan(await this.ask(ctx, planSchema(ctx), "다음 Plan을 작성하세요.", ["tools", "transition", "end"]) as Omit<Plan, "end"> & { end?: string }, ctx);
+      // 계획이 다른 이유로 거부되면 맞게 넣은 슬롯도 함께 버려졌다. 같은 단계에서 제안한 슬롯(동의 제외)을 다음 계획에 이어 붙인다.
+      const { consent: _consent, ...facts } = plan.setSlots ?? {};
+      this.carried = { ...this.carried, ...facts };
+      const merged = { ...this.carried, ...plan.setSlots };
+      return this.proposed = Object.keys(merged).length ? { ...plan, setSlots: merged } : plan;
+    }
     catch (e) {
       this.fallbackTurn = true;
       this.fallbacks.push(`plan: ${String(e)}`);
