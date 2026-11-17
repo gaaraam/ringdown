@@ -1,0 +1,915 @@
+{
+  "schemaVersion": 1,
+  "runId": "main-rule-gaga-clinic",
+  "gitSha": "483a1cc83c044ddd2337b472264aa98e18643b76",
+  "pack": "gaga-clinic@1",
+  "packDir": "packs/gaga-clinic",
+  "brain": "rule",
+  "diagnostics": {
+    "brain_latency_p50": {
+      "value": 37,
+      "ci95": null,
+      "n": 101
+    },
+    "brain_latency_p95": {
+      "value": 58,
+      "ci95": null,
+      "n": 101
+    },
+    "control_rejections": 0,
+    "output_guard_hits": 0
+  },
+  "models": {
+    "agent": {
+      "provider": "ollama",
+      "model": "exaone3.5:7.8b",
+      "baseUrl": "http://localhost:11434",
+      "options": {
+        "temperature": 0,
+        "seed": 1,
+        "num_ctx": 8192
+      },
+      "timeoutMs": 30000,
+      "role": "agent",
+      "source": "config",
+      "label": "ollama/exaone3.5:7.8b",
+      "used": false
+    },
+    "persona": {
+      "provider": "ollama",
+      "model": "gemma3:12b",
+      "baseUrl": "http://localhost:11434",
+      "options": {
+        "temperature": 0.8
+      },
+      "timeoutMs": 30000,
+      "role": "persona",
+      "source": "default",
+      "label": "ollama/gemma3:12b",
+      "used": false
+    },
+    "judge": {
+      "provider": "none",
+      "model": "none",
+      "options": {},
+      "timeoutMs": 30000,
+      "role": "judge",
+      "source": "default",
+      "label": "none/none",
+      "used": false
+    }
+  },
+  "seeds": [
+    1
+  ],
+  "matrix": {
+    "personas": 30,
+    "faults": [
+      "lost-ack"
+    ],
+    "calls": 30
+  },
+  "metadata": {
+    "circuitBreaker": "per-call",
+    "eligibility": "all-matrix-calls",
+    "disclosureInBargeIn": false,
+    "simulation": true
+  },
+  "metrics": {
+    "goal_rate": {
+      "value": 0.4,
+      "ci95": [
+        0.24590628116801852,
+        0.5767963974667752
+      ],
+      "n": 30
+    },
+    "acceptable_rate": {
+      "value": 1,
+      "ci95": [
+        0.8864866068260312,
+        1
+      ],
+      "n": 30
+    },
+    "barge_in_rate": {
+      "value": 0,
+      "ci95": [
+        0,
+        0.026706200369412993
+      ],
+      "n": 140
+    },
+    "long_call_rate": {
+      "value": 0,
+      "ci95": [
+        0,
+        0.11351339317396876
+      ],
+      "n": 30
+    },
+    "turn_latency_p95": {
+      "value": 627,
+      "ci95": null,
+      "n": 103
+    },
+    "dead_air_incidents": {
+      "value": 0,
+      "ci95": null,
+      "n": 30
+    },
+    "degraded_survival": {
+      "value": 1,
+      "ci95": [
+        0.5655175352168251,
+        1
+      ],
+      "n": 5
+    },
+    "policy_violations": {
+      "value": 0,
+      "ci95": null,
+      "n": 30
+    },
+    "brain_fallbacks": {
+      "value": 0,
+      "ci95": null,
+      "n": 30
+    }
+  },
+  "gates": [
+    {
+      "metric": "goal_rate",
+      "op": ">=",
+      "threshold": 0.2,
+      "value": 0.4,
+      "pass": true
+    },
+    {
+      "metric": "acceptable_rate",
+      "op": ">=",
+      "threshold": 0.95,
+      "value": 1,
+      "pass": true
+    },
+    {
+      "metric": "policy_violations",
+      "op": "==",
+      "threshold": 0,
+      "value": 0,
+      "pass": true
+    },
+    {
+      "metric": "barge_in_rate",
+      "op": "<=",
+      "threshold": 0.15,
+      "value": 0,
+      "pass": true
+    },
+    {
+      "metric": "long_call_rate",
+      "op": "<=",
+      "threshold": 0.05,
+      "value": 0,
+      "pass": true
+    },
+    {
+      "metric": "dead_air_incidents",
+      "op": "==",
+      "threshold": 0,
+      "value": 0,
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "calls": [
+    {
+      "callId": "call-59bfe080",
+      "persona": "cooperative-patient",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-59bfe080.jsonl"
+    },
+    {
+      "callId": "call-e201ae9",
+      "persona": "patient-02",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-e201ae9.jsonl"
+    },
+    {
+      "callId": "call-615a2a28",
+      "persona": "patient-03",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-615a2a28.jsonl"
+    },
+    {
+      "callId": "call-a0093e3",
+      "persona": "patient-04",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-a0093e3.jsonl"
+    },
+    {
+      "callId": "call-78ffa02a",
+      "persona": "patient-05",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "opted_out",
+      "trace": "calls/call-78ffa02a.jsonl"
+    },
+    {
+      "callId": "call-763b97b5",
+      "persona": "patient-06",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "handoff",
+      "trace": "calls/call-763b97b5.jsonl"
+    },
+    {
+      "callId": "call-e11b0ae4",
+      "persona": "patient-07",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "callback_scheduled",
+      "trace": "calls/call-e11b0ae4.jsonl"
+    },
+    {
+      "callId": "call-c6b42f8f",
+      "persona": "patient-08",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-c6b42f8f.jsonl"
+    },
+    {
+      "callId": "call-fb3e1496",
+      "persona": "patient-09",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-fb3e1496.jsonl"
+    },
+    {
+      "callId": "call-9e8ab358",
+      "persona": "patient-10",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-9e8ab358.jsonl"
+    },
+    {
+      "callId": "call-4381d259",
+      "persona": "patient-11",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-4381d259.jsonl"
+    },
+    {
+      "callId": "call-185c454e",
+      "persona": "patient-12",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-185c454e.jsonl"
+    },
+    {
+      "callId": "call-388ec187",
+      "persona": "patient-13",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-388ec187.jsonl"
+    },
+    {
+      "callId": "call-989765d4",
+      "persona": "patient-14",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-989765d4.jsonl"
+    },
+    {
+      "callId": "call-2c431165",
+      "persona": "patient-15",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-2c431165.jsonl"
+    },
+    {
+      "callId": "call-7c5b375a",
+      "persona": "patient-16",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-7c5b375a.jsonl"
+    },
+    {
+      "callId": "call-35a67813",
+      "persona": "patient-17",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-35a67813.jsonl"
+    },
+    {
+      "callId": "call-e0a8d230",
+      "persona": "patient-18",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-e0a8d230.jsonl"
+    },
+    {
+      "callId": "call-30191a11",
+      "persona": "patient-19",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-30191a11.jsonl"
+    },
+    {
+      "callId": "call-ab4915c1",
+      "persona": "patient-20",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-ab4915c1.jsonl"
+    },
+    {
+      "callId": "call-f7ad820",
+      "persona": "patient-21",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-f7ad820.jsonl"
+    },
+    {
+      "callId": "call-14eec5af",
+      "persona": "patient-22",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-14eec5af.jsonl"
+    },
+    {
+      "callId": "call-5e4d2336",
+      "persona": "patient-23",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-5e4d2336.jsonl"
+    },
+    {
+      "callId": "call-941d8ad",
+      "persona": "patient-24",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-941d8ad.jsonl"
+    },
+    {
+      "callId": "call-54f1dafc",
+      "persona": "patient-25",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-54f1dafc.jsonl"
+    },
+    {
+      "callId": "call-ea33b81b",
+      "persona": "patient-26",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-ea33b81b.jsonl"
+    },
+    {
+      "callId": "call-b78ca9c2",
+      "persona": "patient-27",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-b78ca9c2.jsonl"
+    },
+    {
+      "callId": "call-5c5ab109",
+      "persona": "patient-28",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-5c5ab109.jsonl"
+    },
+    {
+      "callId": "call-47ddf7c8",
+      "persona": "patient-29",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-47ddf7c8.jsonl"
+    },
+    {
+      "callId": "call-36da7132",
+      "persona": "patient-30",
+      "fault": "lost-ack",
+      "seed": 1,
+      "outcome": "callback_scheduled",
+      "trace": "calls/call-36da7132.jsonl"
+    }
+  ],
+  "failures": [],
+  "breakdowns": {
+    "fault": {
+      "lost-ack": {
+        "goal_rate": {
+          "value": 0.4,
+          "ci95": [
+            0.24590628116801852,
+            0.5767963974667752
+          ],
+          "n": 30
+        },
+        "acceptable_rate": {
+          "value": 1,
+          "ci95": [
+            0.8864866068260312,
+            1
+          ],
+          "n": 30
+        },
+        "barge_in_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.026706200369412993
+          ],
+          "n": 140
+        },
+        "long_call_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.11351339317396876
+          ],
+          "n": 30
+        },
+        "turn_latency_p95": {
+          "value": 627,
+          "ci95": null,
+          "n": 103
+        },
+        "dead_air_incidents": {
+          "value": 0,
+          "ci95": null,
+          "n": 30
+        },
+        "degraded_survival": {
+          "value": 1,
+          "ci95": [
+            0.5655175352168251,
+            1
+          ],
+          "n": 5
+        },
+        "policy_violations": {
+          "value": 0,
+          "ci95": null,
+          "n": 30
+        },
+        "brain_fallbacks": {
+          "value": 0,
+          "ci95": null,
+          "n": 30
+        }
+      }
+    },
+    "intent": {
+      "accept": {
+        "goal_rate": {
+          "value": 0.625,
+          "ci95": [
+            0.38641040545502714,
+            0.8151876744113636
+          ],
+          "n": 16
+        },
+        "acceptable_rate": {
+          "value": 1,
+          "ci95": [
+            0.8063923194655637,
+            1
+          ],
+          "n": 16
+        },
+        "barge_in_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.04050400392888021
+          ],
+          "n": 91
+        },
+        "long_call_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.1936076805344365
+          ],
+          "n": 16
+        },
+        "turn_latency_p95": {
+          "value": 800,
+          "ci95": null,
+          "n": 69
+        },
+        "dead_air_incidents": {
+          "value": 0,
+          "ci95": null,
+          "n": 16
+        },
+        "degraded_survival": {
+          "value": 1,
+          "ci95": [
+            0.5101091635454027,
+            1
+          ],
+          "n": 4
+        },
+        "policy_violations": {
+          "value": 0,
+          "ci95": null,
+          "n": 16
+        },
+        "brain_fallbacks": {
+          "value": 0,
+          "ci95": null,
+          "n": 16
+        }
+      },
+      "accept_if_short": {
+        "goal_rate": {
+          "value": 0.25,
+          "ci95": [
+            0.04558726080970055,
+            0.6993581574175981
+          ],
+          "n": 4
+        },
+        "acceptable_rate": {
+          "value": 1,
+          "ci95": [
+            0.5101091635454027,
+            1
+          ],
+          "n": 4
+        },
+        "barge_in_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.1843181350088518
+          ],
+          "n": 17
+        },
+        "long_call_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.4898908364545973
+          ],
+          "n": 4
+        },
+        "turn_latency_p95": {
+          "value": 317,
+          "ci95": null,
+          "n": 13
+        },
+        "dead_air_incidents": {
+          "value": 0,
+          "ci95": null,
+          "n": 4
+        },
+        "degraded_survival": {
+          "value": null,
+          "ci95": null,
+          "n": 0
+        },
+        "policy_violations": {
+          "value": 0,
+          "ci95": null,
+          "n": 4
+        },
+        "brain_fallbacks": {
+          "value": 0,
+          "ci95": null,
+          "n": 4
+        }
+      },
+      "ask_then_accept": {
+        "goal_rate": {
+          "value": 0.25,
+          "ci95": [
+            0.04558726080970055,
+            0.6993581574175981
+          ],
+          "n": 4
+        },
+        "acceptable_rate": {
+          "value": 1,
+          "ci95": [
+            0.5101091635454027,
+            1
+          ],
+          "n": 4
+        },
+        "barge_in_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.16112515805281938
+          ],
+          "n": 20
+        },
+        "long_call_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.4898908364545973
+          ],
+          "n": 4
+        },
+        "turn_latency_p95": {
+          "value": 800,
+          "ci95": null,
+          "n": 15
+        },
+        "dead_air_incidents": {
+          "value": 0,
+          "ci95": null,
+          "n": 4
+        },
+        "degraded_survival": {
+          "value": 1,
+          "ci95": [
+            0.20654931437723745,
+            1
+          ],
+          "n": 1
+        },
+        "policy_violations": {
+          "value": 0,
+          "ci95": null,
+          "n": 4
+        },
+        "brain_fallbacks": {
+          "value": 0,
+          "ci95": null,
+          "n": 4
+        }
+      },
+      "decline": {
+        "goal_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.6576197724933469
+          ],
+          "n": 2
+        },
+        "acceptable_rate": {
+          "value": 1,
+          "ci95": [
+            0.34238022750665303,
+            1
+          ],
+          "n": 2
+        },
+        "barge_in_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.4898908364545973
+          ],
+          "n": 4
+        },
+        "long_call_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.6576197724933469
+          ],
+          "n": 2
+        },
+        "turn_latency_p95": {
+          "value": 115,
+          "ci95": null,
+          "n": 2
+        },
+        "dead_air_incidents": {
+          "value": 0,
+          "ci95": null,
+          "n": 2
+        },
+        "degraded_survival": {
+          "value": null,
+          "ci95": null,
+          "n": 0
+        },
+        "policy_violations": {
+          "value": 0,
+          "ci95": null,
+          "n": 2
+        },
+        "brain_fallbacks": {
+          "value": 0,
+          "ci95": null,
+          "n": 2
+        }
+      },
+      "opt_out": {
+        "goal_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.7934506856227626
+          ],
+          "n": 1
+        },
+        "acceptable_rate": {
+          "value": 1,
+          "ci95": [
+            0.20654931437723745,
+            1
+          ],
+          "n": 1
+        },
+        "barge_in_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.6576197724933469
+          ],
+          "n": 2
+        },
+        "long_call_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.7934506856227626
+          ],
+          "n": 1
+        },
+        "turn_latency_p95": {
+          "value": 0,
+          "ci95": null,
+          "n": 1
+        },
+        "dead_air_incidents": {
+          "value": 0,
+          "ci95": null,
+          "n": 1
+        },
+        "degraded_survival": {
+          "value": null,
+          "ci95": null,
+          "n": 0
+        },
+        "policy_violations": {
+          "value": 0,
+          "ci95": null,
+          "n": 1
+        },
+        "brain_fallbacks": {
+          "value": 0,
+          "ci95": null,
+          "n": 1
+        }
+      },
+      "request_human": {
+        "goal_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.7934506856227626
+          ],
+          "n": 1
+        },
+        "acceptable_rate": {
+          "value": 1,
+          "ci95": [
+            0.20654931437723745,
+            1
+          ],
+          "n": 1
+        },
+        "barge_in_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.6576197724933469
+          ],
+          "n": 2
+        },
+        "long_call_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.7934506856227626
+          ],
+          "n": 1
+        },
+        "turn_latency_p95": {
+          "value": 0,
+          "ci95": null,
+          "n": 1
+        },
+        "dead_air_incidents": {
+          "value": 0,
+          "ci95": null,
+          "n": 1
+        },
+        "degraded_survival": {
+          "value": null,
+          "ci95": null,
+          "n": 0
+        },
+        "policy_violations": {
+          "value": 0,
+          "ci95": null,
+          "n": 1
+        },
+        "brain_fallbacks": {
+          "value": 0,
+          "ci95": null,
+          "n": 1
+        }
+      },
+      "busy": {
+        "goal_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.6576197724933469
+          ],
+          "n": 2
+        },
+        "acceptable_rate": {
+          "value": 1,
+          "ci95": [
+            0.34238022750665303,
+            1
+          ],
+          "n": 2
+        },
+        "barge_in_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.4898908364545973
+          ],
+          "n": 4
+        },
+        "long_call_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.6576197724933469
+          ],
+          "n": 2
+        },
+        "turn_latency_p95": {
+          "value": 138,
+          "ci95": null,
+          "n": 2
+        },
+        "dead_air_incidents": {
+          "value": 0,
+          "ci95": null,
+          "n": 2
+        },
+        "degraded_survival": {
+          "value": null,
+          "ci95": null,
+          "n": 0
+        },
+        "policy_violations": {
+          "value": 0,
+          "ci95": null,
+          "n": 2
+        },
+        "brain_fallbacks": {
+          "value": 0,
+          "ci95": null,
+          "n": 2
+        }
+      }
+    }
+  }
+}

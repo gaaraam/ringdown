@@ -1,0 +1,134 @@
+{
+  "gitSha": "8b752af2c0880c0108a6b66860e32b6ad2e59b3f",
+  "plan": "full",
+  "rules": {
+    "warmupCalls": 20,
+    "minRuleSuccessForZero": 4,
+    "maxLongCallRate": 0.5,
+    "maxRejectionsPerTurn": 1,
+    "maxFallbackRate": 0.5,
+    "maxRequestErrorRate": 0.2,
+    "segmentBudgetMin": 150,
+    "reserveMinForSegment": 40
+  },
+  "deadline": "2026-11-17T22:30:00.000Z",
+  "segments": [
+    {
+      "name": "main-rule-gaga-ads",
+      "status": "complete",
+      "calls": 60,
+      "goal": 0.6,
+      "goalCi": [
+        0.4736605349204075,
+        0.7143050946511744
+      ],
+      "acceptable": 1,
+      "longCall": 0,
+      "minutes": 0
+    },
+    {
+      "name": "main-rule-gaga-clinic",
+      "status": "complete",
+      "calls": 60,
+      "goal": 0.36666666666666664,
+      "goalCi": [
+        0.25620916687225426,
+        0.49316999369896963
+      ],
+      "acceptable": 1,
+      "longCall": 0,
+      "minutes": 0
+    },
+    {
+      "name": "main-rule-gaga-seller",
+      "status": "complete",
+      "calls": 60,
+      "goal": 0.55,
+      "goalCi": [
+        0.4249193588533434,
+        0.6690634559324476
+      ],
+      "acceptable": 1,
+      "longCall": 0,
+      "minutes": 0
+    },
+    {
+      "name": "main-ollama_qwen3_8b-gaga-ads",
+      "status": "complete",
+      "calls": 60,
+      "goal": 0.5833333333333334,
+      "goalCi": [
+        0.45728081022640116,
+        0.6993572144165838
+      ],
+      "acceptable": 1,
+      "longCall": 0,
+      "minutes": 16
+    },
+    {
+      "name": "main-ollama_qwen3_8b-gaga-clinic",
+      "status": "complete",
+      "calls": 60,
+      "goal": 0.3,
+      "goalCi": [
+        0.19898166138769108,
+        0.42508707946914487
+      ],
+      "acceptable": 1,
+      "longCall": 0,
+      "minutes": 13
+    },
+    {
+      "name": "main-ollama_qwen3_8b-gaga-seller",
+      "status": "complete",
+      "calls": 60,
+      "goal": 0.55,
+      "goalCi": [
+        0.4249193588533434,
+        0.6690634559324476
+      ],
+      "acceptable": 1,
+      "longCall": 0,
+      "minutes": 12
+    },
+    {
+      "name": "main-ollama_gemma3_12b-gaga-ads",
+      "status": "complete",
+      "calls": 60,
+      "goal": 0.4666666666666667,
+      "goalCi": [
+        0.34627906041438494,
+        0.5910657297284211
+      ],
+      "acceptable": 0.85,
+      "longCall": 0.15,
+      "minutes": 33
+    },
+    {
+      "name": "main-ollama_gemma3_12b-gaga-clinic",
+      "status": "complete",
+      "calls": 60,
+      "goal": 0.4,
+      "goalCi": [
+        0.2856949053488255,
+        0.5263394650795924
+      ],
+      "acceptable": 0.95,
+      "longCall": 0.05,
+      "minutes": 31
+    },
+    {
+      "name": "main-ollama_gemma3_12b-gaga-seller",
+      "status": "complete",
+      "calls": 60,
+      "goal": 0.6166666666666667,
+      "goalCi": [
+        0.49017595824099924,
+        0.7291172762591798
+      ],
+      "acceptable": 0.9833333333333333,
+      "longCall": 0.016666666666666666,
+      "minutes": 31
+    }
+  ]
+}
