@@ -1,14 +1,17 @@
 #!/usr/bin/env node
 // Fixed seed, system fonts, local assets, isolated Chrome profile. No LLM or external service.
 // Mirrors the reference's three-screen light/dark capture workflow using installed Chrome.
-import { mkdirSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
 import { createPlayServer } from '../src/play/server.ts';
 
 const out = fileURLToPath(new URL('../docs/screenshots/', import.meta.url));
 mkdirSync(out, { recursive: true });
-const app = createPlayServer({ gitSha: 'visual' });
+const dataDir = mkdtempSync(join(tmpdir(), 'ringdown-visual-'));
+const app = createPlayServer({ gitSha: 'visual', dataDir, clock: () => new Date('2026-11-17T00:00:00Z') });
 const base = await app.listen(0);
 let browser;
 const errors = [];
@@ -25,8 +28,9 @@ try {
     page.on('pageerror', error => { errors.push(error.message); console.error(error.message); });
     page.on('console', msg => { if (msg.type() === 'error') errors.push(msg.text()); });
     await page.goto(base);
-    await page.locator('#personas button').first().waitFor();
+    await page.locator('#personas button').first().waitFor({ state: 'attached' });
     await page.locator('#theme').selectOption(theme);
+    await page.locator('[data-view="playground"]').click();
     await page.locator('#mode').selectOption('human');
     await page.locator('#start').click();
     await page.waitForFunction(() => !document.querySelector('#say').disabled);
@@ -67,16 +71,84 @@ try {
     await page.locator('#cell-dialog[open]').waitFor();
     await page.locator('#cell-calls button').last().click();
     await page.waitForFunction(() => document.querySelector('#call-status').textContent === '통화 완료');
+    // Operator campaign creation uses the UI and real RuleBrain calls. Dark captures reuse
+    // the same persisted data; no extra campaign or wall clock changes the screenshots.
+    await page.locator('[data-view="campaigns"]').click();
+    await page.locator('#campaign-pack').waitFor();
+    if (theme === 'light') {
+      await page.locator('#campaign-pack').selectOption({ index: 1 });
+      await page.locator('#campaign-form [name="fault"]').selectOption('lost-ack');
+      await page.locator('#run-campaign').click();
+      await page.waitForFunction(() => document.querySelector('#campaign-progress').textContent.includes('30 / 30통화'));
+      // Verify a subset campaign, with a different fault and seed.
+      await page.locator('#all-personas').uncheck();
+      await page.locator('#campaign-personas input').first().check();
+      await page.locator('#campaign-form [name="fault"]').selectOption('down');
+      await page.locator('#campaign-form [name="seed"]').fill('8');
+      await page.locator('#run-campaign').click();
+      await page.waitForFunction(() => document.querySelector('#campaign-progress').textContent.includes('1 / 1통화'));
+      await page.locator('[data-view="overview"]').click();
+      await page.locator('#overview-filter').waitFor();
+      await page.locator('[data-view="campaigns"]').click();
+      await page.locator('#campaign-pack').waitFor();
+    }
+    await capture('ops-campaigns');
+    await page.locator('[data-view="overview"]').click();
+    await page.locator('.outcome-bars').waitFor();
+    await capture('ops-overview');
+    await page.locator('[data-view="inbox"]').click();
+    await page.locator('#inbox-filter').waitFor();
+    await page.locator('#inbox-filter [name="kind"]').selectOption('confirmation');
+    await page.locator('#inbox-filter button').click();
+    await page.locator('#resolve-form').waitFor();
+    await page.waitForFunction(() => document.querySelector('#state').textContent.includes('업무 반영 상태'));
+    if (!(await page.locator('#state').innerText()).includes('반영됨')) throw new Error('Missing stored write confirmation');
+    await capture('ops-inbox');
+    await page.locator('#state a[href^="#history/"]').click();
+    await page.locator('.ops-transcript').waitFor();
+    if (await page.locator('.developer-details').getAttribute('open') !== null) throw new Error('Developer trace should start collapsed');
+    await capture('ops-history');
+    await page.locator('.developer-details > summary').click();
+    await page.locator('.developer-details .steps').first().waitFor();
+    // Search and resolve must work beyond static screenshots.
+    await page.locator('[data-view="history"]').click();
+    await page.locator('#history-filter').waitFor();
+    await page.locator('#history-filter [name="q"]').fill('S-1001');
+    await page.locator('#history-filter button').first().click();
+    await page.waitForFunction(() => document.querySelector('#view-history tbody')?.rows.length === 2);
+    if (theme === 'dark') {
+      await page.locator('[data-view="inbox"]').click();
+      await page.locator('#resolve-form').waitFor();
+      await page.locator('#resolve-form [name="assignee"]').fill('운영 담당');
+      await page.locator('#resolve-form [name="note"]').fill('고객 안내 완료');
+      await page.locator('#resolve-form [name="status"]').selectOption('resolved');
+      await page.locator('#resolve-form button').click();
+      await page.waitForFunction(() => !document.querySelector('#resolve-form button')?.disabled);
+      await page.locator('#inbox-filter [name="status"]').selectOption('resolved');
+      await page.locator('#inbox-filter button').click();
+      await page.waitForFunction(() => document.querySelector('#resolve-form [name="note"]')?.value === '고객 안내 완료');
+      await page.reload();
+      await page.locator('#inbox-filter').waitFor();
+      await page.locator('#inbox-filter [name="status"]').selectOption('resolved');
+      await page.locator('#inbox-filter button').click();
+      await page.waitForFunction(() => document.querySelector('#resolve-form [name="assignee"]')?.value === '운영 담당');
+    }
     // Narrow viewport must remain usable without horizontal page overflow.
     await page.setViewportSize({ width: 390, height: 844 });
     if (await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)) throw new Error('Mobile page overflows');
+    for (const view of ['overview', 'inbox', 'history', 'campaigns']) {
+      await page.locator(`[data-view="${view}"]`).click();
+      await page.waitForFunction(view => !document.querySelector(`#view-${view}`).hidden, view);
+      if (await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)) throw new Error(`Mobile ${view} overflows`);
+    }
     await page.locator('[data-view="playground"]').click();
     await page.locator('#persona').selectOption({ index: 1 });
     await context.close();
   }
   if (errors.length) throw new Error(errors.join('\n'));
-  console.log(`Captured 6 screens in ${out}; human stepping, auto trace, heatmap navigation and mobile overflow checks passed.`);
+  console.log(`Captured 14 screens in ${out}; human stepping, auto trace, heatmap navigation, campaigns, search, resolution persistence and mobile overflow checks passed.`);
 } finally {
   await browser?.close();
   await app.close();
+  rmSync(dataDir, { recursive: true, force: true });
 }

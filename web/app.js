@@ -1,8 +1,9 @@
+import { createOps } from './ops.js';
 import { esc } from './trace.js';
 import { messages, statePanel, reportView, reportPanel, statusLabel, outcomeLabel } from './render.js';
 const $ = selector => document.querySelector(selector);
-const S = { view: 'playground', packs: [], pack: null, persona: '', call: null, callPack: null, stream: null, report: null, reportPack: null };
-const titles = { playground: 'Playground', calls: 'Calls', soundcheck: 'Soundcheck' };
+const S = { view: 'overview', packs: [], pack: null, persona: '', call: null, callPack: null, stream: null, report: null, reportPack: null };
+const titles = { overview: '운영 현황', inbox: '후속 처리함', history: '통화 기록', campaigns: '캠페인', playground: 'Playground', calls: 'Calls', soundcheck: 'Soundcheck' };
 function notice(error) { $('#notice').textContent = error.message ?? String(error); $('#notice').hidden = false; }
 async function api(path, body, method = body ? 'POST' : 'GET') {
   const response = await fetch(path, { method, headers: body ? { 'content-type': 'application/json' } : {}, body: body ? JSON.stringify(body) : undefined });
@@ -12,17 +13,24 @@ async function api(path, body, method = body ? 'POST' : 'GET') {
 }
 function action(fn) { return event => { event?.preventDefault(); $('#notice').hidden = true; Promise.resolve().then(() => fn(event)).catch(notice); }; }
 function busy(button, active, label) { button.disabled = active; if (label) button.textContent = label; }
-function nav(view) {
+const ops = createOps({ api, action, notice });
+function nav(view, params = new URLSearchParams(), id) {
   S.view = view;
   const title = titles[view];
+  $(`#view-${view}`).scrollTop = 0;
   document.title = `Ringdown — ${title}`;
   $('#page-title').textContent = title;
   for (const name of Object.keys(titles)) $(`#view-${name}`).hidden = view !== name;
-  $('#conversation').hidden = view === 'soundcheck';
+  const developer = ['playground', 'calls', 'soundcheck'].includes(view);
+  $('#conversation').hidden = !['playground', 'calls'].includes(view);
+  $('#dev-catalogue').hidden = !developer;
+  $('#brain-badge').hidden = !developer;
   document.querySelectorAll('[data-view]').forEach(el => { el.classList.toggle('on', el.dataset.view === view); el.setAttribute('aria-current', el.dataset.view === view ? 'page' : 'false'); });
-  renderState();
+  if (developer) { $('#rail').setAttribute('aria-label', '통화 상태'); renderState(); }
+  void ops.show(view, params, id).catch(notice);
 }
 function renderState() {
+  if (!['playground', 'calls', 'soundcheck'].includes(S.view)) return;
   $('#state').innerHTML = S.view === 'soundcheck' && S.report ? reportPanel(S.report) : statePanel(S.call, S.callPack ?? S.pack);
 }
 function renderSidebar() {
@@ -77,7 +85,7 @@ async function openCall(id) {
     if (data.revision < S.call.revision) return;
     const wasWaiting = S.call.status === 'waiting';
     S.call = data; renderCall();
-    if (!wasWaiting && data.status === 'waiting' && S.view !== 'soundcheck') $('#say').focus();
+    if (!wasWaiting && data.status === 'waiting' && ['playground', 'calls'].includes(S.view)) $('#say').focus();
     if (['complete', 'error'].includes(data.status)) { stream.close(); void refreshCalls().catch(notice); }
   });
   stream.onerror = () => {
@@ -111,7 +119,7 @@ $('#pack').addEventListener('change', action(() => selectPack($('#pack').value))
 $('#packs').addEventListener('click', action(event => { const button = event.target.closest('[data-pack]'); if (button) return selectPack(button.dataset.pack); }));
 $('#persona').addEventListener('change', () => { S.persona = $('#persona').value; renderSidebar(); });
 $('#personas').addEventListener('click', event => { const button = event.target.closest('[data-persona]'); if (button) { S.persona = button.dataset.persona; renderSidebar(); } });
-$('.nav').addEventListener('click', action(async event => { const button = event.target.closest('[data-view]'); if (button) { nav(button.dataset.view); if (S.view === 'calls') await refreshCalls(); } }));
+$('.nav').addEventListener('click', action(async event => { const button = event.target.closest('[data-view]'); if (button) { if (window.location.hash === `#${button.dataset.view}`) route(); else window.location.hash = button.dataset.view; if (button.dataset.view === 'calls') await refreshCalls(); } }));
 $('#call-history').addEventListener('change', action(() => $('#call-history').value && openCall($('#call-history').value)));
 $('#refresh-calls').addEventListener('click', action(refreshCalls));
 $('#matrix-form').addEventListener('submit', action(async () => {
@@ -126,7 +134,7 @@ $('#matrix-form').addEventListener('submit', action(async () => {
   } finally { busy($('#run-matrix'), false, '매트릭스 실행'); }
 }));
 async function replay(row) {
-  $('#cell-dialog').close(); nav('calls');
+  $('#cell-dialog').close(); window.location.hash = 'calls'; nav('calls');
   await startCall({ pack: S.reportPack, persona: row.persona, fault: row.fault, seed: row.seed, mode: 'auto' });
 }
 $('#report').addEventListener('click', action(async event => {
@@ -145,11 +153,17 @@ $('#theme').addEventListener('change', () => {
 });
 try { $('#theme').value = localStorage.getItem('ringdown:theme') ?? ''; document.documentElement.dataset.theme = $('#theme').value; } catch { /* System theme remains available. */ }
 window.addEventListener('pagehide', () => S.stream?.close());
+function route() {
+  const [path, query = ''] = window.location.hash.slice(1).split('?');
+  const [view = 'overview', id] = (path || 'overview').split('/');
+  nav(Object.hasOwn(titles, view) ? view : 'overview', new URLSearchParams(query), id);
+}
+window.addEventListener('hashchange', route);
 async function init() {
   S.packs = await api('/api/packs');
   $('#pack').innerHTML = S.packs.map(p => `<option value="${esc(p.id)}">${esc(p.id)}</option>`).join('');
   if (!S.packs.length) throw new Error('실행 가능한 mock Pack이 없어요. packs/ 설정을 확인해 주세요.');
   await selectPack(S.packs[0].id);
-  renderState();
+  route();
 }
 void init().catch(notice);

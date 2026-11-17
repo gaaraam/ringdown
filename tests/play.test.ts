@@ -8,14 +8,16 @@ import { Report } from "../src/soundcheck/report.ts";
 import { runMatrix } from "../src/soundcheck/runner.ts";
 import { resolveModels } from "../src/config/models.ts";
 import { request as httpRequest } from "node:http";
-import { readFileSync } from "node:fs";
+import { readFileSync, mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 
 const loaded = loadPack(listPackDirs("packs")[0]!);
 if (!loaded.ok) throw new Error("fixture pack");
 const pack = loaded.value;
-let app: ReturnType<typeof createPlayServer>, base: string;
-beforeEach(async () => { app = createPlayServer(); base = await app.listen(0); });
-afterEach(async () => { await app.close(); });
+let app: ReturnType<typeof createPlayServer>, base: string, dataDir: string;
+beforeEach(async () => { dataDir = mkdtempSync(join(tmpdir(), "ringdown-play-")); app = createPlayServer({ dataDir }); base = await app.listen(0); });
+afterEach(async () => { await app.close(); rmSync(dataDir, { recursive: true, force: true }); });
 const post = (path: string, input: unknown) => fetch(base + path, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(input) });
 const input = { pack: pack.pack.id, persona: pack.personas[0]!.id, fault: "clean", seed: 7 };
 interface View { id: string; revision: number; status: string; state: CallSnapshot; events: TraceEvent[] }

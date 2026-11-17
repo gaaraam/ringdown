@@ -14,22 +14,34 @@
   <aside id="sidebar" aria-label="탐색">
     <div class="ws"><span class="mark">r</span><strong>ringdown</strong></div>
     <nav class="nav" aria-label="화면">
-      <button class="nav-item on" data-view="playground"><span class="nav-icon">◉</span>Playground</button>
-      <button class="nav-item" data-view="calls"><span class="nav-icon">☷</span>Calls</button>
-      <button class="nav-item" data-view="soundcheck"><span class="nav-icon">▦</span>Soundcheck</button>
+      <div class="section-head nav-heading">운영</div>
+      <button class="nav-item on" data-view="overview">운영 현황</button>
+      <button class="nav-item" data-view="inbox">후속 처리함</button>
+      <button class="nav-item" data-view="history">통화 기록</button>
+      <button class="nav-item" data-view="campaigns">캠페인</button>
+      <div class="section-head nav-heading">개발자 도구</div>
+      <button class="nav-item" data-view="playground">Playground</button>
+      <button class="nav-item" data-view="calls">Calls</button>
+      <button class="nav-item" data-view="soundcheck">Soundcheck</button>
     </nav>
+    <div id="dev-catalogue" hidden>
     <div class="section-head">Pack <span id="pack-count"></span></div>
     <div id="packs"></div>
     <div class="section-head">페르소나 <span id="persona-count"></span></div>
     <div id="personas" class="side-list"></div>
-    <footer class="side-footer"><span class="badge">RuleBrain</span>
+    </div>
+    <footer class="side-footer"><span id="brain-badge" class="badge" hidden>RuleBrain</span>
       <label class="theme-field">화면 테마<select id="theme" aria-label="화면 테마"><option value="">시스템</option><option value="light">라이트</option><option value="dark">다크</option></select></label>
     </footer>
   </aside>
   <main id="main">
-    <header class="ch-head"><h1 id="page-title">Playground</h1></header>
+    <header class="ch-head"><h1 id="page-title">운영 현황</h1></header>
     <div id="notice" role="alert" hidden></div>
-    <section id="view-playground" class="view">
+    <section id="view-overview" class="view ops-view"></section>
+    <section id="view-inbox" class="view ops-view" hidden></section>
+    <section id="view-history" class="view ops-view" hidden></section>
+    <section id="view-campaigns" class="view ops-view" hidden></section>
+    <section id="view-playground" class="view" hidden>
       <form id="call-form" class="config card">
         <label class="field">Pack<select id="pack" required></select></label>
         <label class="field mobile-persona">페르소나<select id="persona"></select></label>
@@ -42,7 +54,7 @@
     <section id="view-calls" class="view" hidden>
       <div class="card call-picker"><label class="field">통화 기록<select id="call-history"><option value="">통화를 선택해 주세요</option></select></label><button class="btn" id="refresh-calls">새로고침</button><small>최근 100건. 서버를 끄면 사라져요.</small></div>
     </section>
-    <section id="conversation" class="card conversation" aria-label="대화">
+    <section id="conversation" hidden class="card conversation" aria-label="대화">
       <header class="chat-head"><div><strong id="conversation-title">새 통화</strong><p id="conversation-subtitle"></p></div><span id="call-status" class="badge">준비</span></header>
             <div id="messages" class="messages"><div class="empty"><p>아직 통화가 없어요. 위에서 조건을 고르고 통화를 시작하세요.</p></div></div>
       <form id="composer" class="composer"><label class="sr-only" for="say">고객 메시지</label><input id="say" placeholder="직접 입력 모드에서 고객의 말을 입력해요" maxlength="2000" autocomplete="off" disabled required><button class="btn primary" id="send" disabled>보내기</button><button type="button" class="btn" id="stop" hidden>통화 닫기</button><small id="composer-help"></small></form>
