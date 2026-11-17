@@ -129,6 +129,9 @@ for (const seg of segments) {
     const result = await runMatrix(seg.pack, { brain, models, faults: seg.faults, seeds: seg.seeds, gitSha, runId: name,
       onCall: ({ result: r, persona, fault, done, total }) => {
         rows.push(r); keys.push(key(seg.pack.pack.id, persona, fault));
+        // 중단된 구간도 원인을 볼 수 있게 통화별 trace를 바로 남긴다
+        mkdirSync(`${segmentDir}/traces`, { recursive: true });
+        writeFileSync(`${segmentDir}/traces/${persona}-${fault}.jsonl`, r.events.map(e => JSON.stringify(e)).join("\n") + "\n");
         if (brain === "rule") ruleSuccess.set(key(seg.pack.pack.id, persona, fault), r.outcome === "success");
         appendFileSync(`${segmentDir}/progress.jsonl`, JSON.stringify({ done, total, persona, fault, outcome: r.outcome,
           userTurns: r.transcript.filter(x => x.role === "user").length, controlRejections: r.metrics.controlRejections,
