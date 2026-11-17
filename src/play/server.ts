@@ -8,6 +8,8 @@ import { runMatrix } from "../soundcheck/runner.ts";
 import { Fault } from "../soundcheck/report.ts";
 import { resolveModels } from "../config/models.ts";
 import { CallSession } from "./sessions.ts";
+import { JsonlStore, type OpsStore } from "../ops/store.ts";
+import { createOpsApi, OpsError } from "../ops/api.ts";
 
 const Seed = z.number().int().min(-2147483648).max(2147483647);
 const CallInput = z.strictObject({ pack: z.string().min(1), persona: z.string().min(1),
@@ -35,13 +37,15 @@ async function body(req: IncomingMessage) {
 }
 
 /** Local-only HTTP adapter. No engine module depends on this module. */
-export function createPlayServer(options: { packsRoot?: string; gitSha?: string } = {}) {
+export function createPlayServer(options: { packsRoot?: string; gitSha?: string; dataDir?: string; store?: OpsStore; clock?: () => Date } = {}) {
   const packs = new Map<string, LoadedPack>();
   for (const dir of listPackDirs(options.packsRoot ?? fileURLToPath(new URL("../../packs/", import.meta.url)))) {
     const loaded = loadPack(dir);
     if (!loaded.ok) throw new Error(JSON.stringify(loaded.issues));
     if (loaded.value.mock && Object.values(loaded.value.jacks).every(j => j.type === "mock")) packs.set(loaded.value.pack.id, loaded.value);
   }
+  const store = options.store ?? new JsonlStore(options.dataDir ?? process.env.DATA_DIR ?? fileURLToPath(new URL("../../data/", import.meta.url)));
+  const ops = createOpsApi(store, packs, options.clock);
   const sessions = new Map<string, CallSession>();
   const streams = new Set<ServerResponse>();
   let matrixBusy = false;
@@ -53,7 +57,7 @@ export function createPlayServer(options: { packsRoot?: string; gitSha?: string 
   const staticFiles: Record<string, [string, string]> = {
     "/": ["index.html", "text/html"], "/style.css": ["style.css", "text/css"],
     "/app.js": ["app.js", "text/javascript"], "/render.js": ["render.js", "text/javascript"],
-    "/trace.js": ["trace.js", "text/javascript"],
+    "/trace.js": ["trace.js", "text/javascript"], "/ops.js": ["ops.js", "text/javascript"],
   };
   const handler = async (req: IncomingMessage, res: ServerResponse) => {
     res.setHeader("x-content-type-options", "nosniff");
@@ -68,6 +72,10 @@ export function createPlayServer(options: { packsRoot?: string; gitSha?: string 
       const [file, mime] = staticFiles[path];
       const content = readFileSync(new URL(`../../web/${file}`, import.meta.url));
       res.writeHead(200, { "content-type": `${mime}; charset=utf-8`, "cache-control": "no-cache" }); res.end(content); return;
+    }
+    if (path.startsWith("/api/ops/")) {
+      const reply = await ops.handle(req.method ?? "GET", url, () => body(req));
+      json(res, reply.status, reply.value); return;
     }
     if (req.method === "GET" && path === "/api/packs") {
       json(res, 200, [...packs.values()].map(p => ({ id: p.pack.id, description: p.pack.goal.description }))); return;
@@ -140,7 +148,7 @@ export function createPlayServer(options: { packsRoot?: string; gitSha?: string 
   const server = createServer((req, res) => { void handler(req, res).catch(error => {
     if (res.headersSent) { res.end(); return; }
     if (error instanceof z.ZodError) json(res, 400, { error: "입력값을 확인해 주세요.", issues: error.issues });
-    else if (error instanceof HttpError) json(res, error.status, { error: error.message });
+    else if (error instanceof HttpError || error instanceof OpsError) json(res, error.status, { error: error.message });
     else { console.error("Play request failed", error); json(res, 500, { error: "처리하지 못했어요. 서버 로그와 Pack 설정을 확인해 주세요." }); }
   }); });
   return {
@@ -155,6 +163,7 @@ export function createPlayServer(options: { packsRoot?: string; gitSha?: string 
       for (const s of sessions.values()) s.cancel();
       for (const stream of streams) stream.end();
       await Promise.all([...sessions.values()].map(s => s.done));
+      try { await ops.runner.close(); } finally { store.close(); }
       await new Promise<void>((resolve, reject) => server.close(error => error ? reject(error) : resolve()));
     },
   };

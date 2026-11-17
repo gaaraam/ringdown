@@ -44,6 +44,22 @@ npm run ringdown -- call --pack packs/gaga-ads --persona grateful-owner --faults
 M2는 RuleBrain과 mock만 사용하며 실제 대기, LLM 호출, 전화 발신, SMS 발송은 하지 않는다. 콜백·확인 작업·이관은 trace의 pending 목록에 등록된다. 성공은 Brain의 선언이 아닌 mock 업무 상태로 판정한다. scripted 페르소나는 현재 단계와 규칙을 아는 테스트 장치이므로 결과를 실제 고객의 대화 품질로 해석하면 안 된다.
 
 
+
+## 운영 콘솔
+
+`npm run play`의 기본 화면은 운영 현황입니다. 캠페인에서 Pack·대상 전체 또는 일부·장애·시드를 선택하면 RuleBrain이 대상별 통화를 실행합니다. 통화 기록에서 고객·결과·캠페인·한국 날짜로 검색하고, 요약과 대화를 확인합니다. 개발자 trace는 **개발자 상세** 안에 접혀 있습니다.
+
+후속 처리함은 상담원 연결·콜백·확인 필요를 모읍니다. 담당자와 처리 메모를 저장하고 처리 완료 또는 열림으로 변경할 수 있습니다. **반영됨 / 반영 안 됨**은 해당 통화에 저장된 업무 상태와 해당 쓰기 기록을 대조한 결과입니다. 목표 달성 통화에도 확인 필요 항목이 남을 수 있습니다.
+
+![운영 콘솔 후속 처리함](docs/screenshots/light-ops-inbox.png)
+
+캠페인·통화·처리 상태는 `data/ops.jsonl`에 영구 저장합니다. `DATA_DIR=/path/to/data npm run play`로 위치를 바꿀 수 있습니다. 하나의 저장소에는 서버 한 개만 실행합니다. 재시작 시 완료된 통화는 유지하고 실행 중이던 캠페인은 중단으로 표시합니다. 통화 시각은 캠페인 시작부터 순차 진행하는 시뮬레이션 시각이며, 실제 발신은 하지 않습니다. 개발자 도구의 Calls는 기존처럼 메모리 기록입니다.
+
+운영 API의 공통 접두사는 `/api/ops`입니다. `GET /catalogue`, `GET|POST /campaigns`, `GET /campaigns/:id`, `GET /calls`, `GET /calls/:id`, `GET /inbox`, `PATCH /inbox/:id`, `GET /overview`를 제공합니다. 캠페인 생성은 `{pack, personas?, fault, seed}`이며 `personas` 생략 시 전체 대상입니다. 생성 응답은 202이고 상세 조회의 `completed/total/status`로 진행을 확인합니다. 처리 변경은 `{status: "open" | "resolved", assignee, note}`입니다.
+
+통화 검색 조건은 `q/outcome/campaign/date`(날짜는 `YYYY-MM-DD`, 한국 시각), 처리함은 `kind/status/campaign`, 현황은 `campaign`입니다. 현황 비율의 분모는 선택한 전체 통화입니다. 업무 API 오류율은 `tool.result`의 **최종 업무 요청 결과**를 기준으로 하며 내장 도구와 개별 재시도 이벤트는 중복 집계하지 않습니다. 관측이 없으면 비율을 만들지 않습니다.
+
+
 ## Playground
 
 ```bash
@@ -62,8 +78,8 @@ RuleBrain과 mock만 사용해요. LLM·실제 전화·외부 업무 API는 호�
 API는 같은 로컬 주소에서 JSON으로 요청해요. `GET /api/packs`, `GET /api/packs/:id`, `GET /api/calls`, `POST /api/calls`, `GET /api/calls/:id`, `GET /api/calls/:id/events`(SSE), `POST /api/calls/:id/say`, `DELETE /api/calls/:id`, `POST /api/soundcheck`를 제공해요. 통화 생성 본문은 `{pack, persona, fault, seed, mode}`이고, 고객 입력은 `{text}`, 매트릭스는 `{pack, faults, seeds}`예요. SSE는 재연결해도 복구할 수 있는 전체 snapshot을 보내요. 매트릭스는 최대 5개 장애·3개 시드를 받아요.
 
 ```bash
-npm run visual                 # 설치된 headless Chrome으로 6장 캡처 + 화면 흐름 검사
+npm run visual                 # 설치된 headless Chrome으로 14장 캡처 + 화면 흐름 검사
 # 필요하면 CHROME_BIN=/path/to/chrome npm run visual
 ```
 
-기본 Chrome 경로는 `/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`이에요. 별도 브라우저 다운로드·서버 준비·프런트엔드 빌드는 필요하지 않아요. 임시 포트의 서버와 독립된 브라우저를 자동으로 닫아요. 시드 7, 1440×1000, 로컬 시스템 글꼴로 `docs/screenshots/{light,dark}-{playground,calls,soundcheck}.png`를 만들어요. 시스템 글꼴과 Chrome 버전이 같은 환경에서는 재실행 결과가 같아요. 테마는 시스템 설정을 따르거나 화면 하단에서 직접 바꿀 수 있어요.
+기본 Chrome 경로는 `/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`이에요. 별도 브라우저 다운로드·서버 준비·프런트엔드 빌드는 필요하지 않아요. 임시 포트의 서버와 독립된 브라우저를 자동으로 닫아요. 시드 7(부분 캠페인은 8), 고정 캠페인 시작 시각, 1440×1000, 로컬 시스템 글꼴로 `docs/screenshots/{light,dark}-{playground,calls,soundcheck,ops-overview,ops-inbox,ops-history,ops-campaigns}.png`를 만들어요. 운영 데이터는 임시 디렉터리에 저장하고 종료 시 삭제해요. 시스템 글꼴과 Chrome 버전이 같은 환경에서는 재실행 결과가 같아요. 테마는 시스템 설정을 따르거나 화면 하단에서 직접 바꿀 수 있어요.
