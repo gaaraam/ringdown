@@ -9,6 +9,7 @@ import { getFaultProfile } from "../jacks/faults.ts";
 import { JackRuntime } from "../jacks/runtime.ts";
 import { Rng, hash } from "../sim/rng.ts";
 import { ScriptedPersona } from "../sim/persona.ts";
+import type { CustomerSource } from "../sim/customer.ts";
 import { SimTransport } from "../transport/sim.ts";
 
 export interface TraceEvent {
@@ -24,9 +25,24 @@ export interface CallResult {
   metrics: { deadAir: number; controlRejections: number; outputGuardHits: number; longCall: boolean; policyViolations: number };
 }
 
+export interface CallSnapshot {
+  at: number; stage: string; transcript: Turn[]; facts: Fact[]; slots: Record<string, SlotValue>;
+  pending: PendingOp[]; metrics: CallResult["metrics"]; outcome?: Outcome;
+  transitions: { from: string; to: string; at: number; turn: number }[];
+  jacks: Record<string, ReturnType<JackRuntime["snapshot"]>>;
+}
+export interface CallOptions {
+  brain?: Brain;
+  transport?: SimTransport;
+  customerSource?: CustomerSource;
+  onEvent?: (event: TraceEvent) => void;
+  /** Detached snapshots; observers cannot mutate the live call. Legacy trace stays unchanged. */
+  onState?: (state: CallSnapshot) => void;
+}
+
 /** 한 호출은 독립된 업무 상태·난수 스트림을 갖는다. 실시간 대기나 외부 API는 없다. */
 export async function runCall(loaded: LoadedPack, persona: Persona, faults: string, seed: number,
-  options: { brain?: Brain; transport?: SimTransport } = {},
+  options: CallOptions = {},
 ): Promise<CallResult> {
   if (!loaded.mock) throw new Error("통화 시뮬레이션에는 mock 설정이 필요합니다");
   if (Object.values(loaded.jacks).some((j) => j.type !== "mock")) throw new Error("M2는 mock 연결만 지원합니다");
@@ -55,10 +71,17 @@ export async function runCall(loaded: LoadedPack, persona: Persona, faults: stri
   let seq = 0;
   let outcome: Outcome | undefined;
   let latency = { brain: 0, tool: 0, tts: 0 };
-  let transport: SimTransport;
   const ctx = (): TurnContext => ({ pack: loaded, stage, slots, facts, transcript, interruptedAt });
+  const transitions: CallSnapshot["transitions"] = [];
+  const observe = () => {
+    if (options.onState) options.onState(structuredClone({ at: now, stage: stage.id, transcript, facts, slots,
+      pending, metrics, outcome, transitions,
+      jacks: Object.fromEntries([...runtimes].map(([id, runtime]) => [id, runtime.snapshot(now)])) }));
+  };
   const emit = (type: TraceEvent["type"], data: Record<string, unknown> = {}, at = now) => {
-    events.push({ type, at, latency: { ...latency }, ...data });
+    const event = { type, at, latency: { ...latency }, ...data };
+    events.push(event);
+    options.onEvent?.(structuredClone(event));
   };
   const say = async (text: string, fixed = false, filler = false) => {
     const guarded = fixed ? { text, hits: [] } : postGuard(text, groundedCorpus(ctx()), pack.policy.forbidden, pack.policy.maxTurnSpeechSec);
@@ -82,6 +105,7 @@ export async function runCall(loaded: LoadedPack, persona: Persona, faults: stri
       emit("speech.interrupted", { intended: guarded.text, heard: spoken.heard }, spoken.endedAt);
     }
     if (!filler) now = speechEnd;
+    observe();
   };
   // 도구 대기와 발화는 겹칠 수 있다. 첫 멘트는 예산 시각, 이후 멘트는 침묵 상한 전에 송출한다.
   const advance = async (to: number) => {
@@ -165,7 +189,7 @@ export async function runCall(loaded: LoadedPack, persona: Persona, faults: stri
   until = now + pack.policy.maxCallSec * 1000;
   // 페르소나 난수는 장애 프로파일과 무관하게 (시드, 페르소나)로만 정한다.
   // 장애마다 다른 고객 행동을 뽑으면 장애별 비교가 장애 효과가 아니라 표본 차이를 재게 된다(공통 난수).
-  transport = options.transport ?? new SimTransport(new ScriptedPersona(persona, new Rng(`${seed}:${persona.id}`).fork("persona")), until);
+  const transport = options.transport ?? new SimTransport(options.customerSource ?? new ScriptedPersona(persona, new Rng(`${seed}:${persona.id}`).fork("persona")), until);
   connected = true;
   await say(pack.policy.disclosure, true);
   if (prefetchFailure?.status === "failed") {
@@ -175,11 +199,12 @@ export async function runCall(loaded: LoadedPack, persona: Persona, faults: stri
 
   while (!outcome && now < until) {
     const previous = [...transcript].reverse().find((t) => t.role === "agent");
-    const user = transport.next(stage, loaded, now, previous?.role === "agent" && previous.interrupted);
+    const user = await transport.next(stage, loaded, now, previous?.role === "agent" && previous.interrupted);
     now = Math.min(user.endedAt, until);
     if (now >= until) break;
     transcript.push({ role: "user", seq: transcript.length, ...user });
     userEnd = now;
+    observe();
     latency = { brain: 0, tool: 0, tts: 0 };
     emit("turn.start", { stage: stage.id, user: user.text, interruptedAt });
     const guarded = preGuard(user.text, ctx());
@@ -219,7 +244,11 @@ export async function runCall(loaded: LoadedPack, persona: Persona, faults: stri
       if (outcome) break;
     }
     if (now >= until) break;
-    if (!outcome && plan.transition) stage = pack.stages.find((s) => s.id === plan.transition)!;
+    if (!outcome && plan.transition) {
+      transitions.push({ from: stage.id, to: plan.transition, at: now, turn: transcript.length - 1 });
+      stage = pack.stages.find((s) => s.id === plan.transition)!;
+      observe();
+    }
     const text = failureText ?? (results.length === 0 && plan.say !== undefined ? render(plan.say, ctx()) : await brain.compose(ctx(), results));
     for (const reason of brain.takeFallbacks?.() ?? []) emit("brain.fallback", { reason });
     latency.tts = 80;
@@ -247,5 +276,6 @@ export async function runCall(loaded: LoadedPack, persona: Persona, faults: stri
   transport.hangup(outcome, now);
   emit("call.end", { outcome, metrics, pending, brain: brain.id, durationMs: now - connectedAt });
   events.sort((a, b) => a.at - b.at);
+  observe();
   return { callId, outcome, transcript, events, pending, system, slots, metrics };
 }

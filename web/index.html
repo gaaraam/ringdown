@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Ringdown — Playground</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+<div id="app">
+  <aside id="sidebar" aria-label="탐색">
+    <div class="ws"><span class="mark">r</span><div><strong>ringdown</strong><small>통화를 이해하는 작업 공간</small></div></div>
+    <nav class="nav" aria-label="화면">
+      <button class="nav-item on" data-view="playground"><span class="nav-icon">◉</span>Playground</button>
+      <button class="nav-item" data-view="calls"><span class="nav-icon">☷</span>Calls</button>
+      <button class="nav-item" data-view="soundcheck"><span class="nav-icon">▦</span>Soundcheck</button>
+    </nav>
+    <div class="section-head">PACKS <span id="pack-count"></span></div>
+    <div id="packs"></div>
+    <div class="section-head">PERSONAS <span id="persona-count"></span></div>
+    <div id="personas" class="side-list"></div>
+    <footer class="side-footer"><span class="badge">RuleBrain</span><p>외부 연결 없이 실험해요</p>
+      <label class="theme-field">화면 테마<select id="theme" aria-label="화면 테마"><option value="">시스템</option><option value="light">라이트</option><option value="dark">다크</option></select></label>
+    </footer>
+  </aside>
+  <main id="main">
+    <header class="ch-head"><div><div class="eyebrow">RINGDOWN / LOCAL LAB</div><h1 id="page-title">Playground</h1><p id="page-description">고객이 되어 대화하고, 런타임의 판단을 살펴봐요.</p></div><span class="badge">로컬 시뮬레이션</span></header>
+    <div id="notice" role="alert" hidden></div>
+    <section id="view-playground" class="view">
+      <form id="call-form" class="config card">
+        <label class="field">Pack<select id="pack" required></select></label>
+        <label class="field mobile-persona">페르소나<select id="persona"></select></label>
+        <label class="field">장애 프로필<select id="fault"></select></label>
+        <label class="field">시드<input id="seed" type="number" value="7" min="-2147483648" max="2147483647" required></label>
+        <label class="field">고객 모드<select id="mode"><option value="auto">페르소나 자동</option><option value="human">직접 대화해요</option></select></label>
+        <button class="btn primary" id="start">통화 시작</button>
+      </form>
+    </section>
+    <section id="view-calls" class="view" hidden>
+      <div class="card call-picker"><label class="field">통화 기록<select id="call-history"><option value="">통화를 선택해 주세요</option></select></label><button class="btn" id="refresh-calls">새로고침</button><small>최근 100개를 메모리에 보관해요.</small></div>
+    </section>
+    <section id="conversation" class="card conversation" aria-label="대화">
+      <header class="chat-head"><div><strong id="conversation-title">대화를 시작해 볼까요?</strong><p id="conversation-subtitle">왼쪽에서 고객을 고르고 통화를 시작해 주세요.</p></div><span id="call-status" class="badge">준비</span></header>
+      <div class="principle"><span class="badge accent">제안 → 검증 → 실행</span><span>Brain이 제안하고, 런타임이 실행 여부를 결정해요.</span></div>
+      <div id="messages" class="messages"><div class="empty"><span class="empty-mark">↗</span><h2>작은 실험으로 통화를 이해해요</h2><p>자동 대화를 돌려 보거나 직접 고객이 되어 보세요.<br>각 응답 아래에서 제안과 실행 결과를 펼쳐 볼 수 있어요.</p></div></div>
+      <form id="composer" class="composer"><label class="sr-only" for="say">고객 메시지</label><input id="say" placeholder="직접 대화 모드에서 고객의 말을 입력해요" maxlength="2000" autocomplete="off" disabled required><button class="btn primary" id="send" disabled>보내기 ↑</button><button type="button" class="btn" id="stop" hidden>통화 닫기</button><small id="composer-help">입력 대기 시간은 시뮬레이션 시계에 포함하지 않아요.</small></form>
+    </section>
+    <section id="view-soundcheck" class="view dashboard" hidden>
+      <form id="matrix-form" class="config card">
+        <fieldset><legend>장애 프로필</legend><div id="matrix-faults" class="checks"></div></fieldset>
+        <label class="field">시드 (최대 3개)<input id="matrix-seeds" value="7" required placeholder="예: 1, 7, 42"></label>
+        <button class="btn primary" id="run-matrix">매트릭스 실행</button>
+      </form>
+      <div id="report"><div class="card empty"><span class="empty-mark">▦</span><h2>장애가 있어도 통화는 이어질까요?</h2><p>선택한 Pack의 모든 페르소나를 같은 조건으로 비교해요.<br>기본값은 clean / slow, 시드 7이에요.</p></div></div>
+    </section>
+  </main>
+  <aside id="rail" class="rail" aria-label="통화 상태"><div id="state"></div></aside>
+</div>
+<dialog id="cell-dialog"><header><h2>통화 선택</h2><button class="btn" id="close-dialog">닫기</button></header><p>같은 칸의 시드별 통화를 살펴봐요.</p><div id="cell-calls"></div></dialog>
+</body>
+</html>

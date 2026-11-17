@@ -21,6 +21,12 @@ export class JackRuntime {
   private probing = false;
   constructor(readonly jack: Jack, private readonly rng: Rng) {}
 
+  /** Read-only observation; does not advance the breaker or consume a probe. */
+  snapshot(now: number) {
+    return { state: this.probing ? "half-open" : now < this.openUntil ? "open" : "closed",
+      failures: this.failures, openUntil: this.openUntil, probeDue: this.openUntil > 0 && now >= this.openUntil };
+  }
+
   async call(toolName: string, tool: Tool, request: Omit<JackRequest, "now" | "idempotencyKey">,
     opts: { callId: string; seq: number; now: number; until?: number;
       advance?: (to: number) => Promise<void>; onAttempt?: (attempt: Attempt) => void },
