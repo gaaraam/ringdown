@@ -14,7 +14,7 @@ const choice = (values: string[]) => values.length ? z.enum(values) : z.never();
  * 상담원 연결은 그 단계에서 call.handoff를 쓸 수 있을 때만 고를 수 있다.
  */
 const CONTINUE = "continue";
-/** 단계 이동도 같은 이유로 "stay"를 두고 생성 시 반드시 채우게 한다. 비워 두면 모델이 단계를 넘어가지 않았다. */
+/** 단계 이동도 같은 이유로 "stay"를 두고 생성 시 반드시 채우게 한다. 비워 두면 모델이 단계를 넘어가지 않았다. tools도 같은 이유로 생성 시 필수다(빈 배열 허용). */
 const STAY = "stay";
 function terminalNext(ctx: TurnContext): string | undefined {
   const terminals = ctx.stage.next.filter(id => ctx.pack.pack.stages.find(s => s.id === id)?.terminal);
@@ -110,7 +110,7 @@ export class LlmBrain implements Brain {
     if (!ctx.rejection) this.fallbackTurn = false;
     const rulePlan = await this.rule.plan(ctx);
     if (this.fallbackTurn) return rulePlan;
-    try { return this.proposed = normalizePlan(await this.ask(ctx, planSchema(ctx), "다음 Plan을 작성하세요.", ["transition", "end"]) as Omit<Plan, "end"> & { end?: string }, ctx); }
+    try { return this.proposed = normalizePlan(await this.ask(ctx, planSchema(ctx), "다음 Plan을 작성하세요.", ["tools", "transition", "end"]) as Omit<Plan, "end"> & { end?: string }, ctx); }
     catch (e) {
       this.fallbackTurn = true;
       this.fallbacks.push(`plan: ${String(e)}`);
