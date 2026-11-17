@@ -16,14 +16,21 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "check:boundary": "tsx scripts/check-boundary.ts",
-    "ci": "npm run typecheck && npm run test && npm run check:boundary && npm run validate && npm run soundcheck:smoke",
+    "ci": "npm run typecheck && npm run lint && npm run test && npm run check:boundary && npm run validate && npm run soundcheck:smoke",
     "soundcheck": "tsx src/cli.ts soundcheck",
-    "soundcheck:smoke": "tsx scripts/soundcheck-smoke.ts"
+    "soundcheck:smoke": "tsx scripts/soundcheck-smoke.ts",
+    "play": "tsx src/play/index.ts",
+    "visual": "node --import tsx scripts/visual.mjs",
+    "lint": "eslint src web scripts tests eslint.config.js"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.5",
     "@types/node": "^20.19.43",
+    "eslint": "^9.39.5",
+    "playwright-core": "^1.65.1",
     "tsx": "^4.23.15",
     "typescript": "^5.9.3",
+    "typescript-eslint": "^8.73.0",
     "vitest": "^4.1.12"
   },
   "dependencies": {
