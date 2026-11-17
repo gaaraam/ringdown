@@ -30,20 +30,21 @@ export function checkPlan(plan: Plan, ctx: TurnContext): string | undefined {
 /**
  * 종료 권한 검사. Brain은 종료를 제안할 뿐이고, 그 종료가 실제 상태와 맞는지는 런타임이 정한다.
  * - pending_confirmation: 쓰기 결과를 모를 때 런타임만 선언한다.
- * - handoff, opted_out: 상담 이관·수신 거부는 어느 단계에서든 허용한다.
+ * - opted_out: 수신 거부는 고객 발화의 입력 정책으로만 정한다. 두뇌가 선언하면 협조적인 고객을 다시 부를 수 없게 된다.
+ * - handoff: 어느 단계에서든 허용한다. 런타임이 이관 요청을 등록한다.
  * - 그 밖의 종료: 종료 단계로 전이하거나 이미 종료 단계여야 한다. 질문하면서 통화를 끝내는 것을 막는다.
  * - callback_scheduled: 같은 계획에서 콜백 등록 도구를 실제로 호출해야 한다.
  */
-const ANYWHERE_ENDS = new Set(["handoff", "opted_out"]);
+/** 수신 거부와 확인 대기는 런타임만 정한다. 두뇌가 수신 거부로 끝내면 협조적인 고객을 다시 못 부르게 된다. */
+const RUNTIME_ENDS = new Set(["opted_out", "pending_confirmation"]);
+const has = (plan: Plan, tool: string) => (plan.tools ?? []).some((t) => t.tool === tool);
 function checkEnd(plan: Plan, ctx: TurnContext): string | undefined {
   if (!plan.end) return undefined;
-  if (plan.end === "pending_confirmation") return "end_reserved_for_runtime";
-  if (ANYWHERE_ENDS.has(plan.end)) return undefined;
+  if (RUNTIME_ENDS.has(plan.end)) return "end_reserved_for_runtime";
+  if (plan.end === "handoff") return undefined; // 런타임이 이관 등록을 보장한다
   const target = plan.transition ? ctx.pack.pack.stages.find((s) => s.id === plan.transition) : ctx.stage;
   if (!target?.terminal) return "end_without_terminal_stage";
-  if (plan.end === "callback_scheduled" && !(plan.tools ?? []).some((t) => t.tool === "call.scheduleCallback")) {
-    return "end_without_effect";
-  }
+  if (plan.end === "callback_scheduled" && !has(plan, "call.scheduleCallback")) return "end_without_effect";
   return undefined;
 }
 

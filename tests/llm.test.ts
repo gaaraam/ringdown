@@ -1,6 +1,6 @@
 import { afterEach, expect, it, vi } from "vitest";
 import { z } from "zod";
-import { LlmBrain, planSchema, promptPrefix } from "../src/brain/llm.ts";
+import { LlmBrain, normalizePlan, planSchema, promptPrefix } from "../src/brain/llm.ts";
 import { registerProvider, type ChatRequest } from "../src/llm/types.ts";
 import { LlmError } from "../src/llm/http.ts";
 import { OllamaClient } from "../src/llm/ollama.ts";
@@ -31,19 +31,29 @@ function fake(answer: (req: ChatRequest) => unknown | Promise<unknown>) {
 }
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
-it("스키마는 런타임 전용 종료를 막고, 종료 단계로 갈 수 없으면 상담원 연결·수신 거부만 허용", () => {
+it("스키마는 continue를 기본값으로 두고 두뇌가 고를 수 없는 종료를 막는다", () => {
   const ctx = context();
   for (const stage of pack.pack.stages) {
     ctx.stage = stage;
     const schema = planSchema(ctx);
-    expect(schema.safeParse({ intent: "yes", end: "pending_confirmation" }).success).toBe(false);
-    expect(schema.safeParse({ intent: "yes", end: "handoff" }).success).toBe(true);
+    expect(schema.safeParse({ intent: "yes", end: "continue" }).success).toBe(true);
+    for (const reserved of ["pending_confirmation", "opted_out", "failed"]) expect(schema.safeParse({ intent: "yes", end: reserved }).success).toBe(false);
+    expect(schema.safeParse({ intent: "yes", end: "handoff" }).success).toBe(stage.allowTools.includes("call.handoff"));
     const canClose = stage.terminal || stage.next.some(id => pack.pack.stages.find(s => s.id === id)?.terminal);
     expect(schema.safeParse({ intent: "no", end: "declined" }).success).toBe(Boolean(canClose));
   }
   ctx.stage = { ...pack.pack.stages[0]!, terminal: false, next: [] };
   expect(planSchema(ctx).safeParse({ intent: "no", end: "declined" }).success).toBe(false);
-  expect(planSchema(ctx).safeParse({ intent: "no", end: "opted_out" }).success).toBe(true);
+});
+
+it("계획 정규화: continue는 지우고, 종료만 고르면 하나뿐인 종료 단계로 이동시킨다", () => {
+  const ctx = context();
+  const stage = pack.pack.stages.find(s => !s.terminal && s.next.filter(id => pack.pack.stages.find(x => x.id === id)?.terminal).length === 1)!;
+  ctx.stage = stage;
+  const close = stage.next.find(id => pack.pack.stages.find(x => x.id === id)?.terminal);
+  expect(normalizePlan({ intent: "yes", say: "네", end: "continue" }, ctx)).toEqual({ intent: "yes", say: "네" });
+  expect(normalizePlan({ intent: "no", end: "declined" }, ctx)).toMatchObject({ transition: close, end: "declined" });
+  expect(normalizePlan({ intent: "no", transition: "x", end: "declined" }, ctx)).toMatchObject({ transition: "x", end: "declined" });
 });
 
 it("스키마는 현재 단계 도구·전이와 선언 슬롯 enum만 허용", () => {

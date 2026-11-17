@@ -189,6 +189,8 @@ it("종료 권한: 질문하면서 종료·런타임 전용 종료·효과 없�
   const at = (id: string): TurnContext => ({ pack: loaded, stage: stage(id), facts: [], slots: {}, transcript: [] });
   // M4 실측에서 EXAONE이 낸 계획: 다음 단계로 가며 질문하고, 동시에 확인 대기로 종료
   expect(checkPlan({ transition: "pitch", end: "pending_confirmation" }, at("verify"))).toBe("end_reserved_for_runtime");
+  // 두뇌가 수신 거부로 끝내면 협조적인 고객을 다시 부를 수 없게 된다 (M4 파일럿에서 실제로 발생)
+  expect(checkPlan({ transition: "pitch", end: "opted_out" }, at("verify"))).toBe("end_reserved_for_runtime");
   expect(checkPlan({ transition: "pitch", end: "declined" }, at("verify"))).toBe("end_without_terminal_stage");
   expect(checkPlan({ end: "success" }, at("confirm"))).toBe("end_without_terminal_stage");
   expect(checkPlan({ transition: "close", end: "callback_scheduled" }, at("pitch"))).toBe("end_without_effect");
