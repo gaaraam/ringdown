@@ -8,7 +8,7 @@ export function turnTrace(turn, index, call, pack) {
   const previous = transcript.slice(0, index).findLast(t => t.role === 'agent');
   const start = previous?.startedAt ?? -Infinity;
   const events = call.events.filter(e => e.at > start && e.at <= turn.startedAt);
-  const rejects = events.filter(e => e.type === 'guard.reject');
+  const rejects = events.filter(e => e.type === 'guard.reject' && e.layer !== 'input');
   const user = transcript.slice(0, index).findLast(t => t.role === 'user');
   const before = transcript[index - 1];
   const silence = before ? Math.max(0, turn.startedAt - before.endedAt) : 0;
@@ -25,7 +25,10 @@ export function turnTrace(turn, index, call, pack) {
         ${data({ say: p.say ?? null, tools: p.tools ?? [], transition: p.transition ?? null, end: p.end ?? null, setSlots: p.setSlots ?? {} })}
         ${rejected ? `<p>사유: <code>${esc(rejected.reason)}</code> — 이 제안은 실행하지 않았어요.</p>` : ''}</div>`);
     } else if (e.type === 'guard.reject') {
-      rows.push(`<div class="rejection"><b>⊘ ${e.layer === 'control' ? '실행을 차단했어요' : e.layer === 'output' ? '발화를 수정했어요' : '입력 정책으로 종료해요'}</b>${esc(e.layer)} / <code>${esc(e.reason)}</code></div>`);
+      // Input policy (opt-out, handoff request) is the runtime working as intended, not a blocked proposal.
+      rows.push(e.layer === 'input'
+        ? `<div class="policy-note"><b>입력 정책이 먼저 처리했어요</b>${esc(e.layer)} / <code>${esc(e.reason)}</code></div>`
+        : `<div class="rejection"><b>⊘ ${e.layer === 'control' ? '실행을 차단했어요' : '발화를 수정했어요'}</b>${esc(e.layer)} / <code>${esc(e.reason)}</code></div>`);
     } else if (e.type === 'tool.call') {
       rows.push(`<div class="trace-item"><b>↳ ${esc(e.call.tool)}</b> ${e.builtin ? '내장 도구' : `호출 #${e.callSeq}`}${data(e.call.args)}</div>`);
     } else if (e.type === 'tool.result') {

@@ -36,3 +36,12 @@ it('multi-seed heatmap uses goal success, and non-rate metrics have no invented 
   expect(html).toContain('CI 없음');
   expect(html).toContain('성공 0%, 2통화 열기');
 });
+it('input policy (opt-out) is shown as handled, not as a blocked proposal', async () => {
+  const customerSource = { spec: { speechRate: 7 }, reply: () => '다시는 전화하지 마세요', responseDelay: () => 300, interruption: () => undefined };
+  let state;
+  const result = await runCall(loaded.value, loaded.value.personas[0], 'clean', 7, { brain: new RuleBrain(), customerSource, onState: s => { state = s; } });
+  expect(result.outcome).toBe('opted_out');
+  const html = messages({ state, events: result.events, status: 'complete' }, { silenceMaxSec: loaded.value.pack.policy.silenceMaxSec });
+  expect(html).toContain('입력 정책이 먼저 처리했어요');
+  expect(html).not.toContain('런타임이');
+});
