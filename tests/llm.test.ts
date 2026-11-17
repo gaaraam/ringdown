@@ -52,6 +52,8 @@ it("계획 정규화: continue는 지우고, 종료만 고르면 하나뿐인 �
   ctx.stage = stage;
   const close = stage.next.find(id => pack.pack.stages.find(x => x.id === id)?.terminal);
   expect(normalizePlan({ intent: "yes", say: "네", end: "continue" }, ctx)).toEqual({ intent: "yes", say: "네" });
+  expect(normalizePlan({ intent: "yes", transition: "stay", end: "continue" }, ctx)).toEqual({ intent: "yes" });
+  expect(planSchema(ctx).safeParse({ intent: "yes", transition: "stay" }).success).toBe(true);
   expect(normalizePlan({ intent: "no", end: "declined" }, ctx)).toMatchObject({ transition: close, end: "declined" });
   expect(normalizePlan({ intent: "no", transition: "x", end: "declined" }, ctx)).toMatchObject({ transition: "x", end: "declined" });
 });
