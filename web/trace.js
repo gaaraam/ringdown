@@ -21,16 +21,16 @@ export function turnTrace(turn, index, call, pack) {
       const next = following.findIndex(x => x.type === 'brain.plan');
       const rejected = following.slice(0, next < 0 ? undefined : next).find(x => x.type === 'guard.reject' && x.layer === 'control');
       const p = e.plan;
-      rows.push(`<div class="trace-item ${rejected ? 'rejected-plan' : ''}"><b>${rejected ? '⊘ 실행 거부된 제안' : 'Brain 제안'} #${e.attempt + 1}</b><p>감지 의도: <code>${esc(p.intent ?? '없음')}</code></p>
+      rows.push(`<div class="trace-item ${rejected ? 'rejected-plan' : ''}"><b>${rejected ? '거부된 제안' : 'Brain 제안'} #${e.attempt + 1}</b><p>감지 의도: <code>${esc(p.intent ?? '없음')}</code></p>
         ${data({ say: p.say ?? null, tools: p.tools ?? [], transition: p.transition ?? null, end: p.end ?? null, setSlots: p.setSlots ?? {} })}
-        ${rejected ? `<p>사유: <code>${esc(rejected.reason)}</code> — 이 제안은 실행하지 않았어요.</p>` : ''}</div>`);
+        ${rejected ? `<p>사유: <code>${esc(rejected.reason)}</code></p>` : ''}</div>`);
     } else if (e.type === 'guard.reject') {
       // Input policy (opt-out, handoff request) is the runtime working as intended, not a blocked proposal.
       rows.push(e.layer === 'input'
-        ? `<div class="policy-note"><b>입력 정책이 먼저 처리했어요</b>${esc(e.layer)} / <code>${esc(e.reason)}</code></div>`
-        : `<div class="rejection"><b>⊘ ${e.layer === 'control' ? '실행을 차단했어요' : '발화를 수정했어요'}</b>${esc(e.layer)} / <code>${esc(e.reason)}</code></div>`);
+        ? `<div class="policy-note"><b>입력 정책 처리</b>${esc(e.layer)} / <code>${esc(e.reason)}</code></div>`
+        : `<div class="rejection"><b>${e.layer === 'control' ? '실행 거부' : '발화 수정'}</b>${esc(e.layer)} / <code>${esc(e.reason)}</code></div>`);
     } else if (e.type === 'tool.call') {
-      rows.push(`<div class="trace-item"><b>↳ ${esc(e.call.tool)}</b> ${e.builtin ? '내장 도구' : `호출 #${e.callSeq}`}${data(e.call.args)}</div>`);
+      rows.push(`<div class="trace-item"><b>${esc(e.call.tool)}</b> ${e.builtin ? '내장 도구' : `호출 #${e.callSeq}`}${data(e.call.args)}</div>`);
     } else if (e.type === 'tool.result') {
       if (e.attempt) {
         const a = e.attempt;
@@ -50,7 +50,7 @@ export function turnTrace(turn, index, call, pack) {
   rows.push(`<div class="trace-item">${currentSpeech?.fixed ? '고정 고지' : currentSpeech?.filler ? '대기 멘트 (filler)' : '응답'} / 직전 발화 뒤 침묵 ${ms(silence)}${silence > pack.silenceMaxSec * 1000 ? ' / 침묵 상한 초과' : ' / 침묵 상한 이내'}</div>`);
   if (currentSpeech) rows.push(`<div class="trace-item">지연 누적: Brain ${ms(currentSpeech.latency.brain)} / 도구 ${ms(currentSpeech.latency.tool)} / TTS ${ms(currentSpeech.latency.tts)}</div>`);
   if (turn.interrupted) rows.push(`<div class="trace-item">끼어들기로 잘린 원문${data(turn.text)}</div>`);
-  const banner = rejects.length ? `<div class="rejection"><b>⊘ 런타임이 ${rejects.length}건을 차단·수정했어요</b>${rejects.map(e => `<code>${esc(e.reason)}</code>`).join(' / ')}</div>` : '';
+  const banner = rejects.length ? `<div class="rejection"><b>런타임 거부·수정 ${rejects.length}건</b>${rejects.map(e => `<code>${esc(e.reason)}</code>`).join(' / ')}</div>` : '';
   const intent = events.findLast(e => e.type === 'brain.plan')?.plan?.intent;
-  return `${banner}<details class="steps" data-trace="${turn.seq}"><summary>${intent ? `의도 ${esc(intent)} / ` : ''}${events.length}개 이벤트 / 판단 과정 펼치기</summary><div class="trace-body">${user && !intent ? `<div class="trace-item">고객 입력: ${esc(user.text)}</div>` : ''}${rows.join('')}</div></details>`;
+  return `${banner}<details class="steps" data-trace="${turn.seq}"><summary>${intent ? `의도 ${esc(intent)} / ` : ''}이벤트 ${events.length}개</summary><div class="trace-body">${user && !intent ? `<div class="trace-item">고객 입력: ${esc(user.text)}</div>` : ''}${rows.join('')}</div></details>`;
 }

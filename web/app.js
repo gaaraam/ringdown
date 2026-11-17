@@ -2,7 +2,7 @@ import { esc } from './trace.js';
 import { messages, statePanel, reportView, reportPanel, statusLabel, outcomeLabel } from './render.js';
 const $ = selector => document.querySelector(selector);
 const S = { view: 'playground', packs: [], pack: null, persona: '', call: null, callPack: null, stream: null, report: null, reportPack: null };
-const descriptions = { playground: ['Playground', '고객이 되어 대화하고, 런타임의 판단을 살펴봐요.'], calls: ['Calls', '대화 아래에서 제안과 실행, 차단된 이유를 확인해요.'], soundcheck: ['Soundcheck', '같은 고객, 다른 장애. 통화가 얼마나 견디는지 비교해요.'] };
+const titles = { playground: 'Playground', calls: 'Calls', soundcheck: 'Soundcheck' };
 function notice(error) { $('#notice').textContent = error.message ?? String(error); $('#notice').hidden = false; }
 async function api(path, body, method = body ? 'POST' : 'GET') {
   const response = await fetch(path, { method, headers: body ? { 'content-type': 'application/json' } : {}, body: body ? JSON.stringify(body) : undefined });
@@ -14,11 +14,10 @@ function action(fn) { return event => { event?.preventDefault(); $('#notice').hi
 function busy(button, active, label) { button.disabled = active; if (label) button.textContent = label; }
 function nav(view) {
   S.view = view;
-  const [title, description] = descriptions[view];
+  const title = titles[view];
   document.title = `Ringdown — ${title}`;
   $('#page-title').textContent = title;
-  $('#page-description').textContent = description;
-  for (const name of Object.keys(descriptions)) $(`#view-${name}`).hidden = view !== name;
+  for (const name of Object.keys(titles)) $(`#view-${name}`).hidden = view !== name;
   $('#conversation').hidden = view === 'soundcheck';
   document.querySelectorAll('[data-view]').forEach(el => { el.classList.toggle('on', el.dataset.view === view); el.setAttribute('aria-current', el.dataset.view === view ? 'page' : 'false'); });
   renderState();
@@ -52,14 +51,14 @@ function renderCall() {
   el.querySelectorAll('details').forEach(d => { d.open = expanded.has(d.dataset.trace); });
   if (bottom) el.scrollTop = el.scrollHeight;
   $('#conversation-title').textContent = `${call.persona}와의 대화`;
-  $('#conversation-subtitle').textContent = `${call.pack} / ${call.fault} / seed ${call.seed} / ${call.mode === 'human' ? '직접 대화' : '페르소나 자동'}`;
+  $('#conversation-subtitle').textContent = `${call.pack} / ${call.fault} / seed ${call.seed} / ${call.mode === 'human' ? '직접 입력' : '페르소나 자동'}`;
   $('#call-status').textContent = statusLabel(call.status);
   const ready = call.mode === 'human' && call.status === 'waiting';
   $('#say').disabled = !ready;
   $('#send').disabled = !ready;
-  $('#say').placeholder = ready ? '고객의 말을 입력해 주세요…' : call.status === 'complete' ? '통화가 끝났어요. 새 통화를 시작할 수 있어요.' : '자동 진행 또는 응답을 기다리는 중이에요';
+  $('#say').placeholder = ready ? '고객의 말을 입력하세요' : call.status === 'complete' ? '통화가 끝났어요' : '진행 중이에요';
   $('#stop').hidden = !['running', 'waiting'].includes(call.status);
-  $('#composer-help').textContent = call.error ?? (ready ? 'Enter로 보내요. 기다리는 동안 시뮬레이션 시계는 멈춰 있어요.' : 'RuleBrain과 mock 업무 시스템으로 실행해요. 실제 발신은 하지 않아요.');
+  $('#composer-help').textContent = call.error ?? (ready ? 'Enter로 보내요. 입력을 기다리는 동안 시뮬레이션 시계는 멈춰 있어요.' : '');
   renderState();
 }
 async function openCall(id) {
@@ -82,12 +81,12 @@ async function openCall(id) {
     if (['complete', 'error'].includes(data.status)) { stream.close(); void refreshCalls().catch(notice); }
   });
   stream.onerror = () => {
-    if (S.stream === stream && !['complete', 'error'].includes(S.call.status)) $('#composer-help').textContent = '연결을 다시 시도하고 있어요. 마지막 상태는 보존돼요.';
+    if (S.stream === stream && !['complete', 'error'].includes(S.call.status)) $('#composer-help').textContent = '연결이 끊겨 다시 연결하고 있어요.';
   };
 }
 async function refreshCalls() {
   const calls = await api('/api/calls');
-  $('#call-history').innerHTML = '<option value="">통화를 선택해 주세요</option>' + calls.map(c => `<option value="${esc(c.id)}">${esc(c.pack)} / ${esc(c.persona)} / ${esc(c.fault)} / seed ${c.seed} — ${statusLabel(c.status)}</option>`).join('');
+  $('#call-history').innerHTML = '<option value="">통화 선택</option>' + calls.map(c => `<option value="${esc(c.id)}">${esc(c.pack)} / ${esc(c.persona)} / ${esc(c.fault)} / seed ${c.seed} — ${statusLabel(c.status)}</option>`).join('');
   if (S.call) $('#call-history').value = S.call.id;
 }
 async function startCall(input) {
