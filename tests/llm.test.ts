@@ -51,7 +51,7 @@ it("스키마는 현재 단계 도구·전이와 선언 슬롯 enum만 허용", 
   for (const stage of pack.pack.stages) {
     ctx.stage = stage;
     const schema = planSchema(ctx);
-    const json = z.toJSONSchema(schema) as any;
+    const json = z.toJSONSchema(schema) as unknown as { properties: { tools: { items: { properties: { tool: { enum: string[] } } } } } };
     if (stage.allowTools.length) expect(json.properties.tools.items.properties.tool.enum).toEqual(stage.allowTools);
     expect(schema.safeParse({ intent: "yes", tools: [{ tool: "unknown.write", args: {} }] }).success).toBe(false);
     expect(schema.safeParse({ intent: "yes", transition: "unknown" }).success).toBe(false);
@@ -106,7 +106,7 @@ it("런타임 대체 지표와 모델 used 기록, 구 v1 보고서도 수용", 
   expect(result.report.models.persona.used).toBe(false);
   expect(result.report.metrics.brain_fallbacks.value).toBeGreaterThan(0);
   expect(result.report.metrics.brain_fallbacks.value).toBe(Object.values(result.traces).flat().filter(e => e.type === "brain.fallback").length);
-  const { diagnostics, ...old } = result.report;
+  const { diagnostics: _diagnostics, ...old } = result.report;
   expect(Report.safeParse({ ...old, brain: "rule" }).success).toBe(true);
 });
 it("공급자 JSON schema·옵션·usage·비스트리밍 요청", async () => {
@@ -114,13 +114,13 @@ it("공급자 JSON schema·옵션·usage·비스트리밍 요청", async () => {
   vi.stubGlobal("fetch", fetcher);
   const req = { system: "정책", messages: [{ role: "user" as const, content: "질문" }], jsonSchema: { type: "object" }, maxTokens: 20 };
   const result = await new OllamaClient(models.agent).chat(req);
-  const body = JSON.parse((fetcher.mock.calls as any)[0][1].body);
+  const body = JSON.parse((fetcher.mock.calls as unknown as [string, RequestInit][])[0]![1].body as string);
   expect(body).toMatchObject({ stream: false, think: false, keep_alive: "5m", format: req.jsonSchema, options: { num_predict: 20 } });
   expect(result.usage).toEqual({ promptTokens: 12, completionTokens: 4 }); expect(result.firstTokenMs).toBeUndefined();
   fetcher.mockImplementation(async () => new Response(JSON.stringify({ choices: [{ message: { content: '{"say":"네"}' } }], usage: { prompt_tokens: 2, completion_tokens: 3 } })));
   const compatible = await new OpenAICompatClient({ ...models.agent, provider: "openai-compat", baseUrl: "http://local/v1" }).chat(req);
   expect(compatible.usage?.completionTokens).toBe(3);
-  expect(JSON.parse((fetcher.mock.calls as any)[1][1].body).response_format.json_schema.schema).toEqual(req.jsonSchema);
+  expect(JSON.parse((fetcher.mock.calls as unknown as [string, RequestInit][])[1]![1].body as string).response_format.json_schema.schema).toEqual(req.jsonSchema);
 });
 it("공급자 HTTP·잘못된 JSON·본문 제한 시간의 오류 종류", async () => {
   const client = new OllamaClient({ ...models.agent, timeoutMs: 10 });

@@ -4,7 +4,8 @@ export class LlmError extends Error {
   constructor(readonly kind: "timeout" | "http" | "invalid_json", message: string) { super(message); this.name = `LlmError(${kind})`; }
 }
 /** 본문 수신까지 하나의 데드라인을 적용한다. */
-export async function requestJson(spec: ResolvedModel, route: string, body?: unknown, signal?: AbortSignal): Promise<any> {
+/** 응답 형태는 공급자가 보장하지 않으므로 호출부가 선택 필드로 좁혀 읽는다. */
+export async function requestJson<T = unknown>(spec: ResolvedModel, route: string, body?: unknown, signal?: AbortSignal): Promise<T> {
   const timeout = AbortSignal.timeout(spec.timeoutMs);
   try {
     const response = await fetch(`${spec.baseUrl?.replace(/\/$/, "")}${route}`, {
@@ -14,7 +15,7 @@ export async function requestJson(spec: ResolvedModel, route: string, body?: unk
       signal: signal ? AbortSignal.any([timeout, signal]) : timeout,
     });
     if (!response.ok) throw new LlmError("http", `HTTP ${response.status}: ${(await response.text()).slice(0, 300)}`);
-    try { return JSON.parse(await response.text()); }
+    try { return JSON.parse(await response.text()) as T; }
     catch (e) { if (timeout.aborted || signal?.aborted) throw e; throw new LlmError("invalid_json", "공급자 응답 JSON 파싱 실패"); }
   } catch (e) {
     if (timeout.aborted || signal?.aborted) throw new LlmError("timeout", "LLM 요청 제한 시간 초과 또는 취소");

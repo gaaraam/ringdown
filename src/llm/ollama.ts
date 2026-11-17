@@ -8,7 +8,7 @@ export class OllamaClient implements LlmClient {
   constructor(private spec: ResolvedModel) { this.label = modelLabel(spec); }
   async chat(req: ChatRequest): Promise<ChatResponse> {
     const start = performance.now();
-    const data = await requestJson(this.spec, "/api/chat", {
+    const data = await requestJson<{ message?: { content?: unknown }; prompt_eval_count?: unknown; eval_count?: unknown }>(this.spec, "/api/chat", {
       model: this.spec.model, stream: false, think: false, keep_alive: "5m",
       messages: [{ role: "system", content: req.system }, ...req.messages],
       ...(req.jsonSchema ? { format: req.jsonSchema } : {}),

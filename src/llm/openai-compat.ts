@@ -7,7 +7,7 @@ export class OpenAICompatClient implements LlmClient {
   constructor(private spec: ResolvedModel) { this.label = modelLabel(spec); }
   async chat(req: ChatRequest): Promise<ChatResponse> {
     const start = performance.now();
-    const data = await requestJson(this.spec, "/chat/completions", {
+    const data = await requestJson<{ choices?: { message?: { content?: unknown } }[]; usage?: { prompt_tokens?: unknown; completion_tokens?: unknown } }>(this.spec, "/chat/completions", {
       ...this.spec.options, model: this.spec.model, stream: false,
       messages: [{ role: "system", content: req.system }, ...req.messages],
       ...(req.maxTokens ? { max_tokens: req.maxTokens } : {}),
