@@ -31,6 +31,21 @@ function fake(answer: (req: ChatRequest) => unknown | Promise<unknown>) {
 }
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
+it("스키마는 런타임 전용 종료를 막고, 종료 단계로 갈 수 없으면 상담원 연결·수신 거부만 허용", () => {
+  const ctx = context();
+  for (const stage of pack.pack.stages) {
+    ctx.stage = stage;
+    const schema = planSchema(ctx);
+    expect(schema.safeParse({ intent: "yes", end: "pending_confirmation" }).success).toBe(false);
+    expect(schema.safeParse({ intent: "yes", end: "handoff" }).success).toBe(true);
+    const canClose = stage.terminal || stage.next.some(id => pack.pack.stages.find(s => s.id === id)?.terminal);
+    expect(schema.safeParse({ intent: "no", end: "declined" }).success).toBe(Boolean(canClose));
+  }
+  ctx.stage = { ...pack.pack.stages[0]!, terminal: false, next: [] };
+  expect(planSchema(ctx).safeParse({ intent: "no", end: "declined" }).success).toBe(false);
+  expect(planSchema(ctx).safeParse({ intent: "no", end: "opted_out" }).success).toBe(true);
+});
+
 it("스키마는 현재 단계 도구·전이와 선언 슬롯 enum만 허용", () => {
   const ctx = context();
   for (const stage of pack.pack.stages) {
