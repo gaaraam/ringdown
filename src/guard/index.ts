@@ -34,6 +34,7 @@ export function checkPlan(plan: Plan, ctx: TurnContext): string | undefined {
  * - handoff: 어느 단계에서든 허용한다. 런타임이 이관 요청을 등록한다.
  * - 그 밖의 종료: 종료 단계로 전이하거나 이미 종료 단계여야 한다. 질문하면서 통화를 끝내는 것을 막는다.
  * - callback_scheduled: 같은 계획에서 콜백 등록 도구를 실제로 호출해야 한다.
+ * - success: 같은 계획에서 쓰기 도구를 실제로 호출해야 한다.
  */
 /** 수신 거부와 확인 대기는 런타임만 정한다. 두뇌가 수신 거부로 끝내면 협조적인 고객을 다시 못 부르게 된다. */
 const RUNTIME_ENDS = new Set(["opted_out", "pending_confirmation"]);
@@ -45,6 +46,8 @@ function checkEnd(plan: Plan, ctx: TurnContext): string | undefined {
   const target = plan.transition ? ctx.pack.pack.stages.find((s) => s.id === plan.transition) : ctx.stage;
   if (!target?.terminal) return "end_without_terminal_stage";
   if (plan.end === "callback_scheduled" && !has(plan, "call.scheduleCallback")) return "end_without_effect";
+  // 업무 완료로 끝내려면 같은 계획에서 쓰기 도구를 실제로 불러야 한다. 부르지 않고 "설정해 드렸어요"라고 끝내는 것을 막는다.
+  if (plan.end === "success" && !(plan.tools ?? []).some((t) => ctx.pack.pack.tools[t.tool]?.kind === "write")) return "end_without_effect";
   return undefined;
 }
 

@@ -191,6 +191,8 @@ it("종료 권한: 질문하면서 종료·런타임 전용 종료·효과 없�
   expect(checkPlan({ transition: "pitch", end: "pending_confirmation" }, at("verify"))).toBe("end_reserved_for_runtime");
   // 두뇌가 수신 거부로 끝내면 협조적인 고객을 다시 부를 수 없게 된다 (M4 파일럿에서 실제로 발생)
   expect(checkPlan({ transition: "pitch", end: "opted_out" }, at("verify"))).toBe("end_reserved_for_runtime");
+  // 쓰기 없이 성공으로 끝내면 고객에게 거짓 완료 안내가 나간다 (M4 파일럿에서 세 모델 모두 발생)
+  expect(checkPlan({ transition: "close", end: "success" }, at("confirm"))).toBe("end_without_effect");
   expect(checkPlan({ transition: "pitch", end: "declined" }, at("verify"))).toBe("end_without_terminal_stage");
   expect(checkPlan({ end: "success" }, at("confirm"))).toBe("end_without_terminal_stage");
   expect(checkPlan({ transition: "close", end: "callback_scheduled" }, at("pitch"))).toBe("end_without_effect");
