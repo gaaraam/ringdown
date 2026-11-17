@@ -198,6 +198,8 @@ it("종료 권한: 질문하면서 종료·런타임 전용 종료·효과 없�
   const stageWithWrite = loaded.pack.stages.find(s => s.allowTools.includes(write))!.id;
   const agreed = { ...at(stageWithWrite), transcript: [{ role: "user" as const, seq: 0, text: "네, 동의합니다.", startedAt: 0, endedAt: 1 }] };
   expect(checkPlan({ tools: [{ tool: write, args: {} }], setSlots: { consent: true } }, agreed)).toBe("write_param_missing");
+  // 한 계획 안의 같은 쓰기 반복은 이중 반영이므로 거부한다
+  expect(checkPlan({ tools: [{ tool: write, args: {} }, { tool: write, args: {} }], setSlots: { consent: true } }, agreed)).toBe("duplicate_write");
   expect(checkPlan({ transition: "pitch", end: "declined" }, at("verify"))).toBe("end_without_terminal_stage");
   expect(checkPlan({ end: "success" }, at("confirm"))).toBe("end_without_terminal_stage");
   expect(checkPlan({ transition: "close", end: "callback_scheduled" }, at("pitch"))).toBe("end_without_effect");

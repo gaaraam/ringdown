@@ -19,6 +19,9 @@ export function checkPlan(plan: Plan, ctx: TurnContext): string | undefined {
     if (key === "consent" && value === true && (!ctx.stage.requireConsent || classify(user?.text ?? "", pack.intents) !== "yes")) return "consent_not_explicit";
   }
   const consent = plan.setSlots?.consent ?? ctx.slots.consent?.value;
+  // 한 계획에 같은 쓰기를 두 번 넣으면 순번이 달라 멱등 키도 달라지고, 업무 시스템에 이중 반영된다 (M4 야간 실험에서 감사 지표로 발견)
+  const writes = (plan.tools ?? []).filter((t) => pack.tools[t.tool]?.kind === "write").map((t) => t.tool);
+  if (new Set(writes).size !== writes.length) return "duplicate_write";
   for (const call of plan.tools ?? []) {
     if (!ctx.stage.allowTools.includes(call.tool)) return "tool_not_allowed";
     if (pack.tools[call.tool]?.kind === "write" && consent !== true) return "write_without_consent";

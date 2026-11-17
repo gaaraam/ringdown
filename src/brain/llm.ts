@@ -54,6 +54,7 @@ export function rejectionHint(ctx: TurnContext): string | undefined {
       ? `업무 완료로 끝내려면 tools에 ${writes.map(call).join(" 또는 ")}를 넣어 실제로 실행하고, 고객이 동의했다면 setSlots에 consent: true를 넣으세요. 인자는 런타임이 채웁니다. 콜백으로 끝내려면 tools에 ${call("call.scheduleCallback")}를 넣으세요.`
       : `이 단계에서는 업무를 완료할 수 없습니다. 콜백으로 끝내려면 tools에 ${call("call.scheduleCallback")}를 넣고, 아니면 end를 continue로 두세요.`;
   }
+  if (code === "duplicate_write") return "같은 쓰기 도구는 한 계획에 한 번만 넣으세요.";
   if (code === "write_without_consent") return "고객이 이번 단계에서 명시적으로 동의했다면 setSlots에 consent: true를 함께 넣으세요. 동의가 없었다면 tools를 비우고 동의를 물어보세요.";
   if (code === "write_param_missing") {
     const missing = ctx.stage.allowTools.flatMap(t => Object.values(ctx.pack.pack.tools[t]?.kind === "write" ? ctx.pack.pack.tools[t]!.params : {}))
