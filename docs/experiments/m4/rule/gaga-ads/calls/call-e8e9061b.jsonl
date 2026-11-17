@@ -1,0 +1,25 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"ads.getAccount","args":{"advertiserId":"A-2013"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":1200,"latency":{"brain":0,"tool":1200,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":1200,"result":{"status":"error","kind":"timeout","latencyMs":1200}}}
+{"type":"tool.result","at":1317,"latency":{"brain":0,"tool":1317,"tts":0},"callSeq":1,"attempt":{"at":1260,"endedAt":1317,"result":{"status":"ok","data":{"businessName":"스마일치과","balance":55000,"dailySpend":27500,"daysLeft":2,"autoCharge":null},"latencyMs":57}}}
+{"type":"tool.result","at":1317,"latency":{"brain":0,"tool":1317,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"businessName":"스마일치과","balance":55000,"dailySpend":27500,"daysLeft":2,"autoCharge":null},"latencyMs":57},"elapsedMs":1317,"attempts":2}
+{"type":"speech.start","at":1317,"latency":{"brain":0,"tool":1317,"tts":0},"text":"안녕하세요, 가가애즈 AI 상담원입니다. 광고 운영 안내를 위해 연락드렸고, 통화 내용은 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":7175,"latency":{"brain":0,"tool":1317,"tts":0},"text":"스마일치과 광고 담당자분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":10761,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":10798,"latency":{"brain":37,"tool":0,"tts":0},"plan":{"intent":"yes","transition":"pitch","tools":[]},"attempt":0}
+{"type":"brain.compose","at":10798,"latency":{"brain":37,"tool":0,"tts":0},"text":"잔액이 55000원이라 2일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼요."}
+{"type":"brain.latency","at":10798,"latency":{"brain":37,"tool":0,"tts":0},"ms":37}
+{"type":"speech.start","at":10878,"latency":{"brain":37,"tool":0,"tts":80},"text":"잔액이 55000원이라 2일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼요.","filler":false,"fixed":false}
+{"type":"turn.start","at":20607,"latency":{"brain":0,"tool":0,"tts":0},"stage":"pitch","user":"10만으로 해 주세요."}
+{"type":"brain.plan","at":20640,"latency":{"brain":33,"tool":0,"tts":0},"plan":{"intent":"amount_100k","setSlots":{"chargeAmount":"100000"},"transition":"confirm","tools":[]},"attempt":0}
+{"type":"brain.compose","at":20640,"latency":{"brain":33,"tool":0,"tts":0},"text":"잔액이 1만 원 아래로 내려가면 등록된 결제수단으로 10만 원씩 충전돼요. 이대로 설정할까요?"}
+{"type":"brain.latency","at":20640,"latency":{"brain":33,"tool":0,"tts":0},"ms":33}
+{"type":"speech.start","at":20720,"latency":{"brain":33,"tool":0,"tts":80},"text":"잔액이 1만 원 아래로 내려가면 등록된 결제수단으로 10만 원씩 충전돼요. 이대로 설정할까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":27592,"latency":{"brain":0,"tool":0,"tts":0},"stage":"confirm","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":27616,"latency":{"brain":24,"tool":0,"tts":0},"plan":{"intent":"yes","setSlots":{"consent":true},"transition":"close","end":"success","say":"설정해 드렸어요.","tools":[{"tool":"ads.enableAutoCharge","args":{}}]},"attempt":0}
+{"type":"tool.call","at":27616,"latency":{"brain":24,"tool":0,"tts":0},"call":{"tool":"ads.enableAutoCharge","args":{"advertiserId":"A-2013","amount":"100000"}},"callSeq":2,"consent":true}
+{"type":"tool.result","at":27778,"latency":{"brain":24,"tool":162,"tts":0},"callSeq":2,"attempt":{"at":27616,"endedAt":27778,"result":{"status":"ok","data":{"businessName":"스마일치과","balance":55000,"dailySpend":27500,"daysLeft":2,"autoCharge":{"advertiserId":"A-2013","amount":"100000"}},"latencyMs":162},"idempotencyKey":"call-e8e9061b:ads.enableAutoCharge:2"}}
+{"type":"tool.result","at":27778,"latency":{"brain":24,"tool":162,"tts":0},"callSeq":2,"result":{"status":"ok","data":{"businessName":"스마일치과","balance":55000,"dailySpend":27500,"daysLeft":2,"autoCharge":{"advertiserId":"A-2013","amount":"100000"}},"latencyMs":162},"elapsedMs":162,"attempts":1}
+{"type":"brain.compose","at":27778,"latency":{"brain":24,"tool":162,"tts":0},"text":"설정해 드렸어요."}
+{"type":"brain.latency","at":27778,"latency":{"brain":24,"tool":162,"tts":0},"ms":24}
+{"type":"speech.start","at":27858,"latency":{"brain":24,"tool":162,"tts":80},"text":"설정해 드렸어요.","filler":false,"fixed":false}
+{"type":"call.end","at":28858,"latency":{"brain":24,"tool":162,"tts":80},"outcome":"success","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[],"brain":"rule","durationMs":27541}

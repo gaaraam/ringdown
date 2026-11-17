@@ -1,0 +1,9 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"ads.getAccount","args":{"advertiserId":"A-2005"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":74,"latency":{"brain":0,"tool":74,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":74,"result":{"status":"ok","data":{"businessName":"스마일치과","balance":55000,"dailySpend":27500,"daysLeft":2,"autoCharge":null},"latencyMs":74}}}
+{"type":"tool.result","at":74,"latency":{"brain":0,"tool":74,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"businessName":"스마일치과","balance":55000,"dailySpend":27500,"daysLeft":2,"autoCharge":null},"latencyMs":74},"elapsedMs":74,"attempts":1}
+{"type":"speech.start","at":74,"latency":{"brain":0,"tool":74,"tts":0},"text":"안녕하세요, 가가애즈 AI 상담원입니다. 광고 운영 안내를 위해 연락드렸고, 통화 내용은 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5932,"latency":{"brain":0,"tool":74,"tts":0},"text":"스마일치과 광고 담당자분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":9947,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"다시는 전화하지 마세요."}
+{"type":"guard.reject","at":9947,"latency":{"brain":0,"tool":0,"tts":0},"layer":"input","reason":"opted_out"}
+{"type":"speech.start","at":9947,"latency":{"brain":0,"tool":0,"tts":0},"text":"연락드리지 않겠습니다. 감사합니다.","filler":false,"fixed":false}
+{"type":"call.end","at":12090,"latency":{"brain":0,"tool":0,"tts":0},"outcome":"opted_out","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[],"brain":"rule","durationMs":12016}

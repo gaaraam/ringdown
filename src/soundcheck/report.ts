@@ -8,8 +8,9 @@ export const MetricsSchema = z.record(z.enum(METRICS), MetricSchema);
 export const Fault = z.enum(["clean", "slow", "flaky", "down", "lost-ack"]);
 export const CallSummary = z.strictObject({ callId: z.string().regex(/^call-[a-zA-Z0-9-]+$/), persona: z.string(), fault: Fault, seed: z.number().int(), outcome: Outcome, trace: z.string() });
 export const Report = z.strictObject({
-  schemaVersion: z.literal(1), runId: z.string(), gitSha: z.string(), pack: z.string(), packDir: z.string(), brain: z.literal("rule"),
-  models: z.record(z.enum(ROLES), ModelSpec.extend({ role: z.enum(ROLES), source: z.enum(["default","config","env","cli"]), label: z.string(), used: z.literal(false) })),
+  schemaVersion: z.literal(1), runId: z.string(), gitSha: z.string(), pack: z.string(), packDir: z.string(), brain: z.enum(["rule", "llm"]),
+  diagnostics: z.strictObject({ brain_latency_p50: MetricSchema, brain_latency_p95: MetricSchema, control_rejections: z.number().nonnegative(), output_guard_hits: z.number().nonnegative() }).optional(),
+  models: z.record(z.enum(ROLES), ModelSpec.extend({ role: z.enum(ROLES), source: z.enum(["default","config","env","cli"]), label: z.string(), used: z.boolean() })),
   seeds: z.array(z.number().int()).min(1),
   matrix: z.strictObject({ personas: z.number().int().positive(), faults: z.array(Fault).min(1), calls: z.number().int().positive() }),
   metadata: z.strictObject({ circuitBreaker: z.literal("per-call"), eligibility: z.literal("all-matrix-calls"), disclosureInBargeIn: z.literal(false), simulation: z.literal(true) }),

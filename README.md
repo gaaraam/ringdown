@@ -91,3 +91,21 @@ npm run visual                 # 설치된 headless Chrome으로 14장 캡처 + 
 ```
 
 기본 Chrome 경로는 `/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`이에요. 별도 브라우저 다운로드·서버 준비·프런트엔드 빌드는 필요하지 않아요. 임시 포트의 서버와 독립된 브라우저를 자동으로 닫아요. 시드 7(부분 캠페인은 8), 고정 캠페인 시작 시각, 1440×1000, 로컬 시스템 글꼴로 `docs/screenshots/{light,dark}-{playground,calls,soundcheck,ops-overview,ops-inbox,ops-history,ops-campaigns}.png`를 만들어요. 운영 데이터는 임시 디렉터리에 저장하고 종료 시 삭제해요. 시스템 글꼴과 Chrome 버전이 같은 환경에서는 재실행 결과가 같아요. 테마는 시스템 설정을 따르거나 화면 하단에서 직접 바꿀 수 있어요.
+
+## 로컬 LLM과 모델 비교 (M4)
+
+기본 Brain은 `rule`이다. Ollama에 모델을 설치한 뒤 `--brain llm`으로 실제 추론을 선택한다.
+
+```bash
+npm run ringdown -- models --check
+npm run ringdown -- call --pack packs/gaga-ads --persona grateful-owner --brain llm
+npm run soundcheck -- --pack packs/gaga-seller --pack packs/gaga-ads --brain llm --model agent=ollama/qwen3:8b --faults clean,flaky --seeds 1
+```
+
+모델 해석 순서는 기본값 → 설정 파일 → 환경변수 → `--model`이다. `openai-compat`는 `/v1`을 포함한 서버 URL을 spec의 `@` 뒤에 지정한다. 공급자는 JSON 스키마 출력을 요청하고 LlmBrain이 같은 스키마로 응답을 검증한다. OpenAI 호환 모드는 선택 필드와 자유 형식 도구 인자를 위해 `strict:false`를 사용하므로 서버의 스키마 강제 능력에만 의존하지 않는다.
+
+스키마 오류·HTTP 오류·타임아웃은 한 번 재요청한 뒤 해당 턴을 RuleBrain으로 대체한다. 정책 거부에 대한 런타임 재요청은 별도이며, 무동의 쓰기는 여전히 차단한다. 비스트리밍 추론 전체 시간을 시뮬레이션 시계에 더하므로 filler는 가상 시각의 대기 안내다. 실제 오디오를 추론 중 송출하는 구현은 아니다.
+
+`report.json`은 역할별 해석된 모델과 `used`, 선택적 `diagnostics`의 Brain 지연 p50/p95 및 제어·출력 가드 횟수를 남긴다. `turn_latency_p95`는 filler까지 포함한 첫 발화 지연이므로 실제 답변 완성 시간과 다르다. 기존 v1 보고서도 읽을 수 있다. 기준선 비교·갱신은 `rule`에만 허용한다.
+
+`npm run ci`는 가짜 클라이언트로 검증하여 Ollama 없이 통과한다. 실제 서버 테스트는 `RINGDOWN_LIVE=1 npm test -- tests/llm.test.ts`로 선택한다. 실제 비교 결과와 재현 조건은 [M4 모델 비교](docs/experiments/2026-11-m4-model-comparison.md)에 기록한다. 페르소나는 계속 scripted이며 LLM 페르소나는 아직 구현하지 않았다.

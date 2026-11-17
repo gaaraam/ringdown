@@ -1,0 +1,20 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"ads.getAccount","args":{"advertiserId":"A-2001"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":94,"latency":{"brain":0,"tool":94,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":94,"result":{"status":"ok","data":{"businessName":"한입베이커리","balance":18000,"dailySpend":6000,"daysLeft":3,"autoCharge":null},"latencyMs":94}}}
+{"type":"tool.result","at":94,"latency":{"brain":0,"tool":94,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"businessName":"한입베이커리","balance":18000,"dailySpend":6000,"daysLeft":3,"autoCharge":null},"latencyMs":94},"elapsedMs":94,"attempts":1}
+{"type":"speech.start","at":94,"latency":{"brain":0,"tool":94,"tts":0},"text":"안녕하세요, 가가애즈 AI 상담원입니다. 광고 운영 안내를 위해 연락드렸고, 통화 내용은 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5952,"latency":{"brain":0,"tool":94,"tts":0},"text":"한입베이커리 광고 담당자분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":9681,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"speech.start","at":10481,"latency":{"brain":9846.871207999999,"tool":0,"tts":0},"text":"네, 잠시만요.","filler":true,"fixed":false}
+{"type":"speech.start","at":11996,"latency":{"brain":9846.871207999999,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"speech.start","at":14368,"latency":{"brain":9846.871207999999,"tool":0,"tts":0},"text":"네, 잠시만요.","filler":true,"fixed":false}
+{"type":"speech.start","at":15883,"latency":{"brain":9846.871207999999,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"speech.start","at":18255,"latency":{"brain":9846.871207999999,"tool":0,"tts":0},"text":"네, 잠시만요.","filler":true,"fixed":false}
+{"type":"brain.plan","at":19527.871207999997,"latency":{"brain":9846.871207999999,"tool":0,"tts":0},"plan":{"intent":"verify","transition":"pitch","setSlots":{},"end":"pending_confirmation"},"attempt":0}
+{"type":"speech.start","at":19770,"latency":{"brain":16234.343332999999,"tool":0,"tts":0},"text":"네, 잠시만요.","filler":true,"fixed":false}
+{"type":"speech.start","at":21285,"latency":{"brain":16234.343332999999,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"speech.start","at":23657,"latency":{"brain":16234.343332999999,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"brain.compose","at":25915.343332999997,"latency":{"brain":16234.343332999999,"tool":0,"tts":0},"text":"한입베이커리님, 현재 광고 잔액이 18,000원으로 3일 후에 광고가 멈출 예정입니다. 1만 원 아래로 내려가면 자동으로 충전을 원하시나요? 5만 원, 10만 원, 20만 원 중 선택 가능합니다."}
+{"type":"brain.latency","at":25915.343332999997,"latency":{"brain":16234.343332999999,"tool":0,"tts":0},"ms":16234.343332999999}
+{"type":"guard.reject","at":25995.343332999997,"latency":{"brain":16234.343332999999,"tool":0,"tts":80},"layer":"output","reason":"speech_length"}
+{"type":"speech.start","at":25995.343332999997,"latency":{"brain":16234.343332999999,"tool":0,"tts":80},"text":"한입베이커리님, 현재 광고 잔액이 18,000원으로 3일 후에 광고가 멈출 예정입니다. 1만 원 아래로 내려가면 자동으로 충전을 원하시나요?","filler":false,"fixed":false}
+{"type":"call.end","at":34281.343333,"latency":{"brain":16234.343332999999,"tool":0,"tts":80},"outcome":"pending_confirmation","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":1,"longCall":false,"policyViolations":0},"pending":[],"brain":"llm","durationMs":34187.343333}

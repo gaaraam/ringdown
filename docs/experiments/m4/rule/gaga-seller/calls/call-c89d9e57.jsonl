@@ -1,0 +1,10 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"seller.lookup","args":{"sellerId":"S-1029"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":190,"latency":{"brain":0,"tool":190,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":190,"result":{"status":"ok","data":{"storeName":"모던키친","pendingReturns":4,"monthlyReturnShippingCost":38000,"returnPolicy":null},"latencyMs":190}}}
+{"type":"tool.result","at":190,"latency":{"brain":0,"tool":190,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"storeName":"모던키친","pendingReturns":4,"monthlyReturnShippingCost":38000,"returnPolicy":null},"latencyMs":190},"elapsedMs":190,"attempts":1}
+{"type":"speech.start","at":190,"latency":{"brain":0,"tool":190,"tts":0},"text":"안녕하세요, 가가마켓 판매자센터 AI 상담원입니다. 통화 내용은 품질 관리를 위해 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5762,"latency":{"brain":0,"tool":190,"tts":0},"text":"모던키친 운영하시는 분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":11548,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"아니요. 필요 없어요."}
+{"type":"brain.plan","at":11600,"latency":{"brain":52,"tool":0,"tts":0},"plan":{"intent":"no","transition":"close","end":"declined","say":"실례했습니다. 담당자분께 다시 연락드릴게요.","tools":[]},"attempt":0}
+{"type":"brain.latency","at":11600,"latency":{"brain":52,"tool":0,"tts":0},"ms":52}
+{"type":"speech.start","at":11680,"latency":{"brain":52,"tool":0,"tts":80},"text":"실례했습니다. 담당자분께 다시 연락드릴게요.","filler":false,"fixed":false}
+{"type":"call.end","at":14395,"latency":{"brain":52,"tool":0,"tts":80},"outcome":"declined","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[],"brain":"rule","durationMs":14205}

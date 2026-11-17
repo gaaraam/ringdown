@@ -1,0 +1,31 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"seller.lookup","args":{"sellerId":"S-1027"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":66,"latency":{"brain":0,"tool":66,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":66,"result":{"status":"ok","data":{"storeName":"단단스포츠","pendingReturns":7,"monthlyReturnShippingCost":91000,"returnPolicy":null},"latencyMs":66}}}
+{"type":"tool.result","at":66,"latency":{"brain":0,"tool":66,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"storeName":"단단스포츠","pendingReturns":7,"monthlyReturnShippingCost":91000,"returnPolicy":null},"latencyMs":66},"elapsedMs":66,"attempts":1}
+{"type":"speech.start","at":66,"latency":{"brain":0,"tool":66,"tts":0},"text":"안녕하세요, 가가마켓 판매자센터 AI 상담원입니다. 통화 내용은 품질 관리를 위해 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5638,"latency":{"brain":0,"tool":66,"tts":0},"text":"단단스포츠 운영하시는 분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":9224,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":9274,"latency":{"brain":50,"tool":0,"tts":0},"plan":{"intent":"yes","transition":"explain","tools":[]},"attempt":0}
+{"type":"brain.compose","at":9274,"latency":{"brain":50,"tool":0,"tts":0},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설정해 드릴 수 있는데, 무료, 3천 원, 5천 원 중 어떤 걸로 할까요?"}
+{"type":"brain.latency","at":9274,"latency":{"brain":50,"tool":0,"tts":0},"ms":50}
+{"type":"speech.start","at":9354,"latency":{"brain":50,"tool":0,"tts":80},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설정해 드릴 수 있는데, 무료, 3천 원, 5천 원 중 어떤 걸로 할까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":20798,"latency":{"brain":0,"tool":0,"tts":0},"stage":"explain","user":"어떻게 변경하나요? 궁금해요."}
+{"type":"brain.plan","at":20846,"latency":{"brain":48,"tool":0,"tts":0},"plan":{"intent":"question","tools":[{"tool":"kb.search","args":{"query":"어떻게 변경하나요? 궁금해요."}}]},"attempt":0}
+{"type":"tool.call","at":20846,"latency":{"brain":48,"tool":0,"tts":0},"call":{"tool":"kb.search","args":{"query":"어떻게 변경하나요? 궁금해요."}},"builtin":true}
+{"type":"tool.result","at":20846,"latency":{"brain":48,"tool":0,"tts":0},"result":{"call":{"tool":"kb.search","args":{"query":"어떻게 변경하나요? 궁금해요."}},"status":"ok","data":[{"chunkId":"kb/return-policy.md#변경","text":"판매자센터 > 배송 설정 > 반품 정책에서 언제든 바꿀 수 있습니다. 변경 횟수 제한은 없습니다.","score":2.8712850889330945}]},"citations":["kb/return-policy.md#변경"]}
+{"type":"brain.compose","at":20846,"latency":{"brain":48,"tool":0,"tts":0},"text":"판매자센터 > 배송 설정 > 반품 정책에서 언제든 바꿀 수 있습니다. 변경 횟수 제한은 없습니다."}
+{"type":"brain.latency","at":20846,"latency":{"brain":48,"tool":0,"tts":0},"ms":48}
+{"type":"speech.start","at":20926,"latency":{"brain":48,"tool":0,"tts":80},"text":"판매자센터 > 배송 설정 > 반품 정책에서 언제든 바꿀 수 있습니다. 변경 횟수 제한은 없습니다.","filler":false,"fixed":false}
+{"type":"turn.start","at":27512,"latency":{"brain":0,"tool":0,"tts":0},"stage":"explain","user":"3천으로 해 주세요."}
+{"type":"brain.plan","at":27566,"latency":{"brain":54,"tool":0,"tts":0},"plan":{"intent":"plan_3000","setSlots":{"returnPlan":"paid-3000"},"transition":"confirm","tools":[]},"attempt":0}
+{"type":"brain.compose","at":27566,"latency":{"brain":54,"tool":0,"tts":0},"text":"반품 배송비 3천 원으로 설정할게요. 진행해도 될까요?"}
+{"type":"brain.latency","at":27566,"latency":{"brain":54,"tool":0,"tts":0},"ms":54}
+{"type":"speech.start","at":27646,"latency":{"brain":54,"tool":0,"tts":80},"text":"반품 배송비 3천 원으로 설정할게요. 진행해도 될까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":32089,"latency":{"brain":0,"tool":0,"tts":0},"stage":"confirm","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":32118,"latency":{"brain":29,"tool":0,"tts":0},"plan":{"intent":"yes","setSlots":{"consent":true},"transition":"close","end":"success","say":"설정해 드렸어요.","tools":[{"tool":"seller.setReturnPolicy","args":{}}]},"attempt":0}
+{"type":"tool.call","at":32118,"latency":{"brain":29,"tool":0,"tts":0},"call":{"tool":"seller.setReturnPolicy","args":{"sellerId":"S-1027","plan":"paid-3000"}},"callSeq":2,"consent":true}
+{"type":"tool.result","at":32218,"latency":{"brain":29,"tool":100,"tts":0},"callSeq":2,"attempt":{"at":32118,"endedAt":32218,"result":{"status":"ok","data":{"storeName":"단단스포츠","pendingReturns":7,"monthlyReturnShippingCost":91000,"returnPolicy":{"sellerId":"S-1027","plan":"paid-3000"}},"latencyMs":100},"idempotencyKey":"call-14b4fd19:seller.setReturnPolicy:2"}}
+{"type":"tool.result","at":32218,"latency":{"brain":29,"tool":100,"tts":0},"callSeq":2,"result":{"status":"ok","data":{"storeName":"단단스포츠","pendingReturns":7,"monthlyReturnShippingCost":91000,"returnPolicy":{"sellerId":"S-1027","plan":"paid-3000"}},"latencyMs":100},"elapsedMs":100,"attempts":1}
+{"type":"brain.compose","at":32218,"latency":{"brain":29,"tool":100,"tts":0},"text":"설정해 드렸어요."}
+{"type":"brain.latency","at":32218,"latency":{"brain":29,"tool":100,"tts":0},"ms":29}
+{"type":"speech.start","at":32298,"latency":{"brain":29,"tool":100,"tts":80},"text":"설정해 드렸어요.","filler":false,"fixed":false}
+{"type":"call.end","at":33298,"latency":{"brain":29,"tool":100,"tts":80},"outcome":"success","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[],"brain":"rule","durationMs":33232}

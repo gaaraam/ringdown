@@ -1,0 +1,18 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"seller.lookup","args":{"sellerId":"S-1016"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":122,"latency":{"brain":0,"tool":122,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":122,"result":{"status":"ok","data":{"storeName":"꼬마옷장","pendingReturns":9,"monthlyReturnShippingCost":120000,"returnPolicy":null},"latencyMs":122}}}
+{"type":"tool.result","at":122,"latency":{"brain":0,"tool":122,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"storeName":"꼬마옷장","pendingReturns":9,"monthlyReturnShippingCost":120000,"returnPolicy":null},"latencyMs":122},"elapsedMs":122,"attempts":1}
+{"type":"speech.start","at":122,"latency":{"brain":0,"tool":122,"tts":0},"text":"안녕하세요, 가가마켓 판매자센터 AI 상담원입니다. 통화 내용은 품질 관리를 위해 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5694,"latency":{"brain":0,"tool":122,"tts":0},"text":"꼬마옷장 운영하시는 분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":9137,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"speech.start","at":9937,"latency":{"brain":3183.3532920000143,"tool":0,"tts":0},"text":"네, 확인해 볼게요.","filler":true,"fixed":false}
+{"type":"speech.start","at":11737,"latency":{"brain":3183.3532920000143,"tool":0,"tts":0},"text":"네, 확인해 볼게요.","filler":true,"fixed":false}
+{"type":"brain.plan","at":12320.353292000014,"latency":{"brain":3183.3532920000143,"tool":0,"tts":0},"plan":{"intent":"verify","transition":"explain","setSlots":{"consent":false},"end":"pending_confirmation"},"attempt":0}
+{"type":"speech.start","at":13537,"latency":{"brain":9715.753792000003,"tool":0,"tts":0},"text":"네, 확인해 볼게요.","filler":true,"fixed":false}
+{"type":"speech.start","at":15337,"latency":{"brain":9715.753792000003,"tool":0,"tts":0},"text":"네, 확인해 볼게요.","filler":true,"fixed":false}
+{"type":"speech.start","at":17137,"latency":{"brain":9715.753792000003,"tool":0,"tts":0},"text":"네, 확인해 볼게요.","filler":true,"fixed":false}
+{"type":"brain.compose","at":18852.753792000003,"latency":{"brain":9715.753792000003,"tool":0,"tts":0},"text":"꼬마옷장 판매자님, 반품 배송비 정책이 현재 설정되어 있지 않아 반품 시 배송비를 모두 판매자님께서 부담하게 됩니다. 무료 배송, 3천 원 배송비, 또는 5천 원 배송비 중 어떤 옵션으로 설정하시겠습니까? 설정을 원하신다면 지금 바로 도와드릴 수 있습니다."}
+{"type":"brain.latency","at":18852.753792000003,"latency":{"brain":9715.753792000003,"tool":0,"tts":0},"ms":9715.753792000003}
+{"type":"guard.reject","at":18932.753792000003,"latency":{"brain":9715.753792000003,"tool":0,"tts":80},"layer":"output","reason":"speech_length"}
+{"type":"speech.start","at":18932.753792000003,"latency":{"brain":9715.753792000003,"tool":0,"tts":80},"text":"꼬마옷장 판매자님, 반품 배송비 정책이 현재 설정되어 있지 않아 반품 시 배송비를 모두 판매자님께서 부담하게 됩니다. 무료 배송, 3천 원 배송비, 또는 5천 원 배송비 중 어떤 옵션으로 설정하시겠습니까?","filler":false,"fixed":false}
+{"type":"speech.interrupted","at":28932.753792000003,"latency":{"brain":9715.753792000003,"tool":0,"tts":80},"intended":"꼬마옷장 판매자님, 반품 배송비 정책이 현재 설정되어 있지 않아 반품 시 배송비를 모두 판매자님께서 부담하게 됩니다. 무료 배송, 3천 원 배송비, 또는 5천 원 배송비 중 어떤 옵션으로 설정하시겠습니까?","heard":"꼬마옷장 판매자님, 반품 배송비 정책이 현재 설정되어 있지 않아 반품 시 배송비를 모두 판매자님께서 부담하게 됩니다. 무료 배송, 3천 원 배송비, 또는 5천 원 배송비 중 어떤 옵"}
+{"type":"call.end","at":28932.753792000003,"latency":{"brain":9715.753792000003,"tool":0,"tts":80},"outcome":"pending_confirmation","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":1,"longCall":false,"policyViolations":0},"pending":[],"brain":"llm","durationMs":28810.753792000003}

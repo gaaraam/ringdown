@@ -1,3 +1,4 @@
+import "../llm/providers.ts";
 import { parseArgs } from "node:util";
 import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -13,7 +14,8 @@ import { writeRun } from "./io.ts";
 export async function soundcheck(args: string[]): Promise<number> {
   const {values} = parseArgs({args, options:{ pack:{type:"string",multiple:true}, faults:{type:"string",default:"all"}, seeds:{type:"string",default:"3"}, out:{type:"string",default:"runs"}, baseline:{type:"boolean"}, "update-baseline":{type:"boolean"}, brain:{type:"string",default:"rule"}, config:{type:"string",default:"ringdown.config.yaml"}, model:{type:"string",multiple:true} }});
   if (!values.pack?.length || new Set(values.pack).size !== values.pack.length) throw Error("중복 없는 --pack이 필요합니다");
-  if (values.brain !== "rule") throw Error("현재 rule만 지원합니다");
+  if (values.brain !== "rule" && values.brain !== "llm") throw Error("--brain은 rule 또는 llm입니다");
+  if (values.brain === "llm" && (values.baseline || values["update-baseline"])) throw Error("rule 기준선 비교·갱신은 rule 모드에서만 가능합니다");
   const count=Number(values.seeds);
   if (!Number.isSafeInteger(count) || count < 1) throw Error("--seeds는 양의 정수여야 합니다");
   const seeds=Array.from({length:count},(_,i)=>i+1);
@@ -23,7 +25,7 @@ export async function soundcheck(args: string[]): Promise<number> {
   for (const dir of values.pack) {
     const loaded=loadPack(dir); if (!loaded.ok) throw Error(JSON.stringify(loaded.issues));
     const runId=`${new Date().toISOString().replace(/[:.]/g,"-")}-${loaded.value.pack.id}-${randomUUID().slice(0,8)}`;
-    const result=await runMatrix(loaded.value,{faults:values.faults === "all" ? FAULT_IDS : values.faults!.split(","),seeds,models,gitSha,runId});
+    const result=await runMatrix(loaded.value,{faults:values.faults === "all" ? FAULT_IDS : values.faults!.split(","),seeds,models,gitSha,runId,brain:values.brain});
     const file=path.join("baselines",`${loaded.value.pack.id}.json`); let comparison="";
     if (values.baseline) {
       const old=Baseline.parse(JSON.parse(readFileSync(file,"utf8")));

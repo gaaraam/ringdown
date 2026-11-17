@@ -6,7 +6,7 @@ import { Outcome } from "../pack/schema.ts";
 import { Fault, Report } from "./report.ts";
 import type { runMatrix } from "./runner.ts";
 
-export const DEFINITIONS = `시뮬레이션 기준 · rule / scripted · 외부 LLM·실제 음성·업무 API 호출 없음.
+export const DEFINITIONS = `시뮬레이션 기준 · scripted 페르소나 · 실제 음성·업무 API 호출 없음. LLM 모드는 실제 추론 시간을 가상 시계에 반영한다.
 - 대상 통화: 전체 페르소나 × 장애 × 시드. 거절·바쁨·down도 제외하지 않는다.
 - goal_rate: 업무 상태 성공 / 대상 통화. acceptable_rate: 성공 또는 Pack 허용 종료 / 대상 통화.
 - barge_in_rate: 고정 고지를 제외한 에이전트 턴의 끼어들기 비율(대기 멘트 포함).
@@ -22,10 +22,11 @@ export const DEFINITIONS = `시뮬레이션 기준 · rule / scripted · 외부 
 export function markdown(r: Report): string {
   const fmt = (v: number | null) => v === null ? "관측 없음" : v.toFixed(4);
   return `# Soundcheck ${r.pack}: ${r.pass ? "통과" : "실패"}\n\n${r.runId} · git ${r.gitSha}\n\n| 지표 | 값 | 95% CI | n |\n|---|---:|---|---:|\n` + Object.entries(r.metrics).map(([k,m]) => `| ${k} | ${fmt(m.value)} | ${m.ci95?.map(fmt).join(" ~ ") ?? "—"} | ${m.n} |`).join("\n") +
+    (r.diagnostics ? `\n\n## Brain 진단\n\n- 턴 지연 p50/p95: ${fmt(r.diagnostics.brain_latency_p50.value)} / ${fmt(r.diagnostics.brain_latency_p95.value)} ms (n=${r.diagnostics.brain_latency_p95.n})\n- 제어 거부: ${r.diagnostics.control_rejections}회 · 출력 가드: ${r.diagnostics.output_guard_hits}회\n` : "") +
     `\n\n## 게이트\n\n| 지표 | 기준 | 값 | 판정 |\n|---|---|---:|---|\n` + r.gates.map(g => `| ${g.metric} | ${g.op} ${g.threshold} | ${fmt(g.value)} | ${g.pass ? "통과" : "실패"} |`).join("\n") +
     `\n\n## 장애별\n\n| 장애 | 성공률 | 허용률 | 장애 생존율 | 지연 p95(ms) |\n|---|---:|---:|---:|---:|\n` + Object.entries(r.breakdowns.fault).map(([f,m]) => `| ${f} | ${fmt(m.goal_rate.value)} | ${fmt(m.acceptable_rate.value)} | ${fmt(m.degraded_survival.value)} | ${fmt(m.turn_latency_p95.value)} |`).join("\n") +
     `\n\n## 주요 실패 이유\n\n` + (Object.entries(r.failures.reduce<Record<string,number>>((a,f) => { a[f.reason]=(a[f.reason]??0)+1; return a; },{})).sort((a,b) => b[1]-a[1]).slice(0,10).map(([reason,n]) => `- ${reason}: ${n}건`).join("\n") || "통화 단위 실패 없음(집계 게이트 실패와 별개).") +
-    `\n\n## 정의와 한계\n\n${DEFINITIONS}\n\n모델 설정(모두 미사용): ${Object.entries(r.models).map(([role,m]) => `${role}=${m.label} (${m.source})`).join(", ")}\n`;
+    `\n\n## 정의와 한계\n\n${DEFINITIONS}\n\nBrain: ${r.brain} · 게이트는 CI 하한이 아닌 점추정 기준.\n\n모델 설정: ${Object.entries(r.models).map(([role,m]) => `${role}=${m.label} (${m.source}, used=${m.used})`).join(", ")}\n`;
 }
 export function writeRun(dir: string, result: Awaited<ReturnType<typeof runMatrix>>, comparison = "") {
   const report = Report.parse(result.report);

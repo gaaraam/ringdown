@@ -1,6 +1,6 @@
 /**
  * LLM 클라이언트 경계. Brain과 페르소나는 이 인터페이스만 안다.
- * 공급자 구현(ollama, openai-compat)은 M4에서 추가하고, 모델은 src/config/models.ts가 정한다.
+ * 공급자 구현은 providers.ts에서 등록하고, 모델은 src/config/models.ts가 정한다.
  */
 import type { ResolvedModel } from "../config/models.ts";
 

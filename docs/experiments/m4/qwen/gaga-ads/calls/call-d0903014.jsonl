@@ -1,0 +1,13 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"ads.getAccount","args":{"advertiserId":"A-2030"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":64,"latency":{"brain":0,"tool":64,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":64,"result":{"status":"ok","data":{"businessName":"동네세탁소","balance":12000,"dailySpend":3000,"daysLeft":4,"autoCharge":null},"latencyMs":64}}}
+{"type":"tool.result","at":64,"latency":{"brain":0,"tool":64,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"businessName":"동네세탁소","balance":12000,"dailySpend":3000,"daysLeft":4,"autoCharge":null},"latencyMs":64},"elapsedMs":64,"attempts":1}
+{"type":"speech.start","at":64,"latency":{"brain":0,"tool":64,"tts":0},"text":"안녕하세요, 가가애즈 AI 상담원입니다. 광고 운영 안내를 위해 연락드렸고, 통화 내용은 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5922,"latency":{"brain":0,"tool":64,"tts":0},"text":"동네세탁소 광고 담당자분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":10366,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"지금 바빠요. 나중에 연락 주세요."}
+{"type":"speech.start","at":11166,"latency":{"brain":919.7005840000056,"tool":0,"tts":0},"text":"네, 잠시만요.","filler":true,"fixed":false}
+{"type":"brain.plan","at":11285.700584000006,"latency":{"brain":919.7005840000056,"tool":0,"tts":0},"plan":{"intent":"busy","say":"편하신 시간에 다시 연락드릴게요.","end":"callback_scheduled"},"attempt":0}
+{"type":"brain.latency","at":11285.700584000006,"latency":{"brain":919.7005840000056,"tool":0,"tts":0},"ms":919.7005840000056}
+{"type":"speech.start","at":11881,"latency":{"brain":919.7005840000056,"tool":0,"tts":80},"text":"편하신 시간에 다시 연락드릴게요.","filler":false,"fixed":false}
+{"type":"tool.call","at":13881,"latency":{"brain":919.7005840000056,"tool":0,"tts":80},"call":{"tool":"call.scheduleCallback","args":{}},"builtin":true}
+{"type":"tool.result","at":13881,"latency":{"brain":919.7005840000056,"tool":0,"tts":80},"result":{"call":{"tool":"call.scheduleCallback","args":{}},"status":"ok","data":{}},"citations":[]}
+{"type":"call.end","at":13881,"latency":{"brain":919.7005840000056,"tool":0,"tts":80},"outcome":"callback_scheduled","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[{"kind":"callback"}],"brain":"llm","durationMs":13817}

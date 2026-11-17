@@ -90,7 +90,7 @@ it("CLI 실제 게이트 통과/실패 종료 코드",()=>{
 });
 it("Brain 대체 이벤트를 런타임에서 소비해 한 번씩 계수",async()=>{
   let pending:string[]=[];
-  const brain={id:"fallback-test",takeFallbacks:()=>{const taken=pending;pending=[];return taken;},plan:async()=>{pending.push("스키마 오류");return {say:"감사합니다.",end:"declined" as const};},compose:async()=>"감사합니다."};
+  const brain={id:"fallback-test",takeFallbacks:()=>{const taken=pending;pending=[];return taken;},plan:async()=>{pending.push("스키마 오류");return {say:"감사합니다.",transition:"close",end:"declined" as const};},compose:async()=>"감사합니다."};
   const c=await runCall(packs[0]!,packs[0]!.personas[0]!,"clean",1,{brain});
   expect(metrics([c],[]).brain_fallbacks.value).toBe(1);
 });

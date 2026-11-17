@@ -1,0 +1,1243 @@
+{
+  "schemaVersion": 1,
+  "runId": "main-ollama_gemma3_12b-gaga-clinic",
+  "gitSha": "483a1cc83c044ddd2337b472264aa98e18643b76",
+  "pack": "gaga-clinic@1",
+  "packDir": "packs/gaga-clinic",
+  "brain": "llm",
+  "diagnostics": {
+    "brain_latency_p50": {
+      "value": 4004.641667000018,
+      "ci95": null,
+      "n": 290
+    },
+    "brain_latency_p95": {
+      "value": 12517.727167000063,
+      "ci95": null,
+      "n": 290
+    },
+    "control_rejections": 24,
+    "output_guard_hits": 22
+  },
+  "models": {
+    "agent": {
+      "provider": "ollama",
+      "model": "gemma3:12b",
+      "baseUrl": "http://localhost:11434",
+      "options": {
+        "temperature": 0,
+        "seed": 1,
+        "num_ctx": 8192
+      },
+      "timeoutMs": 30000,
+      "role": "agent",
+      "source": "cli",
+      "label": "ollama/gemma3:12b",
+      "used": true
+    },
+    "persona": {
+      "provider": "ollama",
+      "model": "gemma3:12b",
+      "baseUrl": "http://localhost:11434",
+      "options": {
+        "temperature": 0.8
+      },
+      "timeoutMs": 30000,
+      "role": "persona",
+      "source": "default",
+      "label": "ollama/gemma3:12b",
+      "used": false
+    },
+    "judge": {
+      "provider": "none",
+      "model": "none",
+      "options": {},
+      "timeoutMs": 30000,
+      "role": "judge",
+      "source": "default",
+      "label": "none/none",
+      "used": false
+    }
+  },
+  "seeds": [
+    1
+  ],
+  "matrix": {
+    "personas": 30,
+    "faults": [
+      "clean",
+      "flaky"
+    ],
+    "calls": 60
+  },
+  "metadata": {
+    "circuitBreaker": "per-call",
+    "eligibility": "all-matrix-calls",
+    "disclosureInBargeIn": false,
+    "simulation": true
+  },
+  "metrics": {
+    "goal_rate": {
+      "value": 0.35,
+      "ci95": [
+        0.24167774406017556,
+        0.47637381158245135
+      ],
+      "n": 60
+    },
+    "acceptable_rate": {
+      "value": 0.9666666666666667,
+      "ci95": [
+        0.886362257256914,
+        0.9908106807438021
+      ],
+      "n": 60
+    },
+    "barge_in_rate": {
+      "value": 0.00508130081300813,
+      "ci95": [
+        0.0021723225739344763,
+        0.011839499563211245
+      ],
+      "n": 984
+    },
+    "long_call_rate": {
+      "value": 0.03333333333333333,
+      "ci95": [
+        0.009189319256197877,
+        0.113637742743086
+      ],
+      "n": 60
+    },
+    "turn_latency_p95": {
+      "value": 800,
+      "ci95": null,
+      "n": 294
+    },
+    "dead_air_incidents": {
+      "value": 0,
+      "ci95": null,
+      "n": 60
+    },
+    "degraded_survival": {
+      "value": 0.9285714285714286,
+      "ci95": [
+        0.6853129557584889,
+        0.9872777847521093
+      ],
+      "n": 14
+    },
+    "policy_violations": {
+      "value": 0,
+      "ci95": null,
+      "n": 60
+    },
+    "brain_fallbacks": {
+      "value": 0,
+      "ci95": null,
+      "n": 60
+    }
+  },
+  "gates": [
+    {
+      "metric": "goal_rate",
+      "op": ">=",
+      "threshold": 0.2,
+      "value": 0.35,
+      "pass": true
+    },
+    {
+      "metric": "acceptable_rate",
+      "op": ">=",
+      "threshold": 0.95,
+      "value": 0.9666666666666667,
+      "pass": true
+    },
+    {
+      "metric": "policy_violations",
+      "op": "==",
+      "threshold": 0,
+      "value": 0,
+      "pass": true
+    },
+    {
+      "metric": "barge_in_rate",
+      "op": "<=",
+      "threshold": 0.15,
+      "value": 0.00508130081300813,
+      "pass": true
+    },
+    {
+      "metric": "long_call_rate",
+      "op": "<=",
+      "threshold": 0.05,
+      "value": 0.03333333333333333,
+      "pass": true
+    },
+    {
+      "metric": "dead_air_incidents",
+      "op": "==",
+      "threshold": 0,
+      "value": 0,
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "calls": [
+    {
+      "callId": "call-5c2f49a7",
+      "persona": "cooperative-patient",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-5c2f49a7.jsonl"
+    },
+    {
+      "callId": "call-885975cb",
+      "persona": "cooperative-patient",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "pending_confirmation",
+      "trace": "calls/call-885975cb.jsonl"
+    },
+    {
+      "callId": "call-2c9bbdd4",
+      "persona": "patient-02",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-2c9bbdd4.jsonl"
+    },
+    {
+      "callId": "call-dce9ad54",
+      "persona": "patient-02",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-dce9ad54.jsonl"
+    },
+    {
+      "callId": "call-be6d039f",
+      "persona": "patient-03",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-be6d039f.jsonl"
+    },
+    {
+      "callId": "call-7dc16af3",
+      "persona": "patient-03",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-7dc16af3.jsonl"
+    },
+    {
+      "callId": "call-66678502",
+      "persona": "patient-04",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-66678502.jsonl"
+    },
+    {
+      "callId": "call-b2ab176a",
+      "persona": "patient-04",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-b2ab176a.jsonl"
+    },
+    {
+      "callId": "call-291c3bad",
+      "persona": "patient-05",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "opted_out",
+      "trace": "calls/call-291c3bad.jsonl"
+    },
+    {
+      "callId": "call-c0d87d31",
+      "persona": "patient-05",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "opted_out",
+      "trace": "calls/call-c0d87d31.jsonl"
+    },
+    {
+      "callId": "call-878617d0",
+      "persona": "patient-06",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "handoff",
+      "trace": "calls/call-878617d0.jsonl"
+    },
+    {
+      "callId": "call-b3bef1a8",
+      "persona": "patient-06",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "handoff",
+      "trace": "calls/call-b3bef1a8.jsonl"
+    },
+    {
+      "callId": "call-2ea1a2b",
+      "persona": "patient-07",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "callback_scheduled",
+      "trace": "calls/call-2ea1a2b.jsonl"
+    },
+    {
+      "callId": "call-ec24fe77",
+      "persona": "patient-07",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "callback_scheduled",
+      "trace": "calls/call-ec24fe77.jsonl"
+    },
+    {
+      "callId": "call-4d1090ce",
+      "persona": "patient-08",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-4d1090ce.jsonl"
+    },
+    {
+      "callId": "call-b35c2f2e",
+      "persona": "patient-08",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-b35c2f2e.jsonl"
+    },
+    {
+      "callId": "call-936f0339",
+      "persona": "patient-09",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-936f0339.jsonl"
+    },
+    {
+      "callId": "call-68f60225",
+      "persona": "patient-09",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "pending_confirmation",
+      "trace": "calls/call-68f60225.jsonl"
+    },
+    {
+      "callId": "call-4024fe2f",
+      "persona": "patient-10",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-4024fe2f.jsonl"
+    },
+    {
+      "callId": "call-9a479863",
+      "persona": "patient-10",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-9a479863.jsonl"
+    },
+    {
+      "callId": "call-f4216364",
+      "persona": "patient-11",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-f4216364.jsonl"
+    },
+    {
+      "callId": "call-162ca204",
+      "persona": "patient-11",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-162ca204.jsonl"
+    },
+    {
+      "callId": "call-4a288a61",
+      "persona": "patient-12",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-4a288a61.jsonl"
+    },
+    {
+      "callId": "call-450efb5d",
+      "persona": "patient-12",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-450efb5d.jsonl"
+    },
+    {
+      "callId": "call-5f07c736",
+      "persona": "patient-13",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-5f07c736.jsonl"
+    },
+    {
+      "callId": "call-e09eb026",
+      "persona": "patient-13",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-e09eb026.jsonl"
+    },
+    {
+      "callId": "call-840443fb",
+      "persona": "patient-14",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-840443fb.jsonl"
+    },
+    {
+      "callId": "call-85adcaa7",
+      "persona": "patient-14",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-85adcaa7.jsonl"
+    },
+    {
+      "callId": "call-eeba2660",
+      "persona": "patient-15",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-eeba2660.jsonl"
+    },
+    {
+      "callId": "call-e8984518",
+      "persona": "patient-15",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "failed",
+      "trace": "calls/call-e8984518.jsonl"
+    },
+    {
+      "callId": "call-44d966fd",
+      "persona": "patient-16",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "failed",
+      "trace": "calls/call-44d966fd.jsonl"
+    },
+    {
+      "callId": "call-a85fe821",
+      "persona": "patient-16",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-a85fe821.jsonl"
+    },
+    {
+      "callId": "call-5c039652",
+      "persona": "patient-17",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-5c039652.jsonl"
+    },
+    {
+      "callId": "call-1c7ee0da",
+      "persona": "patient-17",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-1c7ee0da.jsonl"
+    },
+    {
+      "callId": "call-4e6f2977",
+      "persona": "patient-18",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-4e6f2977.jsonl"
+    },
+    {
+      "callId": "call-45c4317b",
+      "persona": "patient-18",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-45c4317b.jsonl"
+    },
+    {
+      "callId": "call-5497824c",
+      "persona": "patient-19",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-5497824c.jsonl"
+    },
+    {
+      "callId": "call-f970857c",
+      "persona": "patient-19",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "pending_confirmation",
+      "trace": "calls/call-f970857c.jsonl"
+    },
+    {
+      "callId": "call-6136c0dc",
+      "persona": "patient-20",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-6136c0dc.jsonl"
+    },
+    {
+      "callId": "call-b65e1bac",
+      "persona": "patient-20",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-b65e1bac.jsonl"
+    },
+    {
+      "callId": "call-846f5a47",
+      "persona": "patient-21",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-846f5a47.jsonl"
+    },
+    {
+      "callId": "call-974b3e6b",
+      "persona": "patient-21",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-974b3e6b.jsonl"
+    },
+    {
+      "callId": "call-cb0b6aee",
+      "persona": "patient-22",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-cb0b6aee.jsonl"
+    },
+    {
+      "callId": "call-517f84e",
+      "persona": "patient-22",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-517f84e.jsonl"
+    },
+    {
+      "callId": "call-617825d9",
+      "persona": "patient-23",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-617825d9.jsonl"
+    },
+    {
+      "callId": "call-633ca2c5",
+      "persona": "patient-23",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-633ca2c5.jsonl"
+    },
+    {
+      "callId": "call-40d34458",
+      "persona": "patient-24",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-40d34458.jsonl"
+    },
+    {
+      "callId": "call-f3c4d840",
+      "persona": "patient-24",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-f3c4d840.jsonl"
+    },
+    {
+      "callId": "call-e15ca633",
+      "persona": "patient-25",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "success",
+      "trace": "calls/call-e15ca633.jsonl"
+    },
+    {
+      "callId": "call-4a429bef",
+      "persona": "patient-25",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "callback_scheduled",
+      "trace": "calls/call-4a429bef.jsonl"
+    },
+    {
+      "callId": "call-a78093ca",
+      "persona": "patient-26",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-a78093ca.jsonl"
+    },
+    {
+      "callId": "call-143b19e2",
+      "persona": "patient-26",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-143b19e2.jsonl"
+    },
+    {
+      "callId": "call-371f0375",
+      "persona": "patient-27",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-371f0375.jsonl"
+    },
+    {
+      "callId": "call-96937fa9",
+      "persona": "patient-27",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-96937fa9.jsonl"
+    },
+    {
+      "callId": "call-650ad1f4",
+      "persona": "patient-28",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-650ad1f4.jsonl"
+    },
+    {
+      "callId": "call-2ea57674",
+      "persona": "patient-28",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-2ea57674.jsonl"
+    },
+    {
+      "callId": "call-13e64a3f",
+      "persona": "patient-29",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-13e64a3f.jsonl"
+    },
+    {
+      "callId": "call-a4813793",
+      "persona": "patient-29",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "declined",
+      "trace": "calls/call-a4813793.jsonl"
+    },
+    {
+      "callId": "call-774605c5",
+      "persona": "patient-30",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "callback_scheduled",
+      "trace": "calls/call-774605c5.jsonl"
+    },
+    {
+      "callId": "call-2f298919",
+      "persona": "patient-30",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "callback_scheduled",
+      "trace": "calls/call-2f298919.jsonl"
+    }
+  ],
+  "failures": [
+    {
+      "callId": "call-e8984518",
+      "persona": "patient-15",
+      "fault": "flaky",
+      "seed": 1,
+      "outcome": "failed",
+      "trace": "calls/call-e8984518.jsonl",
+      "reason": "outcome:failed, long_call"
+    },
+    {
+      "callId": "call-44d966fd",
+      "persona": "patient-16",
+      "fault": "clean",
+      "seed": 1,
+      "outcome": "failed",
+      "trace": "calls/call-44d966fd.jsonl",
+      "reason": "outcome:failed, long_call"
+    }
+  ],
+  "breakdowns": {
+    "fault": {
+      "clean": {
+        "goal_rate": {
+          "value": 0.4,
+          "ci95": [
+            0.24590628116801852,
+            0.5767963974667752
+          ],
+          "n": 30
+        },
+        "acceptable_rate": {
+          "value": 0.9666666666666667,
+          "ci95": [
+            0.8332960900859082,
+            0.9940914096183874
+          ],
+          "n": 30
+        },
+        "barge_in_rate": {
+          "value": 0.006024096385542169,
+          "ci95": [
+            0.0020508077731223985,
+            0.01755988530078411
+          ],
+          "n": 498
+        },
+        "long_call_rate": {
+          "value": 0.03333333333333333,
+          "ci95": [
+            0.005908590381612455,
+            0.16670390991409173
+          ],
+          "n": 30
+        },
+        "turn_latency_p95": {
+          "value": 800,
+          "ci95": null,
+          "n": 148
+        },
+        "dead_air_incidents": {
+          "value": 0,
+          "ci95": null,
+          "n": 30
+        },
+        "degraded_survival": {
+          "value": null,
+          "ci95": null,
+          "n": 0
+        },
+        "policy_violations": {
+          "value": 0,
+          "ci95": null,
+          "n": 30
+        },
+        "brain_fallbacks": {
+          "value": 0,
+          "ci95": null,
+          "n": 30
+        }
+      },
+      "flaky": {
+        "goal_rate": {
+          "value": 0.3,
+          "ci95": [
+            0.16664748268243793,
+            0.47875787458714947
+          ],
+          "n": 30
+        },
+        "acceptable_rate": {
+          "value": 0.9666666666666667,
+          "ci95": [
+            0.8332960900859082,
+            0.9940914096183874
+          ],
+          "n": 30
+        },
+        "barge_in_rate": {
+          "value": 0.00411522633744856,
+          "ci95": [
+            0.0011292698740659884,
+            0.014878886804980004
+          ],
+          "n": 486
+        },
+        "long_call_rate": {
+          "value": 0.03333333333333333,
+          "ci95": [
+            0.005908590381612455,
+            0.16670390991409173
+          ],
+          "n": 30
+        },
+        "turn_latency_p95": {
+          "value": 800,
+          "ci95": null,
+          "n": 146
+        },
+        "dead_air_incidents": {
+          "value": 0,
+          "ci95": null,
+          "n": 30
+        },
+        "degraded_survival": {
+          "value": 0.9285714285714286,
+          "ci95": [
+            0.6853129557584889,
+            0.9872777847521093
+          ],
+          "n": 14
+        },
+        "policy_violations": {
+          "value": 0,
+          "ci95": null,
+          "n": 30
+        },
+        "brain_fallbacks": {
+          "value": 0,
+          "ci95": null,
+          "n": 30
+        }
+      }
+    },
+    "intent": {
+      "accept": {
+        "goal_rate": {
+          "value": 0.53125,
+          "ci95": [
+            0.3644951711897464,
+            0.6913061289193116
+          ],
+          "n": 32
+        },
+        "acceptable_rate": {
+          "value": 0.9375,
+          "ci95": [
+            0.7985287685584542,
+            0.982689432968359
+          ],
+          "n": 32
+        },
+        "barge_in_rate": {
+          "value": 0.004189944134078212,
+          "ci95": [
+            0.001425960512835357,
+            0.012245742749181873
+          ],
+          "n": 716
+        },
+        "long_call_rate": {
+          "value": 0.0625,
+          "ci95": [
+            0.017310567031640967,
+            0.2014712314415458
+          ],
+          "n": 32
+        },
+        "turn_latency_p95": {
+          "value": 800,
+          "ci95": null,
+          "n": 217
+        },
+        "dead_air_incidents": {
+          "value": 0,
+          "ci95": null,
+          "n": 32
+        },
+        "degraded_survival": {
+          "value": 0.875,
+          "ci95": [
+            0.5291118177871464,
+            0.9775825085499433
+          ],
+          "n": 8
+        },
+        "policy_violations": {
+          "value": 0,
+          "ci95": null,
+          "n": 32
+        },
+        "brain_fallbacks": {
+          "value": 0,
+          "ci95": null,
+          "n": 32
+        }
+      },
+      "accept_if_short": {
+        "goal_rate": {
+          "value": 0.5,
+          "ci95": [
+            0.21521606221387757,
+            0.7847839377861224
+          ],
+          "n": 8
+        },
+        "acceptable_rate": {
+          "value": 1,
+          "ci95": [
+            0.6755924351161198,
+            1
+          ],
+          "n": 8
+        },
+        "barge_in_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.03345010469339235
+          ],
+          "n": 111
+        },
+        "long_call_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.32440756488388023
+          ],
+          "n": 8
+        },
+        "turn_latency_p95": {
+          "value": 800,
+          "ci95": null,
+          "n": 29
+        },
+        "dead_air_incidents": {
+          "value": 0,
+          "ci95": null,
+          "n": 8
+        },
+        "degraded_survival": {
+          "value": 1,
+          "ci95": [
+            0.34238022750665303,
+            1
+          ],
+          "n": 2
+        },
+        "policy_violations": {
+          "value": 0,
+          "ci95": null,
+          "n": 8
+        },
+        "brain_fallbacks": {
+          "value": 0,
+          "ci95": null,
+          "n": 8
+        }
+      },
+      "ask_then_accept": {
+        "goal_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.32440756488388023
+          ],
+          "n": 8
+        },
+        "acceptable_rate": {
+          "value": 1,
+          "ci95": [
+            0.6755924351161198,
+            1
+          ],
+          "n": 8
+        },
+        "barge_in_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.03232423144931307
+          ],
+          "n": 115
+        },
+        "long_call_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.32440756488388023
+          ],
+          "n": 8
+        },
+        "turn_latency_p95": {
+          "value": 800,
+          "ci95": null,
+          "n": 36
+        },
+        "dead_air_incidents": {
+          "value": 0,
+          "ci95": null,
+          "n": 8
+        },
+        "degraded_survival": {
+          "value": 1,
+          "ci95": [
+            0.20654931437723745,
+            1
+          ],
+          "n": 1
+        },
+        "policy_violations": {
+          "value": 0,
+          "ci95": null,
+          "n": 8
+        },
+        "brain_fallbacks": {
+          "value": 0,
+          "ci95": null,
+          "n": 8
+        }
+      },
+      "decline": {
+        "goal_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.4898908364545973
+          ],
+          "n": 4
+        },
+        "acceptable_rate": {
+          "value": 1,
+          "ci95": [
+            0.5101091635454027,
+            1
+          ],
+          "n": 4
+        },
+        "barge_in_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.2153108027376358
+          ],
+          "n": 14
+        },
+        "long_call_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.4898908364545973
+          ],
+          "n": 4
+        },
+        "turn_latency_p95": {
+          "value": 800,
+          "ci95": null,
+          "n": 4
+        },
+        "dead_air_incidents": {
+          "value": 0,
+          "ci95": null,
+          "n": 4
+        },
+        "degraded_survival": {
+          "value": 1,
+          "ci95": [
+            0.20654931437723745,
+            1
+          ],
+          "n": 1
+        },
+        "policy_violations": {
+          "value": 0,
+          "ci95": null,
+          "n": 4
+        },
+        "brain_fallbacks": {
+          "value": 0,
+          "ci95": null,
+          "n": 4
+        }
+      },
+      "opt_out": {
+        "goal_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.6576197724933469
+          ],
+          "n": 2
+        },
+        "acceptable_rate": {
+          "value": 1,
+          "ci95": [
+            0.34238022750665303,
+            1
+          ],
+          "n": 2
+        },
+        "barge_in_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.4898908364545973
+          ],
+          "n": 4
+        },
+        "long_call_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.6576197724933469
+          ],
+          "n": 2
+        },
+        "turn_latency_p95": {
+          "value": 0,
+          "ci95": null,
+          "n": 2
+        },
+        "dead_air_incidents": {
+          "value": 0,
+          "ci95": null,
+          "n": 2
+        },
+        "degraded_survival": {
+          "value": null,
+          "ci95": null,
+          "n": 0
+        },
+        "policy_violations": {
+          "value": 0,
+          "ci95": null,
+          "n": 2
+        },
+        "brain_fallbacks": {
+          "value": 0,
+          "ci95": null,
+          "n": 2
+        }
+      },
+      "request_human": {
+        "goal_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.6576197724933469
+          ],
+          "n": 2
+        },
+        "acceptable_rate": {
+          "value": 1,
+          "ci95": [
+            0.34238022750665303,
+            1
+          ],
+          "n": 2
+        },
+        "barge_in_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.4898908364545973
+          ],
+          "n": 4
+        },
+        "long_call_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.6576197724933469
+          ],
+          "n": 2
+        },
+        "turn_latency_p95": {
+          "value": 0,
+          "ci95": null,
+          "n": 2
+        },
+        "dead_air_incidents": {
+          "value": 0,
+          "ci95": null,
+          "n": 2
+        },
+        "degraded_survival": {
+          "value": null,
+          "ci95": null,
+          "n": 0
+        },
+        "policy_violations": {
+          "value": 0,
+          "ci95": null,
+          "n": 2
+        },
+        "brain_fallbacks": {
+          "value": 0,
+          "ci95": null,
+          "n": 2
+        }
+      },
+      "busy": {
+        "goal_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.4898908364545973
+          ],
+          "n": 4
+        },
+        "acceptable_rate": {
+          "value": 1,
+          "ci95": [
+            0.5101091635454027,
+            1
+          ],
+          "n": 4
+        },
+        "barge_in_rate": {
+          "value": 0.1,
+          "ci95": [
+            0.027866481213768224,
+            0.3010336452284873
+          ],
+          "n": 20
+        },
+        "long_call_rate": {
+          "value": 0,
+          "ci95": [
+            0,
+            0.4898908364545973
+          ],
+          "n": 4
+        },
+        "turn_latency_p95": {
+          "value": 800,
+          "ci95": null,
+          "n": 4
+        },
+        "dead_air_incidents": {
+          "value": 0,
+          "ci95": null,
+          "n": 4
+        },
+        "degraded_survival": {
+          "value": 1,
+          "ci95": [
+            0.34238022750665303,
+            1
+          ],
+          "n": 2
+        },
+        "policy_violations": {
+          "value": 0,
+          "ci95": null,
+          "n": 4
+        },
+        "brain_fallbacks": {
+          "value": 0,
+          "ci95": null,
+          "n": 4
+        }
+      }
+    }
+  }
+}

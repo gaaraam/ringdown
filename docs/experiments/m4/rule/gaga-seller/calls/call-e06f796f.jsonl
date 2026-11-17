@@ -1,0 +1,28 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"seller.lookup","args":{"sellerId":"S-1014"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":125,"latency":{"brain":0,"tool":125,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":125,"result":{"status":"ok","data":{"storeName":"숲속캠핑","pendingReturns":2,"monthlyReturnShippingCost":27000,"returnPolicy":null},"latencyMs":125}}}
+{"type":"tool.result","at":125,"latency":{"brain":0,"tool":125,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"storeName":"숲속캠핑","pendingReturns":2,"monthlyReturnShippingCost":27000,"returnPolicy":null},"latencyMs":125},"elapsedMs":125,"attempts":1}
+{"type":"speech.start","at":125,"latency":{"brain":0,"tool":125,"tts":0},"text":"안녕하세요, 가가마켓 판매자센터 AI 상담원입니다. 통화 내용은 품질 관리를 위해 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5697,"latency":{"brain":0,"tool":125,"tts":0},"text":"숲속캠핑 운영하시는 분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":9140,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":9162,"latency":{"brain":22,"tool":0,"tts":0},"plan":{"intent":"yes","transition":"explain","tools":[]},"attempt":0}
+{"type":"brain.compose","at":9162,"latency":{"brain":22,"tool":0,"tts":0},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설정해 드릴 수 있는데, 무료, 3천 원, 5천 원 중 어떤 걸로 할까요?"}
+{"type":"brain.latency","at":9162,"latency":{"brain":22,"tool":0,"tts":0},"ms":22}
+{"type":"speech.start","at":9242,"latency":{"brain":22,"tool":0,"tts":80},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설정해 드릴 수 있는데, 무료, 3천 원, 5천 원 중 어떤 걸로 할까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":20257,"latency":{"brain":0,"tool":0,"tts":0},"stage":"explain","user":"오늘 날씨 이야기예요."}
+{"type":"brain.plan","at":20295,"latency":{"brain":38,"tool":0,"tts":0},"plan":{"say":"다시 짧게 말씀해 주시겠어요?","intent":"unknown"},"attempt":0}
+{"type":"brain.latency","at":20295,"latency":{"brain":38,"tool":0,"tts":0},"ms":38}
+{"type":"speech.start","at":20375,"latency":{"brain":38,"tool":0,"tts":80},"text":"다시 짧게 말씀해 주시겠어요?","filler":false,"fixed":false}
+{"type":"turn.start","at":23533,"latency":{"brain":0,"tool":0,"tts":0},"stage":"explain","user":"5천으로 해 주세요."}
+{"type":"brain.plan","at":23573,"latency":{"brain":40,"tool":0,"tts":0},"plan":{"intent":"plan_5000","setSlots":{"returnPlan":"paid-5000"},"transition":"confirm","tools":[]},"attempt":0}
+{"type":"brain.compose","at":23573,"latency":{"brain":40,"tool":0,"tts":0},"text":"반품 배송비 5천 원으로 설정할게요. 진행해도 될까요?"}
+{"type":"brain.latency","at":23573,"latency":{"brain":40,"tool":0,"tts":0},"ms":40}
+{"type":"speech.start","at":23653,"latency":{"brain":40,"tool":0,"tts":80},"text":"반품 배송비 5천 원으로 설정할게요. 진행해도 될까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":28096,"latency":{"brain":0,"tool":0,"tts":0},"stage":"confirm","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":28130,"latency":{"brain":34,"tool":0,"tts":0},"plan":{"intent":"yes","setSlots":{"consent":true},"transition":"close","end":"success","say":"설정해 드렸어요.","tools":[{"tool":"seller.setReturnPolicy","args":{}}]},"attempt":0}
+{"type":"tool.call","at":28130,"latency":{"brain":34,"tool":0,"tts":0},"call":{"tool":"seller.setReturnPolicy","args":{"sellerId":"S-1014","plan":"paid-5000"}},"callSeq":2,"consent":true}
+{"type":"tool.result","at":28243,"latency":{"brain":34,"tool":113,"tts":0},"callSeq":2,"attempt":{"at":28130,"endedAt":28243,"result":{"status":"ok","data":{"storeName":"숲속캠핑","pendingReturns":2,"monthlyReturnShippingCost":27000,"returnPolicy":{"sellerId":"S-1014","plan":"paid-5000"}},"latencyMs":113},"idempotencyKey":"call-e06f796f:seller.setReturnPolicy:2"}}
+{"type":"tool.result","at":28243,"latency":{"brain":34,"tool":113,"tts":0},"callSeq":2,"result":{"status":"ok","data":{"storeName":"숲속캠핑","pendingReturns":2,"monthlyReturnShippingCost":27000,"returnPolicy":{"sellerId":"S-1014","plan":"paid-5000"}},"latencyMs":113},"elapsedMs":113,"attempts":1}
+{"type":"brain.compose","at":28243,"latency":{"brain":34,"tool":113,"tts":0},"text":"설정해 드렸어요."}
+{"type":"brain.latency","at":28243,"latency":{"brain":34,"tool":113,"tts":0},"ms":34}
+{"type":"speech.start","at":28323,"latency":{"brain":34,"tool":113,"tts":80},"text":"설정해 드렸어요.","filler":false,"fixed":false}
+{"type":"call.end","at":29323,"latency":{"brain":34,"tool":113,"tts":80},"outcome":"success","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[],"brain":"rule","durationMs":29198}

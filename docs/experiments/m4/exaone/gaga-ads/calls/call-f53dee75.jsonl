@@ -1,0 +1,17 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"ads.getAccount","args":{"advertiserId":"A-2011"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":327,"latency":{"brain":0,"tool":327,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":327,"result":{"status":"error","kind":"5xx","latencyMs":327,"httpStatus":503}}}
+{"type":"tool.result","at":620,"latency":{"brain":0,"tool":620,"tts":0},"callSeq":1,"attempt":{"at":420,"endedAt":620,"result":{"status":"ok","data":{"businessName":"그린필라테스","balance":9000,"dailySpend":9000,"daysLeft":1,"autoCharge":null},"latencyMs":200}}}
+{"type":"tool.result","at":620,"latency":{"brain":0,"tool":620,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"businessName":"그린필라테스","balance":9000,"dailySpend":9000,"daysLeft":1,"autoCharge":null},"latencyMs":200},"elapsedMs":620,"attempts":2}
+{"type":"speech.start","at":620,"latency":{"brain":0,"tool":620,"tts":0},"text":"안녕하세요, 가가애즈 AI 상담원입니다. 광고 운영 안내를 위해 연락드렸고, 통화 내용은 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":6478,"latency":{"brain":0,"tool":620,"tts":0},"text":"그린필라테스 광고 담당자분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":12407,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"speech.start","at":13207,"latency":{"brain":2833.9026250000024,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"brain.plan","at":15240.902625000002,"latency":{"brain":2833.9026250000024,"tool":0,"tts":0},"plan":{"intent":"verify","transition":"pitch","setSlots":{},"end":"pending_confirmation"},"attempt":0}
+{"type":"speech.start","at":15579,"latency":{"brain":8128.958333000002,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"speech.start","at":17951,"latency":{"brain":8128.958333000002,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"speech.start","at":20323,"latency":{"brain":8128.958333000002,"tool":0,"tts":0},"text":"네, 잠시만요.","filler":true,"fixed":false}
+{"type":"brain.compose","at":20535.958333000002,"latency":{"brain":8128.958333000002,"tool":0,"tts":0},"text":"그린필라테스님, 현재 광고 잔액이 9000원으로 1일 후에 광고가 멈출 예정입니다. 1만 원 아래로 내려가면 자동으로 5만 원씩 충전되도록 설정하시겠어요? 선택 가능한 금액은 5만 원, 10만 원, 20만 원입니다."}
+{"type":"brain.latency","at":20535.958333000002,"latency":{"brain":8128.958333000002,"tool":0,"tts":0},"ms":8128.958333000002}
+{"type":"guard.reject","at":20615.958333000002,"latency":{"brain":8128.958333000002,"tool":0,"tts":80},"layer":"output","reason":"speech_length"}
+{"type":"speech.start","at":21038,"latency":{"brain":8128.958333000002,"tool":0,"tts":80},"text":"그린필라테스님, 현재 광고 잔액이 9000원으로 1일 후에 광고가 멈출 예정입니다. 1만 원 아래로 내려가면 자동으로 5만 원씩 충전되도록 설정하시겠어요?","filler":false,"fixed":false}
+{"type":"call.end","at":30324,"latency":{"brain":8128.958333000002,"tool":0,"tts":80},"outcome":"pending_confirmation","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":1,"longCall":false,"policyViolations":0},"pending":[],"brain":"llm","durationMs":29704}

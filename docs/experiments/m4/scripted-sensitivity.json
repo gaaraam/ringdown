@@ -1,0 +1,22 @@
+{
+  "intervention": "송출 발화의 모든 문자·숫자를 가로 치환, 발화 길이 고정",
+  "seed": 1,
+  "faults": [
+    "clean",
+    "flaky"
+  ],
+  "rows": [
+    {
+      "pack": "gaga-ads",
+      "calls": 60,
+      "changedUserTurns": 0,
+      "changedOutcomes": 0
+    },
+    {
+      "pack": "gaga-seller",
+      "calls": 60,
+      "changedUserTurns": 0,
+      "changedOutcomes": 0
+    }
+  ]
+}

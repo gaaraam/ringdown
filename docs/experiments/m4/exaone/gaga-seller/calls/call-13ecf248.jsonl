@@ -1,0 +1,18 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"seller.lookup","args":{"sellerId":"S-1019"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":92,"latency":{"brain":0,"tool":92,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":92,"result":{"status":"ok","data":{"storeName":"단단스포츠","pendingReturns":7,"monthlyReturnShippingCost":91000,"returnPolicy":null},"latencyMs":92}}}
+{"type":"tool.result","at":92,"latency":{"brain":0,"tool":92,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"storeName":"단단스포츠","pendingReturns":7,"monthlyReturnShippingCost":91000,"returnPolicy":null},"latencyMs":92},"elapsedMs":92,"attempts":1}
+{"type":"speech.start","at":92,"latency":{"brain":0,"tool":92,"tts":0},"text":"안녕하세요, 가가마켓 판매자센터 AI 상담원입니다. 통화 내용은 품질 관리를 위해 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5664,"latency":{"brain":0,"tool":92,"tts":0},"text":"단단스포츠 운영하시는 분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":9250,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"speech.start","at":10050,"latency":{"brain":3132.973999999929,"tool":0,"tts":0},"text":"네, 확인해 볼게요.","filler":true,"fixed":false}
+{"type":"speech.start","at":11850,"latency":{"brain":3132.973999999929,"tool":0,"tts":0},"text":"네, 확인해 볼게요.","filler":true,"fixed":false}
+{"type":"brain.plan","at":12382.97399999993,"latency":{"brain":3132.973999999929,"tool":0,"tts":0},"plan":{"intent":"verify","transition":"explain","setSlots":{"consent":false},"end":"pending_confirmation"},"attempt":0}
+{"type":"speech.start","at":13650,"latency":{"brain":9719.937665999983,"tool":0,"tts":0},"text":"잠시만요, 조회하고 있어요.","filler":true,"fixed":false}
+{"type":"speech.start","at":16022,"latency":{"brain":9719.937665999983,"tool":0,"tts":0},"text":"네, 확인해 볼게요.","filler":true,"fixed":false}
+{"type":"speech.start","at":17822,"latency":{"brain":9719.937665999983,"tool":0,"tts":0},"text":"네, 확인해 볼게요.","filler":true,"fixed":false}
+{"type":"brain.compose","at":18969.937665999983,"latency":{"brain":9719.937665999983,"tool":0,"tts":0},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 모두 사장님께서 부담하게 됩니다. 설정을 원하신다면 무료, 3천 원, 5천 원 중 어떤 옵션으로 하시겠어요? 현재 정책 설정 없이는 매월 평균 91,000원의 배송비가 발생하고 있습니다. 어떤 걸로 설정하시겠습니까?"}
+{"type":"brain.latency","at":18969.937665999983,"latency":{"brain":9719.937665999983,"tool":0,"tts":0},"ms":9719.937665999983}
+{"type":"guard.reject","at":19049.937665999983,"latency":{"brain":9719.937665999983,"tool":0,"tts":80},"layer":"output","reason":"speech_length"}
+{"type":"speech.start","at":19049.937665999983,"latency":{"brain":9719.937665999983,"tool":0,"tts":80},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 모두 사장님께서 부담하게 됩니다. 설정을 원하신다면 무료, 3천 원, 5천 원 중 어떤 옵션으로 하시겠어요?","filler":false,"fixed":false}
+{"type":"speech.interrupted","at":25049.937665999983,"latency":{"brain":9719.937665999983,"tool":0,"tts":80},"intended":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 모두 사장님께서 부담하게 됩니다. 설정을 원하신다면 무료, 3천 원, 5천 원 중 어떤 옵션으로 하시겠어요?","heard":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 모두 사장님께서 부담하게 됩니다. 설정"}
+{"type":"call.end","at":25049.937665999983,"latency":{"brain":9719.937665999983,"tool":0,"tts":80},"outcome":"pending_confirmation","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":1,"longCall":false,"policyViolations":0},"pending":[],"brain":"llm","durationMs":24957.937665999983}

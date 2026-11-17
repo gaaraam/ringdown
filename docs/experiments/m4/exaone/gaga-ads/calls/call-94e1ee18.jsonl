@@ -1,0 +1,11 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"ads.getAccount","args":{"advertiserId":"A-2004"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":47,"latency":{"brain":0,"tool":47,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":47,"result":{"status":"ok","data":{"businessName":"노을펜션","balance":30000,"dailySpend":5000,"daysLeft":6,"autoCharge":null},"latencyMs":47}}}
+{"type":"tool.result","at":47,"latency":{"brain":0,"tool":47,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"businessName":"노을펜션","balance":30000,"dailySpend":5000,"daysLeft":6,"autoCharge":null},"latencyMs":47},"elapsedMs":47,"attempts":1}
+{"type":"speech.start","at":47,"latency":{"brain":0,"tool":47,"tts":0},"text":"안녕하세요, 가가애즈 AI 상담원입니다. 광고 운영 안내를 위해 연락드렸고, 통화 내용은 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5905,"latency":{"brain":0,"tool":47,"tts":0},"text":"노을펜션 광고 담당자분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":9491,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"아니요. 필요 없어요."}
+{"type":"speech.start","at":10291,"latency":{"brain":912.3012500000041,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"brain.plan","at":10403.301250000004,"latency":{"brain":912.3012500000041,"tool":0,"tts":0},"plan":{"intent":"declined","say":"실례했습니다.","end":"declined"},"attempt":0}
+{"type":"brain.latency","at":10403.301250000004,"latency":{"brain":912.3012500000041,"tool":0,"tts":0},"ms":912.3012500000041}
+{"type":"speech.start","at":11863,"latency":{"brain":912.3012500000041,"tool":0,"tts":80},"text":"실례했습니다.","filler":false,"fixed":false}
+{"type":"call.end","at":12721,"latency":{"brain":912.3012500000041,"tool":0,"tts":80},"outcome":"declined","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[],"brain":"llm","durationMs":12674}

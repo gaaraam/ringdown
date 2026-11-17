@@ -1,0 +1,13 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"seller.lookup","args":{"sellerId":"S-1007"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":79,"latency":{"brain":0,"tool":79,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":79,"result":{"status":"ok","data":{"storeName":"반짝액세서리","pendingReturns":5,"monthlyReturnShippingCost":33000,"returnPolicy":null},"latencyMs":79}}}
+{"type":"tool.result","at":79,"latency":{"brain":0,"tool":79,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"storeName":"반짝액세서리","pendingReturns":5,"monthlyReturnShippingCost":33000,"returnPolicy":null},"latencyMs":79},"elapsedMs":79,"attempts":1}
+{"type":"speech.start","at":79,"latency":{"brain":0,"tool":79,"tts":0},"text":"안녕하세요, 가가마켓 판매자센터 AI 상담원입니다. 통화 내용은 품질 관리를 위해 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5651,"latency":{"brain":0,"tool":79,"tts":0},"text":"반짝액세서리 운영하시는 분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":10238,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"지금 바빠요. 나중에 연락 주세요."}
+{"type":"speech.start","at":11038,"latency":{"brain":1869.2870410000323,"tool":0,"tts":0},"text":"잠시만요, 조회하고 있어요.","filler":true,"fixed":false}
+{"type":"brain.plan","at":12107.287041000032,"latency":{"brain":1869.2870410000323,"tool":0,"tts":0},"plan":{"intent":"busy","say":"그럼 편하신 시간에 다시 연락드릴게요.","end":"callback_scheduled"},"attempt":0}
+{"type":"brain.latency","at":12107.287041000032,"latency":{"brain":1869.2870410000323,"tool":0,"tts":0},"ms":1869.2870410000323}
+{"type":"speech.start","at":12610,"latency":{"brain":1869.2870410000323,"tool":0,"tts":80},"text":"그럼 편하신 시간에 다시 연락드릴게요.","filler":false,"fixed":false}
+{"type":"tool.call","at":14896,"latency":{"brain":1869.2870410000323,"tool":0,"tts":80},"call":{"tool":"call.scheduleCallback","args":{}},"builtin":true}
+{"type":"tool.result","at":14896,"latency":{"brain":1869.2870410000323,"tool":0,"tts":80},"result":{"call":{"tool":"call.scheduleCallback","args":{}},"status":"ok","data":{}},"citations":[]}
+{"type":"call.end","at":14896,"latency":{"brain":1869.2870410000323,"tool":0,"tts":80},"outcome":"callback_scheduled","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[{"kind":"callback"}],"brain":"llm","durationMs":14817}

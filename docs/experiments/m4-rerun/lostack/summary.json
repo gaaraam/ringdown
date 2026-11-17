@@ -1,0 +1,114 @@
+{
+  "gitSha": "483a1cc83c044ddd2337b472264aa98e18643b76",
+  "plan": "full",
+  "rules": {
+    "warmupCalls": 20,
+    "minRuleSuccessForZero": 4,
+    "maxLongCallRate": 0.5,
+    "maxRejectionsPerTurn": 1,
+    "maxFallbackRate": 0.5,
+    "maxRequestErrorRate": 0.2,
+    "segmentBudgetMin": 150,
+    "reserveMinForSegment": 40
+  },
+  "deadline": "2026-11-17T22:30:00.000Z",
+  "segments": [
+    {
+      "name": "main-rule-gaga-ads",
+      "status": "complete",
+      "calls": 30,
+      "goal": 0.6,
+      "goalCi": [
+        0.42320360253322475,
+        0.7540937188319815
+      ],
+      "acceptable": 1,
+      "longCall": 0,
+      "minutes": 0
+    },
+    {
+      "name": "main-rule-gaga-clinic",
+      "status": "complete",
+      "calls": 30,
+      "goal": 0.4,
+      "goalCi": [
+        0.24590628116801852,
+        0.5767963974667752
+      ],
+      "acceptable": 1,
+      "longCall": 0,
+      "minutes": 0
+    },
+    {
+      "name": "main-rule-gaga-seller",
+      "status": "complete",
+      "calls": 30,
+      "goal": 0.6,
+      "goalCi": [
+        0.42320360253322475,
+        0.7540937188319815
+      ],
+      "acceptable": 1,
+      "longCall": 0,
+      "minutes": 0
+    },
+    {
+      "name": "main-ollama_qwen3_8b-gaga-ads",
+      "status": "complete",
+      "calls": 30,
+      "goal": 0.6,
+      "goalCi": [
+        0.42320360253322475,
+        0.7540937188319815
+      ],
+      "acceptable": 1,
+      "longCall": 0,
+      "minutes": 8
+    },
+    {
+      "name": "main-ollama_qwen3_8b-gaga-clinic",
+      "status": "complete",
+      "calls": 30,
+      "goal": 0.2,
+      "goalCi": [
+        0.0950510717728987,
+        0.3730569641314825
+      ],
+      "acceptable": 1,
+      "longCall": 0,
+      "minutes": 6
+    },
+    {
+      "name": "main-ollama_qwen3_8b-gaga-seller",
+      "status": "complete",
+      "calls": 30,
+      "goal": 0.6,
+      "goalCi": [
+        0.42320360253322475,
+        0.7540937188319815
+      ],
+      "acceptable": 1,
+      "longCall": 0,
+      "minutes": 7
+    },
+    {
+      "name": "main-ollama_gemma3_12b-gaga-ads",
+      "status": "aborted",
+      "scope": "model",
+      "reason": "턴당 런타임 거부 1.28회",
+      "callsDone": 20,
+      "success": 5,
+      "minutes": 18
+    },
+    {
+      "name": "main-ollama_gemma3_12b-gaga-clinic",
+      "status": "skipped",
+      "reason": "같은 모델의 이전 구간에서 중단"
+    },
+    {
+      "name": "main-ollama_gemma3_12b-gaga-seller",
+      "status": "skipped",
+      "reason": "같은 모델의 이전 구간에서 중단"
+    }
+  ]
+}

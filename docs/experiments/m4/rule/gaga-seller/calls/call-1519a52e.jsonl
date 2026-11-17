@@ -1,0 +1,35 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"seller.lookup","args":{"sellerId":"S-1026"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":183,"latency":{"brain":0,"tool":183,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":183,"result":{"status":"ok","data":{"storeName":"오늘의밥상","pendingReturns":0,"monthlyReturnShippingCost":0,"returnPolicy":null},"latencyMs":183}}}
+{"type":"tool.result","at":183,"latency":{"brain":0,"tool":183,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"storeName":"오늘의밥상","pendingReturns":0,"monthlyReturnShippingCost":0,"returnPolicy":null},"latencyMs":183},"elapsedMs":183,"attempts":1}
+{"type":"speech.start","at":183,"latency":{"brain":0,"tool":183,"tts":0},"text":"안녕하세요, 가가마켓 판매자센터 AI 상담원입니다. 통화 내용은 품질 관리를 위해 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5755,"latency":{"brain":0,"tool":183,"tts":0},"text":"오늘의밥상 운영하시는 분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":9341,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":9390,"latency":{"brain":49,"tool":0,"tts":0},"plan":{"intent":"yes","transition":"explain","tools":[]},"attempt":0}
+{"type":"brain.compose","at":9390,"latency":{"brain":49,"tool":0,"tts":0},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설정해 드릴 수 있는데, 무료, 3천 원, 5천 원 중 어떤 걸로 할까요?"}
+{"type":"brain.latency","at":9390,"latency":{"brain":49,"tool":0,"tts":0},"ms":49}
+{"type":"speech.start","at":9470,"latency":{"brain":49,"tool":0,"tts":80},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설정해 드릴 수 있는데, 무료, 3천 원, 5천 원 중 어떤 걸로 할까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":20485,"latency":{"brain":0,"tool":0,"tts":0},"stage":"explain","user":"오늘 날씨 이야기예요."}
+{"type":"brain.plan","at":20514,"latency":{"brain":29,"tool":0,"tts":0},"plan":{"say":"다시 짧게 말씀해 주시겠어요?","intent":"unknown"},"attempt":0}
+{"type":"brain.latency","at":20514,"latency":{"brain":29,"tool":0,"tts":0},"ms":29}
+{"type":"speech.start","at":20594,"latency":{"brain":29,"tool":0,"tts":80},"text":"다시 짧게 말씀해 주시겠어요?","filler":false,"fixed":false}
+{"type":"turn.start","at":24324,"latency":{"brain":0,"tool":0,"tts":0},"stage":"explain","user":"어떻게 변경하나요? 궁금해요."}
+{"type":"brain.plan","at":24373,"latency":{"brain":49,"tool":0,"tts":0},"plan":{"intent":"question","tools":[{"tool":"kb.search","args":{"query":"어떻게 변경하나요? 궁금해요."}}]},"attempt":0}
+{"type":"tool.call","at":24373,"latency":{"brain":49,"tool":0,"tts":0},"call":{"tool":"kb.search","args":{"query":"어떻게 변경하나요? 궁금해요."}},"builtin":true}
+{"type":"tool.result","at":24373,"latency":{"brain":49,"tool":0,"tts":0},"result":{"call":{"tool":"kb.search","args":{"query":"어떻게 변경하나요? 궁금해요."}},"status":"ok","data":[{"chunkId":"kb/return-policy.md#변경","text":"판매자센터 > 배송 설정 > 반품 정책에서 언제든 바꿀 수 있습니다. 변경 횟수 제한은 없습니다.","score":2.8712850889330945}]},"citations":["kb/return-policy.md#변경"]}
+{"type":"brain.compose","at":24373,"latency":{"brain":49,"tool":0,"tts":0},"text":"판매자센터 > 배송 설정 > 반품 정책에서 언제든 바꿀 수 있습니다. 변경 횟수 제한은 없습니다."}
+{"type":"brain.latency","at":24373,"latency":{"brain":49,"tool":0,"tts":0},"ms":49}
+{"type":"speech.start","at":24453,"latency":{"brain":49,"tool":0,"tts":80},"text":"판매자센터 > 배송 설정 > 반품 정책에서 언제든 바꿀 수 있습니다. 변경 횟수 제한은 없습니다.","filler":false,"fixed":false}
+{"type":"turn.start","at":31039,"latency":{"brain":0,"tool":0,"tts":0},"stage":"explain","user":"무료으로 해 주세요."}
+{"type":"brain.plan","at":31086,"latency":{"brain":47,"tool":0,"tts":0},"plan":{"intent":"plan_free","setSlots":{"returnPlan":"free"},"transition":"confirm","tools":[]},"attempt":0}
+{"type":"brain.compose","at":31086,"latency":{"brain":47,"tool":0,"tts":0},"text":"무료 반품으로 설정할게요. 진행해도 될까요?"}
+{"type":"brain.latency","at":31086,"latency":{"brain":47,"tool":0,"tts":0},"ms":47}
+{"type":"speech.start","at":31166,"latency":{"brain":47,"tool":0,"tts":80},"text":"무료 반품으로 설정할게요. 진행해도 될까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":35038,"latency":{"brain":0,"tool":0,"tts":0},"stage":"confirm","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":35097,"latency":{"brain":59,"tool":0,"tts":0},"plan":{"intent":"yes","setSlots":{"consent":true},"transition":"close","end":"success","say":"설정해 드렸어요.","tools":[{"tool":"seller.setReturnPolicy","args":{}}]},"attempt":0}
+{"type":"tool.call","at":35097,"latency":{"brain":59,"tool":0,"tts":0},"call":{"tool":"seller.setReturnPolicy","args":{"sellerId":"S-1026","plan":"free"}},"callSeq":2,"consent":true}
+{"type":"tool.result","at":35229,"latency":{"brain":59,"tool":132,"tts":0},"callSeq":2,"attempt":{"at":35097,"endedAt":35229,"result":{"status":"ok","data":{"storeName":"오늘의밥상","pendingReturns":0,"monthlyReturnShippingCost":0,"returnPolicy":{"sellerId":"S-1026","plan":"free"}},"latencyMs":132},"idempotencyKey":"call-1519a52e:seller.setReturnPolicy:2"}}
+{"type":"tool.result","at":35229,"latency":{"brain":59,"tool":132,"tts":0},"callSeq":2,"result":{"status":"ok","data":{"storeName":"오늘의밥상","pendingReturns":0,"monthlyReturnShippingCost":0,"returnPolicy":{"sellerId":"S-1026","plan":"free"}},"latencyMs":132},"elapsedMs":132,"attempts":1}
+{"type":"brain.compose","at":35229,"latency":{"brain":59,"tool":132,"tts":0},"text":"설정해 드렸어요."}
+{"type":"brain.latency","at":35229,"latency":{"brain":59,"tool":132,"tts":0},"ms":59}
+{"type":"speech.start","at":35309,"latency":{"brain":59,"tool":132,"tts":80},"text":"설정해 드렸어요.","filler":false,"fixed":false}
+{"type":"call.end","at":36309,"latency":{"brain":59,"tool":132,"tts":80},"outcome":"success","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[],"brain":"rule","durationMs":36126}

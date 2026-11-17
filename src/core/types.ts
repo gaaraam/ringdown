@@ -81,6 +81,7 @@ export type ToolResult =
 
 export interface Brain {
   readonly id: string;
+  readonly latencyMode?: "wall";
   /** M4 대체 응답 사유를 소비한다. 호출마다 비워 중복 계수를 막는다. */
   takeFallbacks?(): string[];
   plan(ctx: TurnContext): Promise<Plan>;

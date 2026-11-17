@@ -1,0 +1,22 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"ads.getAccount","args":{"advertiserId":"A-2026"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":83,"latency":{"brain":0,"tool":83,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":83,"result":{"status":"ok","data":{"businessName":"바른정형외과","balance":42000,"dailySpend":21000,"daysLeft":2,"autoCharge":null},"latencyMs":83}}}
+{"type":"tool.result","at":83,"latency":{"brain":0,"tool":83,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"businessName":"바른정형외과","balance":42000,"dailySpend":21000,"daysLeft":2,"autoCharge":null},"latencyMs":83},"elapsedMs":83,"attempts":1}
+{"type":"speech.start","at":83,"latency":{"brain":0,"tool":83,"tts":0},"text":"안녕하세요, 가가애즈 AI 상담원입니다. 광고 운영 안내를 위해 연락드렸고, 통화 내용은 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5941,"latency":{"brain":0,"tool":83,"tts":0},"text":"바른정형외과 광고 담당자분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":9670,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"speech.start","at":10470,"latency":{"brain":2857.4286659999634,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"brain.plan","at":12527.428665999963,"latency":{"brain":2857.4286659999634,"tool":0,"tts":0},"plan":{"intent":"verify","transition":"pitch","setSlots":{},"end":"pending_confirmation"},"attempt":0}
+{"type":"speech.start","at":12842,"latency":{"brain":21307.966665999964,"tool":0,"tts":0},"text":"네, 잠시만요.","filler":true,"fixed":false}
+{"type":"speech.start","at":14357,"latency":{"brain":21307.966665999964,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"speech.start","at":16729,"latency":{"brain":21307.966665999964,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"speech.start","at":19101,"latency":{"brain":21307.966665999964,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"speech.start","at":21473,"latency":{"brain":21307.966665999964,"tool":0,"tts":0},"text":"네, 잠시만요.","filler":true,"fixed":false}
+{"type":"speech.start","at":22988,"latency":{"brain":21307.966665999964,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"speech.start","at":25360,"latency":{"brain":21307.966665999964,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"speech.start","at":27732,"latency":{"brain":21307.966665999964,"tool":0,"tts":0},"text":"네, 잠시만요.","filler":true,"fixed":false}
+{"type":"speech.start","at":29247,"latency":{"brain":21307.966665999964,"tool":0,"tts":0},"text":"계정 정보 확인하고 있어요.","filler":true,"fixed":false}
+{"type":"brain.compose","at":30977.966665999964,"latency":{"brain":21307.966665999964,"tool":0,"tts":0},"text":"바른정형외과님, 현재 광고 잔액이 42,000원으로 2일 후에 광고가 멈출 예정입니다. 1만 원 아래로 내려가면 자동으로 충전을 설정하시겠어요? 5만, 10만, 20만 원 중 선택 가능합니다."}
+{"type":"brain.latency","at":30977.966665999964,"latency":{"brain":21307.966665999964,"tool":0,"tts":0},"ms":21307.966665999964}
+{"type":"guard.reject","at":31057.966665999964,"latency":{"brain":21307.966665999964,"tool":0,"tts":80},"layer":"output","reason":"speech_length"}
+{"type":"speech.start","at":31057.966665999964,"latency":{"brain":21307.966665999964,"tool":0,"tts":80},"text":"바른정형외과님, 현재 광고 잔액이 42,000원으로 2일 후에 광고가 멈출 예정입니다. 1만 원 아래로 내려가면 자동으로 충전을 설정하시겠어요?","filler":false,"fixed":false}
+{"type":"call.end","at":39629.966665999964,"latency":{"brain":21307.966665999964,"tool":0,"tts":80},"outcome":"pending_confirmation","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":1,"longCall":false,"policyViolations":0},"pending":[],"brain":"llm","durationMs":39546.966665999964}

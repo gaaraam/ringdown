@@ -1,0 +1,15 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"ads.getAccount","args":{"advertiserId":"A-2021"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":125,"latency":{"brain":0,"tool":125,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":125,"result":{"status":"ok","data":{"businessName":"스마일치과","balance":55000,"dailySpend":27500,"daysLeft":2,"autoCharge":null},"latencyMs":125}}}
+{"type":"tool.result","at":125,"latency":{"brain":0,"tool":125,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"businessName":"스마일치과","balance":55000,"dailySpend":27500,"daysLeft":2,"autoCharge":null},"latencyMs":125},"elapsedMs":125,"attempts":1}
+{"type":"speech.start","at":125,"latency":{"brain":0,"tool":125,"tts":0},"text":"안녕하세요, 가가애즈 AI 상담원입니다. 광고 운영 안내를 위해 연락드렸고, 통화 내용은 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":5983,"latency":{"brain":0,"tool":125,"tts":0},"text":"스마일치과 광고 담당자분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":9569,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":9629,"latency":{"brain":60,"tool":0,"tts":0},"plan":{"intent":"yes","transition":"pitch","tools":[]},"attempt":0}
+{"type":"brain.compose","at":9629,"latency":{"brain":60,"tool":0,"tts":0},"text":"잔액이 55000원이라 2일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼요."}
+{"type":"brain.latency","at":9629,"latency":{"brain":60,"tool":0,"tts":0},"ms":60}
+{"type":"speech.start","at":9709,"latency":{"brain":60,"tool":0,"tts":80},"text":"잔액이 55000원이라 2일 뒤 광고가 멈춰요. 1만 원 아래로 내려가면 자동 충전되게 해 드릴까요? 5만, 10만, 20만 원 중 고르시면 돼요.","filler":false,"fixed":false}
+{"type":"turn.start","at":19152,"latency":{"brain":0,"tool":0,"tts":0},"stage":"pitch","user":"아니요. 안 할게요."}
+{"type":"brain.plan","at":19185,"latency":{"brain":33,"tool":0,"tts":0},"plan":{"intent":"no","transition":"close","end":"declined","say":"알겠습니다. 필요하시면 광고 관리 화면에서 언제든 켜실 수 있어요.","tools":[]},"attempt":0}
+{"type":"brain.latency","at":19185,"latency":{"brain":33,"tool":0,"tts":0},"ms":33}
+{"type":"speech.start","at":19265,"latency":{"brain":33,"tool":0,"tts":80},"text":"알겠습니다. 필요하시면 광고 관리 화면에서 언제든 켜실 수 있어요.","filler":false,"fixed":false}
+{"type":"call.end","at":23123,"latency":{"brain":33,"tool":0,"tts":80},"outcome":"declined","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[],"brain":"rule","durationMs":22998}

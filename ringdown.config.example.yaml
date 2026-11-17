@@ -1,4 +1,6 @@
 # ringdown.config.yaml 로 복사해서 쓴다. 이 파일이 없으면 기본값을 쓴다.
+# M4 비교에서 두 LLM의 업무 성공률이 0이어서 기존 설정을 유지한다(품질 승인 아님).
+# 자세한 한계: docs/experiments/2026-11-m4-model-comparison.md
 # 모델은 언제든 바꿀 수 있다. 우선순위: 기본값 < 이 파일 < 환경변수 < CLI
 #   환경변수: RINGDOWN_MODEL_AGENT=ollama/qwen3:14b
 #   CLI:     npm run ringdown -- models --model agent=ollama/qwen3:14b
@@ -9,7 +11,7 @@ models:
     baseUrl: http://localhost:11434
     options: { temperature: 0.3, num_ctx: 8192 }
     timeoutMs: 30000
-  persona:                     # soundcheck 통화 상대. 에이전트와 다른 계열 모델을 쓴다
+  persona:                     # 예약 설정. 현재 soundcheck는 scripted여서 이 모델을 사용하지 않는다
     provider: ollama
     model: gemma3:12b
     options: { temperature: 0.8 }

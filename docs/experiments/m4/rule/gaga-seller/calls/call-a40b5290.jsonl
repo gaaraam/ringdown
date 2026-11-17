@@ -1,0 +1,25 @@
+{"type":"tool.call","at":0,"latency":{"brain":0,"tool":0,"tts":0},"call":{"tool":"seller.lookup","args":{"sellerId":"S-1019"}},"callSeq":1,"consent":false}
+{"type":"tool.result","at":1500,"latency":{"brain":0,"tool":1500,"tts":0},"callSeq":1,"attempt":{"at":0,"endedAt":1500,"result":{"status":"error","kind":"timeout","latencyMs":1500}}}
+{"type":"tool.result","at":1993,"latency":{"brain":0,"tool":1993,"tts":0},"callSeq":1,"attempt":{"at":1615,"endedAt":1993,"result":{"status":"ok","data":{"storeName":"단단스포츠","pendingReturns":7,"monthlyReturnShippingCost":91000,"returnPolicy":null},"latencyMs":378}}}
+{"type":"tool.result","at":1993,"latency":{"brain":0,"tool":1993,"tts":0},"callSeq":1,"result":{"status":"ok","data":{"storeName":"단단스포츠","pendingReturns":7,"monthlyReturnShippingCost":91000,"returnPolicy":null},"latencyMs":378},"elapsedMs":1993,"attempts":2}
+{"type":"speech.start","at":1993,"latency":{"brain":0,"tool":1993,"tts":0},"text":"안녕하세요, 가가마켓 판매자센터 AI 상담원입니다. 통화 내용은 품질 관리를 위해 기록됩니다.","filler":false,"fixed":true}
+{"type":"speech.start","at":7565,"latency":{"brain":0,"tool":1993,"tts":0},"text":"단단스포츠 운영하시는 분 맞으실까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":11151,"latency":{"brain":0,"tool":0,"tts":0},"stage":"verify","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":11176,"latency":{"brain":25,"tool":0,"tts":0},"plan":{"intent":"yes","transition":"explain","tools":[]},"attempt":0}
+{"type":"brain.compose","at":11176,"latency":{"brain":25,"tool":0,"tts":0},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설정해 드릴 수 있는데, 무료, 3천 원, 5천 원 중 어떤 걸로 할까요?"}
+{"type":"brain.latency","at":11176,"latency":{"brain":25,"tool":0,"tts":0},"ms":25}
+{"type":"speech.start","at":11256,"latency":{"brain":25,"tool":0,"tts":80},"text":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설정해 드릴 수 있는데, 무료, 3천 원, 5천 원 중 어떤 걸로 할까요?","filler":false,"fixed":false}
+{"type":"speech.interrupted","at":17256,"latency":{"brain":25,"tool":0,"tts":80},"intended":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설정해 드릴 수 있는데, 무료, 3천 원, 5천 원 중 어떤 걸로 할까요?","heard":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설"}
+{"type":"turn.start","at":18699,"latency":{"brain":0,"tool":0,"tts":0},"stage":"explain","user":"무료으로 해 주세요.","interruptedAt":"지금 반품 배송비 정책이 비어 있어서, 반품이 들어오면 배송비를 사장님이 모두 부담하세요. 지금 바로 설"}
+{"type":"brain.plan","at":18739,"latency":{"brain":40,"tool":0,"tts":0},"plan":{"intent":"plan_free","setSlots":{"returnPlan":"free"},"transition":"confirm","tools":[]},"attempt":0}
+{"type":"brain.compose","at":18739,"latency":{"brain":40,"tool":0,"tts":0},"text":"무료 반품으로 설정할게요. 진행해도 될까요?"}
+{"type":"brain.latency","at":18739,"latency":{"brain":40,"tool":0,"tts":0},"ms":40}
+{"type":"speech.start","at":18819,"latency":{"brain":40,"tool":0,"tts":80},"text":"무료 반품으로 설정할게요. 진행해도 될까요?","filler":false,"fixed":false}
+{"type":"turn.start","at":22691,"latency":{"brain":0,"tool":0,"tts":0},"stage":"confirm","user":"네, 진행해 주세요."}
+{"type":"brain.plan","at":22729,"latency":{"brain":38,"tool":0,"tts":0},"plan":{"intent":"yes","setSlots":{"consent":true},"transition":"close","end":"success","say":"설정해 드렸어요.","tools":[{"tool":"seller.setReturnPolicy","args":{}}]},"attempt":0}
+{"type":"tool.call","at":22729,"latency":{"brain":38,"tool":0,"tts":0},"call":{"tool":"seller.setReturnPolicy","args":{"sellerId":"S-1019","plan":"free"}},"callSeq":2,"consent":true}
+{"type":"tool.result","at":22969,"latency":{"brain":38,"tool":240,"tts":0},"callSeq":2,"attempt":{"at":22729,"endedAt":22969,"result":{"status":"error","kind":"5xx","latencyMs":240,"httpStatus":503},"idempotencyKey":"call-a40b5290:seller.setReturnPolicy:2"}}
+{"type":"tool.result","at":22969,"latency":{"brain":38,"tool":240,"tts":0},"callSeq":2,"result":{"status":"error","kind":"5xx","latencyMs":240,"httpStatus":503},"elapsedMs":240,"attempts":1}
+{"type":"brain.latency","at":22969,"latency":{"brain":38,"tool":240,"tts":0},"ms":38}
+{"type":"speech.start","at":23049,"latency":{"brain":38,"tool":240,"tts":80},"text":"처리 결과는 문자로 안내드릴게요.","filler":false,"fixed":false}
+{"type":"call.end","at":25049,"latency":{"brain":38,"tool":240,"tts":80},"outcome":"pending_confirmation","metrics":{"deadAir":0,"controlRejections":0,"outputGuardHits":0,"longCall":false,"policyViolations":0},"pending":[{"kind":"confirmation","tool":"seller.setReturnPolicy"}],"brain":"rule","durationMs":23056}

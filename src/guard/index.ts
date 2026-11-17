@@ -19,11 +19,44 @@ export function checkPlan(plan: Plan, ctx: TurnContext): string | undefined {
     if (key === "consent" && value === true && (!ctx.stage.requireConsent || classify(user?.text ?? "", pack.intents) !== "yes")) return "consent_not_explicit";
   }
   const consent = plan.setSlots?.consent ?? ctx.slots.consent?.value;
+  // 한 계획에 같은 쓰기를 두 번 넣으면 순번이 달라 멱등 키도 달라지고, 업무 시스템에 이중 반영된다 (M4 야간 실험에서 감사 지표로 발견)
+  const writes = (plan.tools ?? []).filter((t) => pack.tools[t.tool]?.kind === "write").map((t) => t.tool);
+  if (new Set(writes).size !== writes.length) return "duplicate_write";
   for (const call of plan.tools ?? []) {
     if (!ctx.stage.allowTools.includes(call.tool)) return "tool_not_allowed";
     if (pack.tools[call.tool]?.kind === "write" && consent !== true) return "write_without_consent";
+    // 쓰기 인자로 쓸 슬롯이 비어 있으면 실행 전에 거부한다. 실행 단계까지 가면 '결과 확인 필요'로 잘못 남는다.
+    if (pack.tools[call.tool]?.kind === "write") {
+      for (const param of Object.values(pack.tools[call.tool]!.params)) {
+        if (param.source === "slot" && (plan.setSlots?.[param.slot!] ?? ctx.slots[param.slot!]?.value) === undefined) return "write_param_missing";
+      }
+    }
   }
   if (plan.transition && !ctx.stage.next.includes(plan.transition)) return "transition_not_allowed";
+  return checkEnd(plan, ctx);
+}
+
+/**
+ * 종료 권한 검사. Brain은 종료를 제안할 뿐이고, 그 종료가 실제 상태와 맞는지는 런타임이 정한다.
+ * - pending_confirmation: 쓰기 결과를 모를 때 런타임만 선언한다.
+ * - opted_out: 수신 거부는 고객 발화의 입력 정책으로만 정한다. 두뇌가 선언하면 협조적인 고객을 다시 부를 수 없게 된다.
+ * - handoff: 어느 단계에서든 허용한다. 런타임이 이관 요청을 등록한다.
+ * - 그 밖의 종료: 종료 단계로 전이하거나 이미 종료 단계여야 한다. 질문하면서 통화를 끝내는 것을 막는다.
+ * - callback_scheduled: 같은 계획에서 콜백 등록 도구를 실제로 호출해야 한다.
+ * - success: 같은 계획에서 쓰기 도구를 실제로 호출해야 한다.
+ */
+/** 수신 거부와 확인 대기는 런타임만 정한다. 두뇌가 수신 거부로 끝내면 협조적인 고객을 다시 못 부르게 된다. */
+const RUNTIME_ENDS = new Set(["opted_out", "pending_confirmation"]);
+const has = (plan: Plan, tool: string) => (plan.tools ?? []).some((t) => t.tool === tool);
+function checkEnd(plan: Plan, ctx: TurnContext): string | undefined {
+  if (!plan.end) return undefined;
+  if (RUNTIME_ENDS.has(plan.end)) return "end_reserved_for_runtime";
+  if (plan.end === "handoff") return undefined; // 런타임이 이관 등록을 보장한다
+  const target = plan.transition ? ctx.pack.pack.stages.find((s) => s.id === plan.transition) : ctx.stage;
+  if (!target?.terminal) return "end_without_terminal_stage";
+  if (plan.end === "callback_scheduled" && !has(plan, "call.scheduleCallback")) return "end_without_effect";
+  // 업무 완료로 끝내려면 같은 계획에서 쓰기 도구를 실제로 불러야 한다. 부르지 않고 "설정해 드렸어요"라고 끝내는 것을 막는다.
+  if (plan.end === "success" && !(plan.tools ?? []).some((t) => ctx.pack.pack.tools[t.tool]?.kind === "write")) return "end_without_effect";
   return undefined;
 }
 
