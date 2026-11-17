@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "pack": "gaga-clinic@1",
+  "brain": "rule",
+  "matrix": {
+    "personas": 30,
+    "faults": [
+      "clean",
+      "slow",
+      "flaky",
+      "down",
+      "lost-ack"
+    ],
+    "calls": 450
+  },
+  "seeds": [
+    1,
+    2,
+    3
+  ],
+  "metrics": {
+    "goal_rate": {
+      "value": 0.2866666666666667,
+      "ci95": [
+        0.2468296240775175,
+        0.33011515197068336
+      ],
+      "n": 450
+    },
+    "acceptable_rate": {
+      "value": 1,
+      "ci95": [
+        0.9915356811370294,
+        1
+      ],
+      "n": 450
+    },
+    "barge_in_rate": {
+      "value": 0,
+      "ci95": [
+        0,
+        0.002087929262750951
+      ],
+      "n": 1836
+    },
+    "long_call_rate": {
+      "value": 0,
+      "ci95": [
+        0,
+        0.008464318862970662
+      ],
+      "n": 450
+    },
+    "turn_latency_p95": {
+      "value": 800,
+      "ci95": null,
+      "n": 1286
+    },
+    "dead_air_incidents": {
+      "value": 0,
+      "ci95": null,
+      "n": 450
+    },
+    "degraded_survival": {
+      "value": 1,
+      "ci95": [
+        0.979217547593473,
+        1
+      ],
+      "n": 181
+    },
+    "policy_violations": {
+      "value": 0,
+      "ci95": null,
+      "n": 450
+    },
+    "brain_fallbacks": {
+      "value": 0,
+      "ci95": null,
+      "n": 450
+    }
+  }
+}

@@ -1,0 +1,252 @@
+# 30명: accept 16, accept_if_short 4, ask_then_accept 4, decline 2, opt_out 1, request_human 1, busy 2.
+# 인내심 0.2~1, 협조성 0~1, 지식 low/mid/high와 다섯 버릇을 분산한다.
+# 선택은 시드 난수다. 실제 환자 분포/본인 인증 정확도/의료 안전성의 추정 표본이 아니다.
+- id: cooperative-patient
+  targetId: DEMO-01
+  description: "가상 환자 1: accept, 특별한 버릇 없음"
+  patience: 0.8
+  cooperativeness: 0.9
+  intent: accept
+- id: patient-02
+  targetId: DEMO-02
+  description: "가상 환자 2: accept_if_short, interrupts"
+  patience: 0.2
+  cooperativeness: 0.5
+  intent: accept_if_short
+  quirks:
+    - interrupts
+- id: patient-03
+  targetId: DEMO-03
+  description: "가상 환자 3: ask_then_accept, asks_question"
+  patience: 0.6
+  cooperativeness: 0.6
+  intent: ask_then_accept
+  knowledge: high
+  quirks:
+    - asks_question
+- id: patient-04
+  targetId: DEMO-04
+  description: "가상 환자 4: decline, 특별한 버릇 없음"
+  patience: 0.5
+  cooperativeness: 0.1
+  intent: decline
+- id: patient-05
+  targetId: DEMO-05
+  description: "가상 환자 5: opt_out, 특별한 버릇 없음"
+  patience: 0.3
+  cooperativeness: 0
+  intent: opt_out
+- id: patient-06
+  targetId: DEMO-06
+  description: "가상 환자 6: request_human, 특별한 버릇 없음"
+  patience: 0.4
+  cooperativeness: 0.4
+  intent: request_human
+- id: patient-07
+  targetId: DEMO-07
+  description: "가상 환자 7: busy, 특별한 버릇 없음"
+  patience: 0.3
+  cooperativeness: 0.5
+  intent: busy
+- id: patient-08
+  targetId: DEMO-08
+  description: "가상 환자 8: accept, topic_switch"
+  patience: 0.7
+  cooperativeness: 0.7
+  intent: accept
+  quirks:
+    - topic_switch
+- id: patient-09
+  targetId: DEMO-09
+  description: "가상 환자 9: accept, 특별한 버릇 없음"
+  patience: 0.2
+  cooperativeness: 0.8
+  intent: accept
+  knowledge: low
+  quirks: []
+- id: patient-10
+  targetId: DEMO-10
+  description: "가상 환자 10: accept, interrupts"
+  patience: 0.4
+  cooperativeness: 0.9
+  intent: accept
+  knowledge: mid
+  quirks:
+    - interrupts
+- id: patient-11
+  targetId: DEMO-11
+  description: "가상 환자 11: accept, silence"
+  patience: 0.6
+  cooperativeness: 1
+  intent: accept
+  knowledge: high
+  quirks:
+    - silence
+- id: patient-12
+  targetId: DEMO-12
+  description: "가상 환자 12: accept, asks_question"
+  patience: 0.8
+  cooperativeness: 0.8
+  intent: accept
+  knowledge: low
+  quirks:
+    - asks_question
+- id: patient-13
+  targetId: DEMO-13
+  description: "가상 환자 13: accept, topic_switch"
+  patience: 1
+  cooperativeness: 0.9
+  intent: accept
+  knowledge: mid
+  quirks:
+    - topic_switch
+- id: patient-14
+  targetId: DEMO-14
+  description: "가상 환자 14: accept, mishears"
+  patience: 0.2
+  cooperativeness: 1
+  intent: accept
+  knowledge: high
+  quirks:
+    - mishears
+- id: patient-15
+  targetId: DEMO-15
+  description: "가상 환자 15: accept, 특별한 버릇 없음"
+  patience: 0.4
+  cooperativeness: 0.8
+  intent: accept
+  knowledge: low
+  quirks: []
+- id: patient-16
+  targetId: DEMO-16
+  description: "가상 환자 16: accept, interrupts"
+  patience: 0.6
+  cooperativeness: 0.9
+  intent: accept
+  knowledge: mid
+  quirks:
+    - interrupts
+- id: patient-17
+  targetId: DEMO-17
+  description: "가상 환자 17: accept, silence"
+  patience: 0.8
+  cooperativeness: 1
+  intent: accept
+  knowledge: high
+  quirks:
+    - silence
+- id: patient-18
+  targetId: DEMO-18
+  description: "가상 환자 18: accept, asks_question"
+  patience: 1
+  cooperativeness: 0.8
+  intent: accept
+  knowledge: low
+  quirks:
+    - asks_question
+- id: patient-19
+  targetId: DEMO-19
+  description: "가상 환자 19: accept, topic_switch"
+  patience: 0.2
+  cooperativeness: 0.9
+  intent: accept
+  knowledge: mid
+  quirks:
+    - topic_switch
+- id: patient-20
+  targetId: DEMO-20
+  description: "가상 환자 20: accept, mishears"
+  patience: 0.4
+  cooperativeness: 1
+  intent: accept
+  knowledge: high
+  quirks:
+    - mishears
+- id: patient-21
+  targetId: DEMO-21
+  description: "가상 환자 21: accept, 특별한 버릇 없음"
+  patience: 0.6
+  cooperativeness: 0.8
+  intent: accept
+  knowledge: low
+  quirks: []
+- id: patient-22
+  targetId: DEMO-22
+  description: "가상 환자 22: accept, interrupts"
+  patience: 0.8
+  cooperativeness: 0.9
+  intent: accept
+  knowledge: mid
+  quirks:
+    - interrupts
+- id: patient-23
+  targetId: DEMO-23
+  description: "가상 환자 23: accept_if_short, silence"
+  patience: 1
+  cooperativeness: 1
+  intent: accept_if_short
+  knowledge: high
+  quirks:
+    - silence
+- id: patient-24
+  targetId: DEMO-24
+  description: "가상 환자 24: accept_if_short, asks_question"
+  patience: 0.2
+  cooperativeness: 0.8
+  intent: accept_if_short
+  knowledge: low
+  quirks:
+    - asks_question
+- id: patient-25
+  targetId: DEMO-25
+  description: "가상 환자 25: accept_if_short, topic_switch"
+  patience: 0.4
+  cooperativeness: 0.9
+  intent: accept_if_short
+  knowledge: mid
+  quirks:
+    - topic_switch
+- id: patient-26
+  targetId: DEMO-26
+  description: "가상 환자 26: ask_then_accept, mishears"
+  patience: 0.6
+  cooperativeness: 1
+  intent: ask_then_accept
+  knowledge: high
+  quirks:
+    - mishears
+- id: patient-27
+  targetId: DEMO-27
+  description: "가상 환자 27: ask_then_accept, 특별한 버릇 없음"
+  patience: 0.8
+  cooperativeness: 0.8
+  intent: ask_then_accept
+  knowledge: low
+  quirks: []
+- id: patient-28
+  targetId: DEMO-28
+  description: "가상 환자 28: ask_then_accept, interrupts"
+  patience: 1
+  cooperativeness: 0.9
+  intent: ask_then_accept
+  knowledge: mid
+  quirks:
+    - interrupts
+- id: patient-29
+  targetId: DEMO-29
+  description: "가상 환자 29: decline, silence"
+  patience: 0.2
+  cooperativeness: 1
+  intent: decline
+  knowledge: high
+  quirks:
+    - silence
+- id: patient-30
+  targetId: DEMO-30
+  description: "가상 환자 30: busy, asks_question"
+  patience: 0.4
+  cooperativeness: 0.8
+  intent: busy
+  knowledge: low
+  quirks:
+    - asks_question
