@@ -1,0 +1,5 @@
+pack: packs/gaga-clinic
+persona: cooperative-patient
+fault: lost-ack
+seed: 1
+expected: success

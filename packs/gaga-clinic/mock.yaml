@@ -1,0 +1,232 @@
+# 전부 합성 데이터. 연락처·생년월일·주민번호·질병 정보 없음.
+# appointmentLabel은 원래 예약 안내용, appointmentTime/resolution은 현재 업무 상태.
+routes:
+  - op: GET /patients/{patientId}
+    action: read
+    collection: patients
+    key: patientId
+  - op: GET /appointments/{patientId}
+    action: read
+    collection: appointments
+    key: patientId
+  - op: PUT /appointments/{patientId}/time
+    action: patch
+    collection: appointments
+    key: patientId
+  - op: PUT /appointments/{patientId}/cancellation
+    action: patch
+    collection: appointments
+    key: patientId
+collections:
+  patients:
+    DEMO-01:
+      patientName: 가상가온가
+      bookingChannel: 방문 접수
+    DEMO-02:
+      patientName: 가상나래가
+      bookingChannel: 방문 접수
+    DEMO-03:
+      patientName: 가상다온가
+      bookingChannel: 방문 접수
+    DEMO-04:
+      patientName: 가상라온가
+      bookingChannel: 방문 접수
+    DEMO-05:
+      patientName: 가상마루가
+      bookingChannel: 방문 접수
+    DEMO-06:
+      patientName: 가상바다가
+      bookingChannel: 방문 접수
+    DEMO-07:
+      patientName: 가상새봄가
+      bookingChannel: 방문 접수
+    DEMO-08:
+      patientName: 가상아람가
+      bookingChannel: 방문 접수
+    DEMO-09:
+      patientName: 가상여울가
+      bookingChannel: 방문 접수
+    DEMO-10:
+      patientName: 가상초롱가
+      bookingChannel: 방문 접수
+    DEMO-11:
+      patientName: 가상가온나
+      bookingChannel: 방문 접수
+    DEMO-12:
+      patientName: 가상나래나
+      bookingChannel: 방문 접수
+    DEMO-13:
+      patientName: 가상다온나
+      bookingChannel: 방문 접수
+    DEMO-14:
+      patientName: 가상라온나
+      bookingChannel: 방문 접수
+    DEMO-15:
+      patientName: 가상마루나
+      bookingChannel: 방문 접수
+    DEMO-16:
+      patientName: 가상바다나
+      bookingChannel: 방문 접수
+    DEMO-17:
+      patientName: 가상새봄나
+      bookingChannel: 방문 접수
+    DEMO-18:
+      patientName: 가상아람나
+      bookingChannel: 방문 접수
+    DEMO-19:
+      patientName: 가상여울나
+      bookingChannel: 방문 접수
+    DEMO-20:
+      patientName: 가상초롱나
+      bookingChannel: 방문 접수
+    DEMO-21:
+      patientName: 가상가온다
+      bookingChannel: 방문 접수
+    DEMO-22:
+      patientName: 가상나래다
+      bookingChannel: 방문 접수
+    DEMO-23:
+      patientName: 가상다온다
+      bookingChannel: 방문 접수
+    DEMO-24:
+      patientName: 가상라온다
+      bookingChannel: 방문 접수
+    DEMO-25:
+      patientName: 가상마루다
+      bookingChannel: 방문 접수
+    DEMO-26:
+      patientName: 가상바다다
+      bookingChannel: 방문 접수
+    DEMO-27:
+      patientName: 가상새봄다
+      bookingChannel: 방문 접수
+    DEMO-28:
+      patientName: 가상아람다
+      bookingChannel: 방문 접수
+    DEMO-29:
+      patientName: 가상여울다
+      bookingChannel: 방문 접수
+    DEMO-30:
+      patientName: 가상초롱다
+      bookingChannel: 방문 접수
+  appointments:
+    DEMO-01:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-02:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-03:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-04:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-05:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-06:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-07:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-08:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-09:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-10:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-11:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-12:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-13:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-14:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-15:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-16:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-17:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-18:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-19:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-20:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-21:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-22:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-23:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-24:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-25:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-26:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-27:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-28:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-29:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null
+    DEMO-30:
+      appointmentLabel: 11월 19일 오전 11시
+      appointmentTime: 2026-11-19T11:00:00+09:00
+      resolution: null

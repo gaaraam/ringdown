@@ -1,0 +1,179 @@
+# 가상 조직·가상 환자 전용. 실제 본인 인증이 아닌 고정 코호트 시뮬레이션이다.
+# 모든 대상의 접수 경로는 방문 접수. 동적 사실 비교의 한계는 실험 문서에 기록한다.
+id: gaga-clinic
+version: 1
+name: 가가클리닉 예약 안내
+locale: ko-KR
+call:
+  direction: outbound
+  target: { collection: patients, idParam: patientId }
+  prefetch: [clinic.identity]
+goal:
+  description: 이름과 접수 경로를 확인한 뒤 다음 예약을 안내하고 유지·시간 변경·취소 중 환자의 선택을 돕는다.
+  # 두 쓰기는 같은 resolution 필드를 갱신한다. 유지는 쓰기 없이 declined로 종료한다.
+  success: { collection: appointments, field: resolution, op: exists }
+  acceptableOutcomes: [callback_scheduled, pending_confirmation, declined, opted_out, handoff]
+policy:
+  callWindow: { days: [mon, tue, wed, thu, fri], from: "09:00", to: "18:00", tz: Asia/Seoul }
+  disclosure: "안녕하세요, 가가클리닉 AI 상담원입니다. 예약 안내 전화이며 통화 내용은 기록됩니다."
+  maxTurnSpeechSec: 12
+  maxCallSec: 180
+  silenceMaxSec: 3
+  turnLatencyBudgetMs: 800
+  fillerPhrases: ["잠시만요, 확인하고 있습니다.", "확인 중입니다. 잠시 기다려 주세요."]
+  handoffTarget: queue:clinic-care
+  forbidden: ["진단은", "진단해", "복용하세요", "드세요", "약을 끊", "약을 중단", "치료하세요", "완치", "부작용 없", "걱정 안 하셔도", "무조건", "보장"]
+intents:
+  # 의료 질문은 어느 단계든 입력 가드에서 이관한다. 일반 질문도 단계별로 이관한다.
+  request_human: ["의사", "간호사", "의료", "진료", "진단", "증상", "아파", "아프", "통증", "약을 먹", "약을 끊", "약을 중단", "약 먹", "복용", "치료", "검사", "금식", "임신", "수술", "열이", "어지러", "피가", "온라인", "전화 접수", "모르겠", "기억 안", "방문 접수 아니", "방문 접수로 안"]
+  identity_match: ["방문 접수"]
+  keep: ["그대로", "유지"]
+  reschedule: ["시간 변경", "날짜 변경", "바꾸고", "바꿔"]
+  cancel: ["예약 취소", "취소"]
+  slot_morning: ["오전", "10시", "열 시"]
+  slot_afternoon: ["오후", "14시", "두 시"]
+  admin_help: ["어떻게 변경", "변경 방법"]
+slots:
+  consent: { type: boolean, description: 현재 확인 단계에서 제시한 변경 또는 취소에 대한 명시적 동의 }
+  resolution:
+    type: string
+    enum: [rescheduled, cancelled]
+    labels: { rescheduled: 예약 시간 변경, cancelled: 예약 취소 }
+  appointmentTime:
+    type: string
+    enum: ["2026-11-20T10:00:00+09:00", "2026-11-20T14:00:00+09:00"]
+    labels:
+      "2026-11-20T10:00:00+09:00": "11월 20일 오전 10시"
+      "2026-11-20T14:00:00+09:00": "11월 20일 오후 2시"
+stages:
+  - id: verify-name
+    goal: 이름을 확인한다. 예약 날짜와 진료 내용은 아직 조회하거나 읽지 않는다.
+    allowTools: [call.scheduleCallback, call.handoff]
+    next: [verify-channel, close]
+    rule:
+      say: "{{fact.patientName}} 님 본인이신가요?"
+      on:
+        yes: { goto: verify-channel }
+        no: { goto: close, say: "실례했습니다. 안내를 마치겠습니다.", end: declined }
+        busy: { tool: call.scheduleCallback, goto: close, say: "다시 연락드릴 수 있도록 접수하겠습니다.", end: callback_scheduled }
+        question: { tool: call.handoff, goto: close, say: "담당 직원에게 연결 요청을 남기겠습니다.", end: handoff }
+  - id: verify-channel
+    goal: 추가 사실인 접수 경로를 환자가 직접 말하게 한다. 단순 긍정만으로 예약을 조회하지 않는다.
+    allowTools: [clinic.nextAppointment, call.scheduleCallback, call.handoff]
+    next: [choose, close]
+    rule:
+      say: "본인 확인을 위해 처음 접수하신 경로를 말씀해 주시겠어요?"
+      on:
+        identity_match: { tool: clinic.nextAppointment, goto: choose }
+        yes: { tool: call.handoff, goto: close, say: "접수 경로 확인이 필요해 담당 직원에게 연결 요청을 남기겠습니다.", end: handoff }
+        no: { goto: close, say: "확인되지 않아 예약 안내를 마치겠습니다.", end: declined }
+        busy: { tool: call.scheduleCallback, goto: close, say: "다시 연락드릴 수 있도록 접수하겠습니다.", end: callback_scheduled }
+        question: { tool: call.handoff, goto: close, say: "담당 직원에게 연결 요청을 남기겠습니다.", end: handoff }
+  - id: choose
+    goal: 조회한 다음 예약을 안내한다. 유지·변경·취소를 고르게 하되 이 단계에서는 쓰지 않는다.
+    allowTools: [kb.search, call.handoff, call.scheduleCallback]
+    next: [choose-slot, confirm-cancel, close]
+    rule:
+      say: "다음 예약은 {{fact.appointmentLabel}}입니다. 그대로 두시거나 시간 변경, 취소 중 어떻게 도와드릴까요?"
+      on:
+        keep: { goto: close, say: "기존 예약은 그대로 두겠습니다. 감사합니다.", end: declined }
+        reschedule: { set: { consent: false, resolution: rescheduled }, goto: choose-slot }
+        cancel: { set: { consent: false, resolution: cancelled }, goto: confirm-cancel }
+        admin_help: { tool: kb.search }
+        question: { tool: call.handoff, goto: close, say: "담당 직원에게 연결 요청을 남기겠습니다.", end: handoff }
+        no: { goto: close, say: "예약은 변경하지 않겠습니다. 감사합니다.", end: declined }
+        busy: { tool: call.scheduleCallback, goto: close, say: "다시 연락드릴 수 있도록 접수하겠습니다.", end: callback_scheduled }
+  - id: choose-slot
+    goal: 고정 모의 일정 중 하나를 선택한다. 실제 서비스에서는 API가 허용한 시간만 받아야 한다.
+    allowTools: [call.handoff, call.scheduleCallback]
+    next: [confirm-reschedule, close]
+    rule:
+      say: "변경 가능한 시간은 11월 20일 오전 10시, 오후 2시입니다. 어느 시간이 편하실까요?"
+      on:
+        slot_morning: { set: { appointmentTime: "2026-11-20T10:00:00+09:00" }, goto: confirm-reschedule }
+        slot_afternoon: { set: { appointmentTime: "2026-11-20T14:00:00+09:00" }, goto: confirm-reschedule }
+        no: { goto: close, say: "기존 예약은 그대로 두겠습니다.", end: declined }
+        question: { tool: call.handoff, goto: close, say: "담당 직원에게 연결 요청을 남기겠습니다.", end: handoff }
+        busy: { tool: call.scheduleCallback, goto: close, say: "다시 연락드릴 수 있도록 접수하겠습니다.", end: callback_scheduled }
+  - id: confirm-reschedule
+    goal: 선택한 시간을 다시 읽고 지금 받은 명시적 동의로만 변경한다.
+    requireConsent: true
+    allowTools: [clinic.reschedule, call.handoff, call.scheduleCallback]
+    next: [close]
+    rule:
+      say: "예약을 {{slot.appointmentTime}}로 변경해도 될까요?"
+      on:
+        yes: { set: { consent: true }, tool: clinic.reschedule, goto: close, say: "예약 시간을 변경했습니다. 감사합니다.", end: success }
+        no: { goto: close, say: "변경하지 않고 기존 예약을 두겠습니다.", end: declined }
+        question: { tool: call.handoff, goto: close, say: "담당 직원에게 연결 요청을 남기겠습니다.", end: handoff }
+        busy: { tool: call.scheduleCallback, goto: close, say: "변경하지 않고 다시 연락드리도록 접수하겠습니다.", end: callback_scheduled }
+  - id: confirm-cancel
+    goal: 취소할 예약을 다시 읽고 지금 받은 명시적 동의로만 취소한다.
+    requireConsent: true
+    allowTools: [clinic.cancel, call.handoff, call.scheduleCallback]
+    next: [close]
+    rule:
+      say: "{{fact.appointmentLabel}} 예약을 취소해도 될까요?"
+      on:
+        yes: { set: { consent: true }, tool: clinic.cancel, goto: close, say: "예약을 취소했습니다. 감사합니다.", end: success }
+        no: { goto: close, say: "취소하지 않고 기존 예약을 두겠습니다.", end: declined }
+        question: { tool: call.handoff, goto: close, say: "담당 직원에게 연결 요청을 남기겠습니다.", end: handoff }
+        busy: { tool: call.scheduleCallback, goto: close, say: "취소하지 않고 다시 연락드리도록 접수하겠습니다.", end: callback_scheduled }
+  - id: close
+    goal: 추가 업무 없이 정중하게 종료한다.
+    terminal: true
+    rule: { say: "감사합니다. 안내를 마치겠습니다." }
+tools:
+  clinic.identity:
+    jack: clinic-api
+    op: GET /patients/{patientId}
+    kind: read
+    description: 예약 정보 없이 가상 대상의 이름만 발화용 사실로 조회한다
+    params: { patientId: { type: string, source: target } }
+    timeoutMs: 1500
+    retry: { max: 2, on: [timeout, 5xx] }
+    onFailure: defer_callback
+    facts: [patientName]
+  clinic.nextAppointment:
+    jack: clinic-api
+    op: GET /appointments/{patientId}
+    kind: read
+    description: 이름과 접수 경로 확인을 마친 대상의 다음 예약을 조회한다
+    params: { patientId: { type: string, source: target } }
+    timeoutMs: 1500
+    retry: { max: 2, on: [timeout, 5xx] }
+    onFailure: defer_callback
+    facts: [appointmentLabel]
+  clinic.reschedule:
+    jack: clinic-api
+    op: PUT /appointments/{patientId}/time
+    kind: write
+    description: 명시적 동의 후 제공한 시간 중 선택한 시간으로 예약을 변경한다
+    params:
+      patientId: { type: string, source: target }
+      appointmentTime: { type: string, source: slot, slot: appointmentTime, enum: ["2026-11-20T10:00:00+09:00", "2026-11-20T14:00:00+09:00"] }
+      resolution: { type: string, source: slot, slot: resolution, enum: [rescheduled] }
+    idempotency: { header: Idempotency-Key }
+    timeoutMs: 2500
+    retry: { max: 1, on: [timeout] }
+    onFailure: confirm_later
+  clinic.cancel:
+    jack: clinic-api
+    op: PUT /appointments/{patientId}/cancellation
+    kind: write
+    description: 명시적 동의 후 예약을 취소 상태로 바꾼다
+    params:
+      patientId: { type: string, source: target }
+      resolution: { type: string, source: slot, slot: resolution, enum: [cancelled] }
+    idempotency: { header: Idempotency-Key }
+    timeoutMs: 2500
+    retry: { max: 1, on: [timeout] }
+    onFailure: confirm_later
+# 전체 장애 매트릭스의 점추정 게이트. 유지/거절도 분모에 남긴다.
+gates:
+  goal_rate: ">= 0.20"
+  acceptable_rate: ">= 0.95"
+  policy_violations: "== 0"
+  barge_in_rate: "<= 0.15"
+  long_call_rate: "<= 0.05"
+  dead_air_incidents: "== 0"

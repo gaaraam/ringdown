@@ -18,7 +18,7 @@
 | Playground ([#12](https://github.com/gaaraam/ringdown/issues/12)) | ✅ 구현·로컬 검증 완료 (PR 검토 대기) | RuleBrain 로컬 웹 3화면, 사람 입력, API 테스트, 라이트·다크 캡처 |
 | 운영 콘솔 ([#16](https://github.com/gaaraam/ringdown/issues/16)) | 구현·로컬 검증 완료 (PR 검토 대기) | 캠페인 영속 저장, 후속 처리·확인, 통화 검색·요약, 운영 현황, 라이트·다크 8장 |
 | M4 LlmBrain | ⏳ | rule / 로컬 모델 2~3종 비교표 |
-| M5 온보딩 증명 | ⏳ | 세 번째 Pack 추가 시 `packs/` 밖 변경 0 |
+| M5 온보딩 증명 ([#19](https://github.com/gaaraam/ringdown/issues/19)) | 구현·로컬 검증 완료 (PR 검토 대기) | 클리닉 30명·두 쓰기·450통화·콘솔 검증. `src/web/scripts` 변경 0; 루트 기준선 사본 제약 [#24](https://github.com/gaaraam/ringdown/issues/24) |
 | M6 음성 | ⏳ 후순위 | — |
 
 ## M1 세부
@@ -118,3 +118,11 @@
 - **2026-11-17** 범위 밖: 설정 편집·배포 게이트·권한·감사 기록, LLM/Ollama, 실제 전화·SMS·업무 API, 저장소 압축·대규모 운영·중단 캠페인 재개. 서버는 기존처럼 로컬 전용이며 운영 지표는 시뮬레이션 결과다.
 
 - **2026-11-17** 최종 검증: `npm run ci` 735개 테스트·타입·lint·경계·Pack 검증·두 Pack 각각 150통화 smoke 통과. 두 Pack × 30명 × 5장애 × 시드 1/2/3의 보고서와 trace 직렬화가 변경 전후 3,130,370바이트로 동일(SHA-256 `723ea99c1d11e46b3e3c565c89846517e9e42ffb0e19caca1c635e322fd8754a`). 고정 메타데이터로 비교했으며 엔진·Pack·기준선 파일은 변경하지 않았다. 마지막 두 번의 시각 검증에서 PNG 14장 모두 SHA-256이 일치했다.
+
+
+## M5 온보딩 (2026-11-17)
+
+- **2026-11-17** `packs/gaga-clinic/` 추가. 이름 확인과 접수 경로 확인 후 예약 조회, 유지·두 시간 선택·취소를 분리했다. 변경/취소마다 동의·멱등 키·결과 불명 후속 처리를 설정했고 의료 질문은 이관한다. 가상 데이터만 사용했다.
+- **2026-11-17** RuleBrain 30명 × 5장애 × 3시드 = 450통화: 성공 129/450(28.67%), 허용 종료 100%, 정책 위반·침묵 사고·장시간 통화 0, 지연 p95 800ms. 유지는 쓰기 없이 `declined`로 종료하므로 목표 성공에 포함하지 않는다. 게이트 근거와 한계는 [실험 기록](experiments/2026-11-m5-onboarding.md)에 남겼다.
+- **2026-11-17** 기존 엔진·UI·스크립트 변경 없이 Playground 직접/자동 대화와 콘솔 30명 캠페인 완료. 처리함에 확인 2·콜백 2·이관 1건이 표시됐고 두 테마 PNG를 직접 검토했다. 로컬 CI 최초 1,062개 테스트·경계·세 팩 검증·각 150통화 smoke 통과. 기존 두 팩과 기준선은 변경하지 않았다.
+- **2026-11-17** [ONBOARDING.md](ONBOARDING.md) 작성. 동적 인증·API 선택지·무쓰기 성공·통화 시간 집행·팩 내부 산출물 발견·scripted 분기 제약을 [#20](https://github.com/gaaraam/ringdown/issues/20), [#21](https://github.com/gaaraam/ringdown/issues/21), [#22](https://github.com/gaaraam/ringdown/issues/22), [#23](https://github.com/gaaraam/ringdown/issues/23), [#24](https://github.com/gaaraam/ringdown/issues/24), [#25](https://github.com/gaaraam/ringdown/issues/25)로 분리했다. 실제 본인 인증·실시간 가용 슬롯·발신 시간 차단·의료 이해·실제 발신/API를 입증한 것이 아니다. 문서/PNG 및 CLI 호환 기준선 사본은 `packs/` 밖에 추가됐다.
