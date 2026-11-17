@@ -1,6 +1,6 @@
 import { afterEach, expect, it, vi } from "vitest";
 import { z } from "zod";
-import { LlmBrain, normalizePlan, planSchema, promptPrefix } from "../src/brain/llm.ts";
+import { LlmBrain, normalizePlan, planSchema, promptPrefix, rejectionHint } from "../src/brain/llm.ts";
 import { registerProvider, type ChatRequest } from "../src/llm/types.ts";
 import { LlmError } from "../src/llm/http.ts";
 import { OllamaClient } from "../src/llm/ollama.ts";
@@ -188,4 +188,14 @@ it("숫자·불리언 enum도 선언된 슬롯 타입을 유지", () => {
   expect(schema.safeParse({ intent: "yes", setSlots: { count: "1" } }).success).toBe(false);
   expect(schema.safeParse({ intent: "yes", setSlots: { count: 3 } }).success).toBe(false);
   expect(schema.safeParse({ intent: "yes", setSlots: { enabled: false } }).success).toBe(false);
+});
+
+it("거부 코드를 고칠 수 있는 지시로 바꿔 전달한다", () => {
+  const ctx = context();
+  const stage = pack.pack.stages.find(s => s.allowTools.some(t => pack.pack.tools[t]?.kind === "write"))!;
+  const write = stage.allowTools.find(t => pack.pack.tools[t]?.kind === "write")!;
+  const hint = rejectionHint({ ...ctx, stage, rejection: "end_without_effect" })!;
+  expect(hint).toContain(write);
+  expect(hint).toContain("consent");
+  expect(rejectionHint({ ...ctx, rejection: undefined })).toBeUndefined();
 });
