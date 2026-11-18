@@ -11,5 +11,5 @@ export default ts.config(
   // Existing schema mutation fixtures deliberately accept invalid shapes.
   { files: ['tests/pack.test.ts'], rules: { '@typescript-eslint/no-explicit-any': 'off' } },
   { files: ['web/**/*.js'], languageOptions: { globals: Object.fromEntries(['document', 'window', 'localStorage', 'fetch', 'FormData', 'URLSearchParams', 'EventSource', 'setTimeout', 'clearTimeout'].map(name => [name, 'readonly'])) } },
-  { files: ['scripts/**/*.mjs'], languageOptions: { globals: Object.fromEntries(['process', 'console', 'Buffer', 'URL', 'setTimeout', 'clearTimeout', 'fetch', 'document', 'innerWidth', 'requestAnimationFrame'].map(name => [name, 'readonly'])) } },
+  { files: ['scripts/**/*.mjs'], languageOptions: { globals: Object.fromEntries(['process', 'console', 'Buffer', 'URL', 'setTimeout', 'clearTimeout', 'fetch', 'document', 'innerWidth', 'requestAnimationFrame', 'Image', 'OffscreenCanvas'].map(name => [name, 'readonly'])) } },
 );
